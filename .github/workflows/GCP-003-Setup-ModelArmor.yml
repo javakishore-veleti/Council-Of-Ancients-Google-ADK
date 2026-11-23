@@ -1,4 +1,4 @@
-name: GCP-001-Setup-ModelArmor
+name: GCP-003-Setup-ModelArmor
 
 on:
   workflow_dispatch:

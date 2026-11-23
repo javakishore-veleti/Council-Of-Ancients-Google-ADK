@@ -36,4 +36,4 @@ See [`CICD/GCP/README.md`](CICD/GCP/README.md). Auth is **Workload Identity Fede
 
 Org/repo secrets: `GCP_PROJECT_ID`, `GCP_SERVICE_ACCOUNT`, `GCP_WORKLOAD_IDENTITY_PROVIDER`.
 
-Run in order: **GCP-001-Setup-APIs** → **GCP-001-Setup-ServiceAccount** → **GCP-001-Setup-ModelArmor**.
+Run in order: **GCP-001-Setup-APIs** → **GCP-002-Setup-ServiceAccount** → **GCP-003-Setup-ModelArmor**.

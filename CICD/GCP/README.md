@@ -7,10 +7,10 @@ Manually triggered workflows under `.github/workflows/` that run the scripts in 
 ## Recommended order
 
 1. **GCP-001-Setup-APIs**
-2. **GCP-001-Setup-ServiceAccount**
-3. **GCP-001-Setup-ModelArmor**
+2. **GCP-002-Setup-ServiceAccount**
+3. **GCP-003-Setup-ModelArmor**
 
-Destroy in reverse: ModelArmor → ServiceAccount → APIs.
+Destroy in reverse: **GCP-003-Destroy-ModelArmor** → **GCP-002-Destroy-ServiceAccount** → **GCP-001-Destroy-APIs**.
 
 ## GitHub secrets (org-shared)
 

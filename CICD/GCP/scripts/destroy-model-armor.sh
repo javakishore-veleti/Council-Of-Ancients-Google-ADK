@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GCP-001 Destroy ModelArmor — delete prompt + response screening templates.
+# GCP-003 Destroy ModelArmor — delete prompt + response screening templates.
 # Requires CONFIRM_DESTROY=delete-model-armor
 set -euo pipefail
 

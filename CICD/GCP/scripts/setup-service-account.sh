@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GCP-001 Setup ServiceAccount — create runtime SA + least-privilege roles.
+# GCP-002 Setup ServiceAccount — create runtime SA + least-privilege roles.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

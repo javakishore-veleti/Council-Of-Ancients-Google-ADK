@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GCP-001 Destroy ServiceAccount — remove IAM bindings and delete runtime SA.
+# GCP-002 Destroy ServiceAccount — remove IAM bindings and delete runtime SA.
 # Requires CONFIRM_DESTROY=delete-service-account
 set -euo pipefail
 

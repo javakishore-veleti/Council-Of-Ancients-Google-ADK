@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# GCP-001 Setup ModelArmor — create prompt + response screening templates.
+# GCP-003 Setup ModelArmor — create prompt + response screening templates.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
