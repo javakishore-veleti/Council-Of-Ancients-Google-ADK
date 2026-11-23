@@ -10,7 +10,7 @@ The three counselors are standing roles in that debate. **Plato** (classical Ath
 |--|--|
 | **Useful for** | Hard decisions where a single chatbot would hedge—“on one hand / on the other.” (*Hedge* here means the bot sits on the fence and never clearly says “do this” or “don’t.”) Hard here means trade-offs with real downside either way—e.g. leave a stable job for a startup, ship a risky feature, grow vs stay profitable, use customer data for a model—because values, evidence, and incentives pull in different directions and you still need a call. Not-so-hard decisions are factual lookups, how-tos, or low-stakes preferences where one clear answer is enough and a council debate would be overkill. The Council forces structured disagreement (ethics vs proof vs power), then a Facilitator synthesis with a recommended action. |
 | **Who uses it** | Founders and operators on strategy/ethics trade-offs (strategy picks the move; ethics checks whether that move still earns trust with customers, employees, and partners); product and eng leads on ship-vs-risk calls; policy, trust & safety, or compliance reviewers stress-testing a stance; coaches/advisors rehearsing a dilemma; developers learning multi-agent ADK patterns. |
-| **How they interact** | Ask the Facilitator in natural language (portal, ADK web, or API). Casual greetings get a short reply; real dilemmas run parallel openings, rebuttals, and a council verdict. |
+| **How they interact** | Chat in natural language through the portal, ADK web, or API. Those clients talk to the **Facilitator** in middleware—you do not pick counselors in the UI. Casual greetings get a short Facilitator reply; real dilemmas run parallel openings, rebuttals, and a council verdict (the UI can show those turns; the Facilitator still chairs them behind the scenes). |
 
 | Counselor | Lens | Benefit to the user |
 |-----------|------|---------------------|
@@ -18,6 +18,12 @@ The three counselors are standing roles in that debate. **Plato** (classical Ath
 | **René Descartes** | Doubt, first principles, what is proven | Challenges shaky assumptions, missing evidence, and leaps of faith before you commit. |
 | **Niccolò Machiavelli** | Power, incentives, what works in practice | Stress-tests politics, leverage, and second-order consequences so the plan survives contact with reality. |
 | **Facilitator** (chair) | Neutral synthesis | Turns three sharp angles into one readable verdict: convergence, tensions, and a concrete recommended action. |
+
+What Plato’s lens means here (product language, not a philosophy textbook):
+
+- **Virtue** — Would a decent person or org still respect this choice? About character and integrity of the move, not “what scores highest.”
+- **Justice** — Is it fair to the people involved? Who gains, who is hurt, and does the “winning” option still look fair once that is named.
+- **Wider community** — Everyone affected beyond “me / my team / my P&L”—customers, employees, partners, users, people downstream. **Wider** means wider than the decision-maker’s private interest, so a clever personal win does not ignore shared harm.
 
 ## Table of contents
 
@@ -52,7 +58,7 @@ The three counselors are standing roles in that debate. **Plato** (classical Ath
 
 ### What users type
 
-Users talk to the **Facilitator**, not to Plato / Descartes / Machiavelli directly.
+Users type into a **client** (Angular portal, ADK web, or HTTP API). The client never is the Facilitator—that agent lives under `Middleware/Agents/` and is the only chair of the debate. Users talk to the **Facilitator**, not to Plato / Descartes / Machiavelli directly.
 
 | Example prompt | Expected behavior |
 |----------------|-------------------|
