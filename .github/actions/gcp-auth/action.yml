@@ -1,0 +1,22 @@
+name: gcp-auth
+description: Authenticate to Google Cloud via Workload Identity Federation (no JSON keys)
+
+inputs:
+  workload_identity_provider:
+    description: Full WIF provider resource name
+    required: true
+  service_account:
+    description: Deployer service account email to impersonate
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Authenticate to Google Cloud (WIF)
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ inputs.workload_identity_provider }}
+        service_account: ${{ inputs.service_account }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2

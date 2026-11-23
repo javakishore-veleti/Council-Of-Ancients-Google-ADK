@@ -32,6 +32,8 @@ Copy `.env.template` → `.env` for app config. Compose defaults live under `CIC
 
 ## GCP setup (manual GitHub Actions)
 
-See [`CICD/GCP/README.md`](CICD/GCP/README.md). Required repo secrets: `GCP_PROJECT_ID`, `GCP_SA_KEY`.
+See [`CICD/GCP/README.md`](CICD/GCP/README.md). Auth is **Workload Identity Federation** (no laptop `gcloud`, no JSON keys).
+
+Org/repo secrets: `GCP_PROJECT_ID`, `GCP_SERVICE_ACCOUNT`, `GCP_WORKLOAD_IDENTITY_PROVIDER`.
 
 Run in order: **GCP-001-Setup-APIs** → **GCP-001-Setup-ServiceAccount** → **GCP-001-Setup-ModelArmor**.
