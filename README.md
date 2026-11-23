@@ -1,19 +1,23 @@
 # Council-Of-Ancients-Google-ADK
 
-Multi-agent Council of Ancients on Google ADK, inspired by Daniela Petruzalek’s [AI Agents from Scratch with Google ADK](https://danicat.dev/posts/ai-agents-from-scratch-with-google-adk/) (companion reference: [danicat/council](https://github.com/danicat/council)).
+Multi-agent Council of Ancients built with Google Agent Development Kit (ADK), Vertex AI, and Model Armor — with Middleware agents, API services, Angular portals, and GitHub Actions for GCP setup.
 
 ## Table of contents
 
 1. [Layout](#layout)
-2. [Local infrastructure](#local-infrastructure)
-3. [GitHub Actions secrets to configure](#github-actions-secrets-to-configure)
-4. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
+2. [How the Council agents work](#how-the-council-agents-work)
+3. [Local infrastructure](#local-infrastructure)
+4. [GitHub Actions secrets to configure](#github-actions-secrets-to-configure)
+5. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
    - [GCP-001 / GCP-002 / GCP-003 summary table](#what-the-three-gcp-setup-workflows-do)
    - [Workflow files (setup & destroy)](#workflow-files-setup--destroy)
-5. [GCP setup from zero (developer guide)](#gcp-setup-from-zero-developer-guide)
-6. [After GCP setup — local `.env`](#after-gcp-setup--local-env)
-7. [More detail](#more-detail)
-8. [Workflows deep dive](.github/workflows/README.md#github-actions-secrets-to-configure)
+6. [GCP setup from zero (developer guide)](#gcp-setup-from-zero-developer-guide)
+7. [After GCP setup — local `.env`](#after-gcp-setup--local-env)
+8. [Hands-on coding](#hands-on-coding)
+9. [Future work (GitHub issues)](#future-work-github-issues)
+10. [More detail](#more-detail)
+11. [Workflows deep dive](.github/workflows/README.md#github-actions-secrets-to-configure)
+12. [References](#references)
 
 ## Layout
 
@@ -25,6 +29,48 @@ Multi-agent Council of Ancients on Google ADK, inspired by Daniela Petruzalek’
 | `CICD/Local/` | Local Docker infra (Redis, Jaeger, optional Postgres) |
 | `CICD/GCP/` | Scripts + templates used by the GCP GitHub Actions |
 | `.github/workflows/` | Manual GCP setup / destroy workflows |
+| [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) | Step-by-step coding lab (type the snippets yourself) |
+
+## How the Council agents work
+
+### What users type
+
+Users talk to the **Facilitator**, not to Plato / Descartes / Machiavelli directly.
+
+| Example prompt | Expected behavior |
+|----------------|-------------------|
+| `hello` / `who is on the council?` | Facilitator answers alone (no sub-agents) |
+| `Should I leave my job for a risky startup?` | Full debate: opening → rebuttal → synthesis |
+| `Should we prioritize growth or profitability?` | Same debate protocol |
+| `Is it ethical to use customer data to train a model?` | Same debate protocol |
+
+Users usually do **not** say “ask Plato.” The Facilitator decides when to call sub-agents.
+
+### Knowledge base vs model prompts
+
+| Piece | What it uses today (blog / MVP design) |
+|-------|----------------------------------------|
+| Facilitator | `static_instruction` = triage + debate rules |
+| Plato / Descartes / Machiavelli | `static_instruction` = persona + how to argue + **Gemini pretrained knowledge** |
+| Tools / DB / RAG | **None** unless you add them later |
+| Model Armor | Screens prompts and replies (not a knowledge source) |
+
+So the MVP is **structured multi-agent prompting** on Gemini — not random free-chat, and **not** a curated corpus of The Republic / Discourse / The Prince until a RAG epic lands.
+
+```text
+User dilemma
+    → Facilitator (orchestrator prompt)
+        → Plato (ethics prompt)      ─┐
+        → Descartes (doubt prompt)   ├─ parallel single_turn calls
+        → Machiavelli (power prompt) ─┘
+    → Facilitator synthesis
+```
+
+Same idea as the ADK tool loop: the model requests work; your app runs sub-agents like tools; the model answers with those results.
+
+### Making it “meatier” later
+
+Tracked as GitHub **epics/features** below: RAG over texts or company docs, real tools (CRM/metrics), eval sets, Angular portal, durable Cloud Run sessions.
 
 ## Local infrastructure
 
@@ -229,9 +275,52 @@ MODEL_ARMOR_PROMPT_TEMPLATE=projects/YOUR_GCP_PROJECT_ID/locations/us-central1/t
 MODEL_ARMOR_RESPONSE_TEMPLATE=projects/YOUR_GCP_PROJECT_ID/locations/us-central1/templates/council-response-screening
 ```
 
+## Hands-on coding
+
+Follow [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) in order (config → counselors → facilitator → Model Armor App → local run → API → Angular → guardrail tests).
+
+## Future work (GitHub issues)
+
+Deferred product work is tracked as **Epics** and **Features** (labels: `epic`, `feature`, `future`, plus `agents` / `rag` / `tools` / `api` / `portal` / `eval` / `security` / `cloud-run`).
+
+Browse: [all `future`](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues?q=is%3Aissue+label%3Afuture) · [epics](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues?q=is%3Aissue+label%3Aepic) · [features](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues?q=is%3Aissue+label%3Afeature)
+
+Each issue includes: description, objective, outcomes, acceptance criteria, and definition of done.
+
+### Epics
+
+| Epic | Issue |
+|------|-------|
+| Core Council agents MVP | [#2](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/2) |
+| Knowledge grounding (RAG) | [#3](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/3) |
+| Agent tools beyond debate | [#4](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/4) |
+| API services (FastAPI / SSE) | [#5](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/5) |
+| Angular council portal | [#6](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/6) |
+| Evals & guardrail regression | [#7](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/7) |
+| Production Cloud Run hardening | [#8](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/8) |
+
+### Features (by epic)
+
+| Epic | Features |
+|------|----------|
+| #2 Core agents | [#9](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/9) counselors · [#10](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/10) facilitator protocol · [#11](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/11) Model Armor App |
+| #3 RAG | [#12](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/12) corpus ingest · [#13](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/13) retrieval tool |
+| #4 Tools | [#14](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/14) sample domain tools |
+| #5 API | [#15](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/15) FastAPI entry · [#16](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/16) SSE/API contract |
+| #6 Portal | [#17](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/17) Angular chat shell · [#18](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/18) event stream UI |
+| #7 Evals | [#19](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/19) dilemma eval set · [#20](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/20) injection regression |
+| #8 Cloud Run | [#21](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/21) private deploy · [#22](https://github.com/javakishore-veleti/Council-Of-Ancients-Google-ADK/issues/22) durable sessions |
+
 ## More detail
 
 | Doc | Contents |
 |-----|----------|
+| [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) | Coding lab with per-step snippets |
 | [`.github/workflows/README.md`](.github/workflows/README.md) | What each workflow enables / creates / destroys |
 | [`CICD/GCP/README.md`](CICD/GCP/README.md) | WIF secrets, Console notes, template JSON |
+
+## References
+
+- Daniela Petruzalek — [AI Agents from Scratch with Google ADK](https://danicat.dev/posts/ai-agents-from-scratch-with-google-adk/)
+- Companion example repo — [danicat/council](https://github.com/danicat/council)
+- Google ADK docs — [adk.dev](https://adk.dev)
