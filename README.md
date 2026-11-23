@@ -6,6 +6,19 @@ Multi-agent Council of Ancients built with Google Agent Development Kit (ADK), V
 
 The three counselors are standing roles in that debate. **Plato** (classical Athens) pushes virtue, justice, and the good of the wider community. **René Descartes** (early modern Europe) applies methodical doubt and asks what can be established from first principles. **Niccolò Machiavelli** (Renaissance Florence) focuses on incentives, power, and what holds up in practice. Together they give opposing lenses on the same dilemma so the Facilitator can synthesize a clearer recommendation.
 
+| | |
+|--|--|
+| **Useful for** | Hard decisions where a single chatbot would hedge—“on one hand / on the other.” The Council forces structured disagreement (ethics vs proof vs power), then a Facilitator synthesis with a recommended action. |
+| **Who uses it** | Founders and operators on strategy/ethics trade-offs; product and eng leads on ship-vs-risk calls; policy, trust & safety, or compliance reviewers stress-testing a stance; coaches/advisors rehearsing a dilemma; developers learning multi-agent ADK patterns. |
+| **How they interact** | Ask the Facilitator in natural language (portal, ADK web, or API). Casual greetings get a short reply; real dilemmas run parallel openings, rebuttals, and a council verdict. |
+
+| Counselor | Lens | Benefit to the user |
+|-----------|------|---------------------|
+| **Plato** | Virtue, justice, wider community | Surfaces who else is affected and whether the “winning” option still looks fair when stakeholders are included. |
+| **René Descartes** | Doubt, first principles, what is proven | Challenges shaky assumptions, missing evidence, and leaps of faith before you commit. |
+| **Niccolò Machiavelli** | Power, incentives, what works in practice | Stress-tests politics, leverage, and second-order consequences so the plan survives contact with reality. |
+| **Facilitator** (chair) | Neutral synthesis | Turns three sharp angles into one readable verdict: convergence, tensions, and a concrete recommended action. |
+
 ## Table of contents
 
 1. [Layout](#layout)
