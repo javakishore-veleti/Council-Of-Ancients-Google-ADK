@@ -6,28 +6,11 @@ Multi-agent Council of Ancients built with Google Agent Development Kit (ADK), V
 
 The three counselors are standing roles in that debate. **Plato** (classical Athens) pushes virtue, justice, and the good of the wider community. **René Descartes** (early modern Europe) applies methodical doubt and asks what can be established from first principles. **Niccolò Machiavelli** (Renaissance Florence) focuses on incentives, power, and what holds up in practice. Together they give opposing lenses on the same dilemma so the Facilitator can synthesize a clearer recommendation.
 
-**Useful for**
-
-- Hard calls where a single chatbot would hedge (“on one hand / on the other”) and never clearly say do this or don’t.
-- Real downside either way—e.g. leave a stable job for a startup, ship a risky feature, grow vs stay profitable, use customer data for a model.
-- Values, evidence, and incentives pull in different directions, but you still need a decision.
-- Not for factual lookups, how-tos, or low-stakes preferences (a council debate would be overkill).
-- Forces structured disagreement (ethics vs proof vs power), then a Facilitator synthesis with a recommended action.
-
-**Who uses it**
-
-- Founders and operators on strategy/ethics trade-offs (strategy picks the move; ethics checks whether it still earns trust).
-- Product and eng leads on ship-vs-risk calls.
-- Policy, trust & safety, or compliance reviewers stress-testing a stance.
-- Coaches and advisors rehearsing a dilemma.
-- Developers learning multi-agent ADK patterns.
-
-**How they interact**
-
-- Chat in natural language via portal, ADK web, or API.
-- Those clients talk to the **Facilitator** in middleware—you do not pick counselors in the UI.
-- Casual greetings → short Facilitator reply.
-- Real dilemmas → parallel openings, rebuttals, and a council verdict (UI can show the turns; Facilitator chairs them behind the scenes).
+| | |
+|--|--|
+| **Useful for** | <ul><li>Hard calls where a single chatbot would hedge (“on one hand / on the other”) and never clearly say do this or don’t.</li><li>Real downside either way—e.g. leave a stable job for a startup, ship a risky feature, grow vs stay profitable, use customer data for a model.</li><li>Values, evidence, and incentives pull in different directions, but you still need a decision.</li><li>Not for factual lookups, how-tos, or low-stakes preferences (a council debate would be overkill).</li><li>Forces structured disagreement (ethics vs proof vs power), then a Facilitator synthesis with a recommended action.</li></ul> |
+| **Who uses it** | <ul><li>Founders and operators on strategy/ethics trade-offs (strategy picks the move; ethics checks whether it still earns trust).</li><li>Product and eng leads on ship-vs-risk calls.</li><li>Policy, trust & safety, or compliance reviewers stress-testing a stance.</li><li>Coaches and advisors rehearsing a dilemma.</li><li>Developers learning multi-agent ADK patterns.</li></ul> |
+| **How they interact** | <ul><li>Chat in natural language via portal, ADK web, or API.</li><li>Those clients talk to the <strong>Facilitator</strong> in middleware—you do not pick counselors in the UI.</li><li>Casual greetings → short Facilitator reply.</li><li>Real dilemmas → parallel openings, rebuttals, and a council verdict (UI can show the turns; Facilitator chairs them behind the scenes).</li></ul> |
 
 | Counselor | Lens | Benefit to the user |
 |-----------|------|---------------------|
