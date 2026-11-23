@@ -2,6 +2,10 @@
 
 Multi-agent Council of Ancients built with Google Agent Development Kit (ADK), Vertex AI, and Model Armor — with Middleware agents, API services, Angular portals, and GitHub Actions for GCP setup.
 
+**Council** means a small board that deliberates together instead of one assistant hedging alone: a neutral Facilitator chairs the room and specialists argue in parallel before a shared verdict. **Ancients** points at classic intellectual lineages—voices that still shape how people argue about ethics, certainty, and power—not literal undead advisors.
+
+The three counselors are standing roles in that debate. **Plato** (classical Athens) pushes virtue, justice, and the good of the wider community. **René Descartes** (early modern Europe) applies methodical doubt and asks what can be established from first principles. **Niccolò Machiavelli** (Renaissance Florence) focuses on incentives, power, and what holds up in practice. Together they give opposing lenses on the same dilemma so the Facilitator can synthesize a clearer recommendation.
+
 ## Table of contents
 
 1. [Layout](#layout)
