@@ -4,6 +4,13 @@ Multi-agent Council of Ancients built with Google Agent Development Kit (ADK), V
 
 **Council** means a small board that deliberates together instead of one assistant hedging alone: a neutral Facilitator chairs the room and specialists argue in parallel before a shared verdict. **Ancients** points at classic intellectual lineages—voices that still shape how people argue about ethics, certainty, and power—not literal undead advisors.
 
+Who is a historical person vs a product role:
+
+- **Plato** — historical person (classical Athens, Greece). In this app: a counselor **persona** (virtue, justice, wider community).
+- **René Descartes** — historical person (France / Dutch Republic, early modern Europe). In this app: a counselor **persona** (doubt, first principles, what is proven).
+- **Niccolò Machiavelli** — historical person (Renaissance Florence, Italy). In this app: a counselor **persona** (power, incentives, what works in practice).
+- **Facilitator** — not a historical person. Invented **chair** role that triages the chat, calls the three counselors, and writes the synthesis.
+
 The three counselors are standing roles in that debate. **Plato** (classical Athens) pushes virtue, justice, and the good of the wider community. **René Descartes** (early modern Europe) applies methodical doubt and asks what can be established from first principles. **Niccolò Machiavelli** (Renaissance Florence) focuses on incentives, power, and what holds up in practice. Together they give opposing lenses on the same dilemma so the Facilitator can synthesize a clearer recommendation.
 
 | | |
