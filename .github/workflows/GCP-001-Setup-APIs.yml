@@ -1,0 +1,36 @@
+name: GCP-001-Setup-APIs
+
+on:
+  workflow_dispatch:
+    inputs:
+      region:
+        description: "Model Armor / regional default (unused for API enable, kept for consistency)"
+        required: false
+        default: "us-central1"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  setup-apis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Enable APIs
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+          MODEL_ARMOR_REGION: ${{ inputs.region }}
+        run: |
+          chmod +x CICD/GCP/scripts/*.sh
+          ./CICD/GCP/scripts/setup-apis.sh

@@ -10,6 +10,7 @@ Multi-agent Council of Ancients on Google ADK, inspired by Daniela Petruzalek’
 | `Middleware/API-Services/` | FastAPI / ADK runtime APIs |
 | `Portals/` | Angular portals |
 | `CICD/Local/` | Local Docker infra (Redis, Jaeger, optional Postgres) |
+| `CICD/GCP/` | Manual GitHub Actions for GCP APIs, SA, Model Armor |
 
 ## Local infrastructure
 
@@ -28,3 +29,9 @@ npm run local:containers:all:stop
 ```
 
 Copy `.env.template` → `.env` for app config. Compose defaults live under `CICD/Local/.env.example`.
+
+## GCP setup (manual GitHub Actions)
+
+See [`CICD/GCP/README.md`](CICD/GCP/README.md). Required repo secrets: `GCP_PROJECT_ID`, `GCP_SA_KEY`.
+
+Run in order: **GCP-001-Setup-APIs** → **GCP-001-Setup-ServiceAccount** → **GCP-001-Setup-ModelArmor**.

@@ -1,0 +1,49 @@
+{
+  "filterConfig": {
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "filterType": "SEXUALLY_EXPLICIT",
+          "confidenceLevel": "MEDIUM_AND_ABOVE"
+        },
+        {
+          "filterType": "HATE_SPEECH",
+          "confidenceLevel": "MEDIUM_AND_ABOVE"
+        },
+        {
+          "filterType": "HARASSMENT",
+          "confidenceLevel": "MEDIUM_AND_ABOVE"
+        },
+        {
+          "filterType": "DANGEROUS",
+          "confidenceLevel": "MEDIUM_AND_ABOVE"
+        }
+      ]
+    },
+    "piAndJailbreakFilterSettings": {
+      "filterEnforcement": "ENABLED",
+      "confidenceLevel": "MEDIUM_AND_ABOVE"
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    },
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "csamFilterSettings": {
+      "filterEnforcement": "ENABLED",
+      "confidenceLevel": "HIGH"
+    }
+  },
+  "templateMetadata": {
+    "ignorePartialInvocationFailures": false,
+    "logTemplateOperations": true,
+    "logSanitizeOperations": true,
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "filterVersionSelector": {
+      "alias": "FILTER_VERSION_ALIAS_LATEST"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+name: GCP-001-Destroy-ModelArmor
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type exactly: delete-model-armor'
+        required: true
+        type: string
+      region:
+        description: "Model Armor region"
+        required: false
+        default: "us-central1"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  destroy-model-armor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Delete Model Armor templates
+        env:
+          GOOGLE_CLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+          MODEL_ARMOR_REGION: ${{ inputs.region }}
+          CONFIRM_DESTROY: ${{ inputs.confirm }}
+        run: |
+          chmod +x CICD/GCP/scripts/*.sh
+          ./CICD/GCP/scripts/destroy-model-armor.sh
