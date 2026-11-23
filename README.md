@@ -6,13 +6,14 @@ Multi-agent Council of Ancients on Google ADK, inspired by Daniela Petruzalek’
 
 1. [Layout](#layout)
 2. [Local infrastructure](#local-infrastructure)
-3. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
+3. [GitHub Actions secrets to configure](#github-actions-secrets-to-configure)
+4. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
    - [GCP-001 / GCP-002 / GCP-003 summary table](#what-the-three-gcp-setup-workflows-do)
    - [Workflow files (setup & destroy)](#workflow-files-setup--destroy)
-4. [GCP setup from zero (developer guide)](#gcp-setup-from-zero-developer-guide)
-5. [After GCP setup — local `.env`](#after-gcp-setup--local-env)
-6. [More detail](#more-detail)
-7. [Workflows deep dive](.github/workflows/README.md)
+5. [GCP setup from zero (developer guide)](#gcp-setup-from-zero-developer-guide)
+6. [After GCP setup — local `.env`](#after-gcp-setup--local-env)
+7. [More detail](#more-detail)
+8. [Workflows deep dive](.github/workflows/README.md#github-actions-secrets-to-configure)
 
 ## Layout
 
@@ -42,6 +43,27 @@ npm run local:containers:all:stop
 ```
 
 Copy `.env.template` → `.env` for app config. Compose defaults live under `CICD/Local/.env.example`.
+
+## GitHub Actions secrets to configure
+
+Before any `GCP-00x-*` workflow can run, add these **repository** (or organization) secrets:
+
+**GitHub path:** repo → **Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret name | What to put | Example shape (not real values) |
+|-------------|-------------|-------------------------------|
+| `GCP_PROJECT_ID` | Your Google Cloud **project ID** | `my-council-project` |
+| `GCP_SERVICE_ACCOUNT` | Email of the **deployer** SA used by Actions (WIF impersonation target) | `github-actions-gcp-deployer@my-council-project.iam.gserviceaccount.com` |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | Full WIF **provider resource name** | `projects/123456789012/locations/global/workloadIdentityPools/github-actions/providers/github` |
+
+| Secret | Used by | Notes |
+|--------|---------|--------|
+| `GCP_PROJECT_ID` | All `GCP-00x-*` workflows | Same value as `GOOGLE_CLOUD_PROJECT` in local `.env` |
+| `GCP_SERVICE_ACCOUNT` | Auth step (`.github/actions/gcp-auth`) | **Not** the runtime `council-of-ancients-sa` |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | Auth step (OIDC / WIF) | No JSON key file; create pool/provider in Console first |
+
+How to create the deployer SA + WIF pool: [Step 3–6 in the developer guide](#step-3--create-the-github-actions-deployer-service-account).  
+Same table in [`.github/workflows/README.md`](.github/workflows/README.md#github-actions-secrets-to-configure).
 
 ## What the three GCP setup workflows do
 

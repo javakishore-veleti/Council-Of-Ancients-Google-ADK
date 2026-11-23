@@ -6,12 +6,34 @@ Scripts live in [`CICD/GCP/scripts/`](../../CICD/GCP/scripts/).
 
 ## Table of contents
 
-1. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
-2. [GCP-001-Setup-APIs](#1-gcp-001-setup-apis)
-3. [GCP-002-Setup-ServiceAccount](#2-gcp-002-setup-serviceaccount)
-4. [GCP-003-Setup-ModelArmor](#3-gcp-003-setup-modelarmor)
-5. [Recommended run order](#recommended-run-order)
-6. [Shared auth helper](#shared-auth-helper)
+1. [GitHub Actions secrets to configure](#github-actions-secrets-to-configure)
+2. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
+3. [GCP-001-Setup-APIs](#1-gcp-001-setup-apis)
+4. [GCP-002-Setup-ServiceAccount](#2-gcp-002-setup-serviceaccount)
+5. [GCP-003-Setup-ModelArmor](#3-gcp-003-setup-modelarmor)
+6. [Recommended run order](#recommended-run-order)
+7. [Shared auth helper](#shared-auth-helper)
+
+## GitHub Actions secrets to configure
+
+All `GCP-00x-*` workflows need these secrets before **Run workflow**.
+
+**Where to add them:** GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**  
+(Prefer organization secrets if many repos share the same GCP project.)
+
+| Secret name | What to put | Example shape (not real values) |
+|-------------|-------------|-------------------------------|
+| `GCP_PROJECT_ID` | Google Cloud project ID | `my-council-project` |
+| `GCP_SERVICE_ACCOUNT` | Deployer SA email (WIF target) | `github-actions-gcp-deployer@my-council-project.iam.gserviceaccount.com` |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | WIF provider resource name | `projects/123456789012/locations/global/workloadIdentityPools/github-actions/providers/github` |
+
+| Secret | Consumed by | Do not put |
+|--------|-------------|------------|
+| `GCP_PROJECT_ID` | Every GCP workflow job (`GOOGLE_CLOUD_PROJECT`) | Project *display name* (use the ID) |
+| `GCP_SERVICE_ACCOUNT` | [`.github/actions/gcp-auth`](../actions/gcp-auth/action.yml) | Runtime SA `council-of-ancients-sa@…` |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | [`.github/actions/gcp-auth`](../actions/gcp-auth/action.yml) | A JSON service-account key |
+
+Console steps to create the deployer SA and WIF provider: root [`README.md` developer guide](../../README.md#github-actions-secrets-to-configure) and [`CICD/GCP/README.md`](../../CICD/GCP/README.md).
 
 ## What the three GCP setup workflows do
 
