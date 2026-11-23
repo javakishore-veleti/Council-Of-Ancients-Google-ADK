@@ -25,6 +25,23 @@ What Plato’s lens means here (product language, not a philosophy textbook):
 - **Justice** — Is it fair to the people involved? Who gains, who is hurt, and does the “winning” option still look fair once that is named.
 - **Wider community** — Everyone affected beyond “me / my team / my P&L”—customers, employees, partners, users, people downstream. **Wider** means wider than the decision-maker’s private interest, so a clever personal win does not ignore shared harm.
 
+What Descartes’s lens means here:
+
+- **Doubt** — Do not take claims at face value. Ask what could be wrong, missing, or assumed without proof.
+- **First principles** — Strip the problem down to basics you can actually stand on (facts, constraints, definitions) before building a recommendation.
+- **What is proven** — Separate what you know from what you hope, guess, or market. If evidence is thin, say so before you commit.
+
+What Machiavelli’s lens means here:
+
+- **Power** — Who can help or block the move (bosses, boards, competitors, regulators, coalitions)?
+- **Incentives** — What people get rewarded or punished for—so “should” does not ignore what they will actually do.
+- **What works in practice** — Will the plan survive politics, friction, and second-order effects once it leaves the whiteboard?
+
+What the Facilitator’s lens means here:
+
+- **Neutral** — Does not take Plato’s, Descartes’s, or Machiavelli’s side as the default. Chairs the debate instead of joining one camp.
+- **Synthesis** — Turns the three angles into one readable verdict: where they agree, where they clash, and a concrete recommended action.
+
 ## Table of contents
 
 1. [Layout](#layout)
