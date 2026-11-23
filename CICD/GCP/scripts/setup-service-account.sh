@@ -17,17 +17,15 @@ else
   echo "Service account already exists."
 fi
 
-echo "Granting roles/aiplatform.user and roles/modelarmor.user..."
-gcloud projects add-iam-policy-binding "${GOOGLE_CLOUD_PROJECT}" \
-  --member="serviceAccount:${COUNCIL_SERVICE_ACCOUNT_EMAIL}" \
-  --role="roles/aiplatform.user" \
-  --condition=None \
-  >/dev/null
+wait_for_service_account "${COUNCIL_SERVICE_ACCOUNT_EMAIL}"
 
-gcloud projects add-iam-policy-binding "${GOOGLE_CLOUD_PROJECT}" \
-  --member="serviceAccount:${COUNCIL_SERVICE_ACCOUNT_EMAIL}" \
-  --role="roles/modelarmor.user" \
-  --condition=None \
-  >/dev/null
+echo "Granting roles/aiplatform.user and roles/modelarmor.user..."
+add_project_iam_binding_with_retry \
+  "serviceAccount:${COUNCIL_SERVICE_ACCOUNT_EMAIL}" \
+  "roles/aiplatform.user"
+
+add_project_iam_binding_with_retry \
+  "serviceAccount:${COUNCIL_SERVICE_ACCOUNT_EMAIL}" \
+  "roles/modelarmor.user"
 
 echo "Service account ready: ${COUNCIL_SERVICE_ACCOUNT_EMAIL}"
