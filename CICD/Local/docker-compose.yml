@@ -30,7 +30,7 @@ services:
     restart: unless-stopped
 
   jaeger:
-    image: jaegertracing/all-in-one:1.62
+    image: jaegertracing/all-in-one:1.62.0
     container_name: council-jaeger
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
