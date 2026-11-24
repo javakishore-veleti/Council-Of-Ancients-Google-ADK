@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-label="Council of Ancients system architecture">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .title { font: 700 22px Inter, Helvetica, Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 13px Inter, Helvetica, Arial, sans-serif; fill: #64748b; }
+      .h { font: 700 14px Inter, Helvetica, Arial, sans-serif; fill: #0f172a; }
+      .b { font: 500 12px Inter, Helvetica, Arial, sans-serif; fill: #1e293b; }
+      .s { font: 400 11px Inter, Helvetica, Arial, sans-serif; fill: #475569; }
+      .layer { font: 700 11px Inter, Helvetica, Arial, sans-serif; fill: #64748b; letter-spacing: 0.06em; }
+      .edge { stroke: #334155; stroke-width: 2.25; fill: none; marker-end: url(#arrow); }
+      .edge-label { font: 500 11px Inter, Helvetica, Arial, sans-serif; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="780" fill="#f8fafc"/>
+  <text x="40" y="42" class="title">Council of Ancients — System Architecture</text>
+  <text x="40" y="64" class="subtitle">Portal → Middleware (API + ADK agents) → Vertex AI / Gemini, with Model Armor fail-closed screening</text>
+
+  <!-- Lane backgrounds -->
+  <rect x="28" y="88" width="1144" height="92" rx="14" fill="#e2e8f0"/>
+  <text x="44" y="112" class="layer">CLIENT</text>
+
+  <rect x="28" y="198" width="1144" height="250" rx="14" fill="#dbeafe"/>
+  <text x="44" y="222" class="layer">MIDDLEWARE</text>
+
+  <rect x="28" y="466" width="560" height="170" rx="14" fill="#dcfce7"/>
+  <text x="44" y="490" class="layer">GOOGLE CLOUD</text>
+
+  <rect x="612" y="466" width="560" height="170" rx="14" fill="#ffedd5"/>
+  <text x="628" y="490" class="layer">LOCAL / CI</text>
+
+  <rect x="28" y="656" width="1144" height="92" rx="14" fill="#f1f5f9"/>
+  <text x="44" y="680" class="layer">RUNTIME FLOW (DILEMMA)</text>
+
+  <!-- Client boxes -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="122" width="200" height="42" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="160" y="148" text-anchor="middle" class="b">End user</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="320" y="122" width="280" height="42" rx="10" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="460" y="141" text-anchor="middle" class="h">Angular Portal</text>
+    <text x="460" y="157" text-anchor="middle" class="s">Portals/ · chat UI</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="660" y="122" width="220" height="42" rx="10" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="770" y="141" text-anchor="middle" class="b">ADK web (dev)</text>
+    <text x="770" y="157" text-anchor="middle" class="s">optional inspector</text>
+  </g>
+
+  <path class="edge" d="M260 143 H312"/>
+  <path class="edge" d="M600 143 H652"/>
+
+  <!-- Middleware -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="240" width="320" height="70" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <text x="220" y="268" text-anchor="middle" class="h">API Services</text>
+    <text x="220" y="288" text-anchor="middle" class="s">Middleware/API-Services/ · FastAPI / ADK · /run_sse</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="460" y="236" width="680" height="188" rx="14" fill="#ffffff" stroke="#1d4ed8" stroke-width="2"/>
+    <text x="800" y="262" text-anchor="middle" class="h">Agents · Middleware/Agents/council_of_ancients/</text>
+    <text x="800" y="280" text-anchor="middle" class="s">Google ADK App + ModelArmorPlugin (fail-closed)</text>
+
+    <rect x="490" y="296" width="620" height="48" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.75"/>
+    <text x="800" y="317" text-anchor="middle" class="h">Facilitator (chair)</text>
+    <text x="800" y="334" text-anchor="middle" class="s">Triage · framing · parallel calls · council synthesis</text>
+
+    <rect x="490" y="362" width="190" height="44" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.75"/>
+    <text x="585" y="381" text-anchor="middle" class="b">Plato</text>
+    <text x="585" y="396" text-anchor="middle" class="s">ethics / virtue</text>
+
+    <rect x="705" y="362" width="190" height="44" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.75"/>
+    <text x="800" y="381" text-anchor="middle" class="b">Descartes</text>
+    <text x="800" y="396" text-anchor="middle" class="s">doubt / proof</text>
+
+    <rect x="920" y="362" width="190" height="44" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.75"/>
+    <text x="1015" y="381" text-anchor="middle" class="b">Machiavelli</text>
+    <text x="1015" y="396" text-anchor="middle" class="s">power / practice</text>
+
+    <!-- solid forks Facilitator to counselors -->
+    <path class="edge" d="M800 344 V356"/>
+    <path class="edge" d="M585 356 V362"/>
+    <path class="edge" d="M800 356 V362"/>
+    <path class="edge" d="M1015 356 V362"/>
+    <path d="M585 356 H1015" stroke="#334155" stroke-width="2.25" fill="none"/>
+  </g>
+
+  <path class="edge" d="M460 143 V210"/>
+  <path class="edge" d="M220 210 V240"/>
+  <path d="M220 210 H460" stroke="#334155" stroke-width="2.25" fill="none"/>
+  <path class="edge" d="M380 275 H452"/>
+  <text x="400" y="268" class="edge-label">HTTP / SSE</text>
+
+  <!-- Google Cloud -->
+  <g filter="url(#shadow)">
+    <rect x="52" y="508" width="240" height="100" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+    <text x="172" y="540" text-anchor="middle" class="h">Vertex AI / Gemini</text>
+    <text x="172" y="560" text-anchor="middle" class="s">gemini-4-hydrogen</text>
+    <text x="172" y="578" text-anchor="middle" class="s">GOOGLE_CLOUD_LOCATION=global</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="316" y="508" width="250" height="100" rx="12" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+    <text x="441" y="540" text-anchor="middle" class="h">Model Armor</text>
+    <text x="441" y="560" text-anchor="middle" class="s">prompt + response templates</text>
+    <text x="441" y="578" text-anchor="middle" class="s">INSPECT_AND_BLOCK · fail-closed</text>
+  </g>
+
+  <!-- Local / CI -->
+  <g filter="url(#shadow)">
+    <rect x="636" y="508" width="170" height="100" rx="12" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="721" y="540" text-anchor="middle" class="h">Redis</text>
+    <text x="721" y="560" text-anchor="middle" class="s">CICD/Local</text>
+    <text x="721" y="578" text-anchor="middle" class="s">cache / sessions</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="826" y="508" width="150" height="100" rx="12" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="901" y="540" text-anchor="middle" class="h">Jaeger</text>
+    <text x="901" y="560" text-anchor="middle" class="s">OTLP traces</text>
+    <text x="901" y="578" text-anchor="middle" class="s">UI :16686</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="996" y="508" width="152" height="100" rx="12" fill="#ffffff" stroke="#ea580c" stroke-width="2"/>
+    <text x="1072" y="532" text-anchor="middle" class="h">GitHub Actions</text>
+    <text x="1072" y="552" text-anchor="middle" class="s">GCP-001/002/003</text>
+    <text x="1072" y="570" text-anchor="middle" class="s">WIF · no JSON keys</text>
+    <text x="1072" y="588" text-anchor="middle" class="s">Postgres optional</text>
+  </g>
+
+  <!-- edges middleware to cloud -->
+  <path class="edge" d="M800 424 V450"/>
+  <path d="M172 450 H441" stroke="#334155" stroke-width="2.25" fill="none"/>
+  <path class="edge" d="M172 450 V508"/>
+  <path class="edge" d="M441 450 V508"/>
+  <text x="520" y="444" class="edge-label">model calls + screening</text>
+
+  <!-- Runtime flow strip -->
+  <g filter="url(#shadow)">
+    <rect x="52" y="692" width="150" height="40" rx="10" fill="#ffffff" stroke="#64748b" stroke-width="1.75"/>
+    <text x="127" y="717" text-anchor="middle" class="b">1. Dilemma</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="242" y="692" width="170" height="40" rx="10" fill="#ffffff" stroke="#3b82f6" stroke-width="1.75"/>
+    <text x="327" y="717" text-anchor="middle" class="b">2. Facilitator frame</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="452" y="692" width="210" height="40" rx="10" fill="#ffffff" stroke="#ea580c" stroke-width="1.75"/>
+    <text x="557" y="717" text-anchor="middle" class="b">3. Parallel openings</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="702" y="692" width="200" height="40" rx="10" fill="#ffffff" stroke="#dc2626" stroke-width="1.75"/>
+    <text x="802" y="717" text-anchor="middle" class="b">4. Cross-rebuttals</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="942" y="692" width="200" height="40" rx="10" fill="#ffffff" stroke="#16a34a" stroke-width="1.75"/>
+    <text x="1042" y="717" text-anchor="middle" class="b">5. Synthesis verdict</text>
+  </g>
+  <path class="edge" d="M202 712 H234"/>
+  <path class="edge" d="M412 712 H444"/>
+  <path class="edge" d="M662 712 H694"/>
+  <path class="edge" d="M902 712 H934"/>
+</svg>

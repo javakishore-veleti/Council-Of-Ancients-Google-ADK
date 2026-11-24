@@ -13,6 +13,10 @@ Who is a historical person vs a product role:
 
 The three counselors are standing roles in that debate. **Plato** (classical Athens) pushes virtue, justice, and the good of the wider community. **René Descartes** (early modern Europe) applies methodical doubt and asks what can be established from first principles. **Niccolò Machiavelli** (Renaissance Florence) focuses on incentives, power, and what holds up in practice. Together they give opposing lenses on the same dilemma so the Facilitator can synthesize a clearer recommendation.
 
+### System architecture
+
+![Council of Ancients system architecture — portal, middleware API and agents, Vertex AI / Gemini, Model Armor, local CI](docs/architecture/system-architecture.png)
+
 | | |
 |--|--|
 | **Useful for** | <ul><li>Hard decisions where a single chatbot would hedge—“on one hand / on the other.”</li><li><em>Hedge</em> here means the bot sits on the fence and never clearly says “do this” or “don’t.”</li><li><em>Hard</em> here means trade-offs with real downside either way—e.g. leave a stable job for a startup, ship a risky feature, grow vs stay profitable, use customer data for a model—because values, evidence, and incentives pull in different directions and you still need a call.</li><li><em>Not-so-hard</em> decisions are factual lookups, how-tos, or low-stakes preferences where one clear answer is enough and a council debate would be overkill.</li><li>The Council forces structured disagreement (ethics vs proof vs power), then a Facilitator synthesis with a recommended action.</li></ul> |
@@ -51,21 +55,22 @@ What the Facilitator’s lens means here:
 
 ## Table of contents
 
-1. [Layout](#layout)
-2. [How the Council agents work](#how-the-council-agents-work)
-3. [Local infrastructure](#local-infrastructure)
-4. [GitHub Actions secrets to configure](#github-actions-secrets-to-configure)
-5. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
+1. [System architecture](#system-architecture) (diagram above)
+2. [Layout](#layout)
+3. [How the Council agents work](#how-the-council-agents-work)
+4. [Local infrastructure](#local-infrastructure)
+5. [GitHub Actions secrets to configure](#github-actions-secrets-to-configure)
+6. [What the three GCP setup workflows do](#what-the-three-gcp-setup-workflows-do)
    - [GCP-001 / GCP-002 / GCP-003 summary table](#what-the-three-gcp-setup-workflows-do)
    - [Workflow files (setup & destroy)](#workflow-files-setup--destroy)
-6. [GCP setup from zero (developer guide)](#gcp-setup-from-zero-developer-guide)
-7. [After GCP setup — local `.env`](#after-gcp-setup--local-env)
-8. [Hands-on coding](#hands-on-coding)
-9. [How it worked in local run](#how-it-worked-in-local-run)
-10. [Future work (GitHub issues)](#future-work-github-issues)
-11. [More detail](#more-detail)
-12. [Workflows deep dive](.github/workflows/README.md#github-actions-secrets-to-configure)
-13. [References](#references)
+7. [GCP setup from zero (developer guide)](#gcp-setup-from-zero-developer-guide)
+8. [After GCP setup — local `.env`](#after-gcp-setup--local-env)
+9. [Hands-on coding](#hands-on-coding)
+10. [How it worked in local run](#how-it-worked-in-local-run)
+11. [Future work (GitHub issues)](#future-work-github-issues)
+12. [More detail](#more-detail)
+13. [Workflows deep dive](.github/workflows/README.md#github-actions-secrets-to-configure)
+14. [References](#references)
 
 ## Layout
 
