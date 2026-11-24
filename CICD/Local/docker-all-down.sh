@@ -55,12 +55,13 @@ else
 fi
 
 # Include postgres profile so a previously started Postgres container is torn down too.
+# Bash 3.2 + set -u treats empty "${arr[@]}" as unbound; expand only when set.
 docker compose \
   --env-file "${ENV_FILE}" \
   -f "${COMPOSE_FILE}" \
   --profile postgres \
   down \
   --remove-orphans \
-  "${EXTRA[@]}"
+  ${EXTRA[@]+"${EXTRA[@]}"}
 
 echo "Local infra is down."

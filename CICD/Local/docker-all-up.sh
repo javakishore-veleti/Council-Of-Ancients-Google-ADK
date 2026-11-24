@@ -83,13 +83,14 @@ else
   echo "Starting Redis and Jaeger (SQLite remains the default app DB)..."
 fi
 
+# Bash 3.2 + set -u treats empty "${arr[@]}" as unbound; expand only when set.
 docker compose \
   --env-file "${ENV_FILE}" \
   -f "${COMPOSE_FILE}" \
-  "${PROFILES[@]}" \
+  ${PROFILES[@]+"${PROFILES[@]}"} \
   up \
   --remove-orphans \
-  "${DETACH[@]}"
+  ${DETACH[@]+"${DETACH[@]}"}
 
 # Sync override hints into repo-root .env when Postgres was requested.
 if [[ "${WITH_POSTGRES}" -eq 1 && -f "${REPO_ENV}" ]]; then
