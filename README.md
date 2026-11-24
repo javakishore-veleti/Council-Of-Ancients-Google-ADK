@@ -348,52 +348,11 @@ Should it be a profitable company
 
 ### Screenshots (local Chrome run)
 
-![Council synthesis verdict](docs/blog/images/local-run/01-synthesis-verdict.png)
+All PNGs: [`docs/blog/images/local-run/`](docs/blog/images/local-run/). Embedded again under each wave below.
+
+### Wave 1 · Facilitator Framing
 
 ![Wave 1 — Facilitator framing](docs/blog/images/local-run/02-wave1-facilitator-framing.png)
-
-![Plato opening](docs/blog/images/local-run/03-plato-opening.png)
-
-![Wave 2 — opening statements (three columns)](docs/blog/images/local-run/04-wave2-openings-three-columns.png)
-
-![Openings continued](docs/blog/images/local-run/05-openings-continued.png)
-
-![Wave 3 — cross-rebuttals](docs/blog/images/local-run/06-wave3-rebuttals-headers.png)
-
-![Rebuttals body](docs/blog/images/local-run/07-wave3-rebuttals-body.png)
-
-![Rebuttal closings](docs/blog/images/local-run/08-rebuttal-closings.png)
-
-### Council Synthesis Verdict
-
-Completed in 50.6s
-
-**Make Profit the Servant of Purpose, Not Its Master**
-
-The Council of Ancients agrees that profitability is neither an inherent moral good nor an inherent evil, but a material instrument of sustainability. Because the venture itself is unspecified, the decision turns on whether its core purpose—be it commerce, education, or public service—can survive without generating its own surplus, and whether its governance can prevent financial incentives from corrupting its integrity. A venture that cannot sustain itself becomes dependent on the shifting whims of patrons or donors; yet a venture that makes profit its sole master risks sacrificing truth, quality, and public trust.
-
-**Recommended Action:** Structure the venture as a profitable company if and only if self-sustaining revenue is required for its independence, while legally and operationally subordinating profit to its primary mission through transparent governance, clear accountability, and protected editorial or intellectual autonomy. Before incorporating, define the venture's primary end, audit its true operating costs, and establish binding rules (such as a mission-locked charter or independent oversight) so that financial survival never demands moral or intellectual compromise.
-
-**Points of Convergence**
-
-- **Means over Ends:** All three counselors agree that profit is a means to material sustenance and independence, never an end in itself.
-- **Peril of Unchecked Appetite:** Each warns that when the pursuit of wealth becomes the ruling principle of an organization, it clouds judgment, invites flattery or short-termism, and erodes long-term legitimacy.
-- **Need for Clarity of Purpose:** Before choosing a legal or financial structure, the founders must clearly define what the venture is for and what standards of excellence it refuses to compromise.
-
-**Unresolved Tensions**
-
-- **Internal Virtue vs. Institutional Restraint:** Plato and Descartes look to internal order—the soul's temperance or the rational will's générosité—to keep greed in check, whereas Machiavelli argues that relying on personal virtue is naive and that only external laws, competing interests, and strict accountability can restrain ambition.
-- **Methodical Deliberation vs. Decisive Action:** Descartes insists on suspending judgment until the venture's nature and costs are clearly and distinctly understood, while Machiavelli warns that fortuna rewards those who act decisively with imperfect knowledge rather than waiting for theoretical certainty.
-- **Absolute Good vs. Effectual Survival:** Plato maintains that it is better for an enterprise to perish than to endure by corrupting its soul, whereas Machiavelli treats survival and independence as the indispensable foundation of any institutional virtù.
-
-**Counselor Contributions**
-
-- **Plato:** Framed the question around the venture's telos (true end), warning that when appetite rules over reason, an organization degenerates into flattery (kolakeia) and sacrifices truth for applause.
-- **Rene Descartes:** Demanded methodical clarity—separating the mechanics of material sustenance (res extensa) from rational judgment (res cogitans)—and anchored ethical governance in générosité, the firm resolution to use one's will well.
-- **Niccolo Machiavelli:** Grounded the debate in the verità effettuale della cosa, demonstrating that profitability is the sinew of independence from fickle patrons, provided it is bound by laws and accountability.
-
-<details>
-<summary>Full local run transcript (framing, openings, rebuttals) — as captured from Chrome</summary>
 
 #### The Facilitator · Dilemma Framing (+4.3s)
 
@@ -402,6 +361,14 @@ The user asks: "Should it be a profitable company"
 Framing: The user asks whether an unspecified venture or organization should be structured as a profitable company. The core dilemma balances financial sustainability and material incentives against broader social purpose, intellectual rigor, and long-term institutional integrity.
 
 Please provide your opening statement.
+
+### Wave 2 · Parallel Openings (3 / 3 Spoke)
+
+![Wave 2 — opening statements](docs/blog/images/local-run/04-wave2-openings-three-columns.png)
+
+![Plato opening](docs/blog/images/local-run/03-plato-opening.png)
+
+![Openings continued](docs/blog/images/local-run/05-openings-continued.png)
 
 #### Plato · 1st · +11.6s
 
@@ -452,6 +419,14 @@ The wise founder, therefore, does not ask whether to pursue profit or purpose, a
 
 An enterprise that cannot sustain itself is a fantasy; an enterprise that serves only itself is a tyranny. Durability belongs to the institution that masters its own means while remaining accountable to its purpose.
 
+### Wave 3 · Cross-Rebuttals (3 / 3 Spoke)
+
+![Wave 3 — cross-rebuttals](docs/blog/images/local-run/06-wave3-rebuttals-headers.png)
+
+![Rebuttals body](docs/blog/images/local-run/07-wave3-rebuttals-body.png)
+
+![Rebuttal closings](docs/blog/images/local-run/08-rebuttal-closings.png)
+
 #### Niccolo Machiavelli · 1st (rebuttal) · +43.6s
 
 Both Plato and René Descartes speak with admirable elegance, yet both construct their arguments upon imagined republics and solitary certainties that collapse the moment they encounter the verità effettuale della cosa—the effectual truth of things.
@@ -484,7 +459,39 @@ Niccolo Machiavelli, by contrast, rightly recognizes that an enterprise requires
 
 If we apply the rules of method, the path becomes clear. We must not reject profitability out of Platonic prejudice, nor must we rely solely on Machiavellian checks and balances as if human reason were powerless. Instead, let us establish profitability as a clear, distinct, and necessary means for the venture's material independence, while anchoring its governance in générosité: a firm, rational resolution never to assent to immediate gain where our intellect perceives that truth and integrity are compromised.
 
-</details>
+### Wave 4 · Synthesis
+
+![Council synthesis verdict](docs/blog/images/local-run/01-synthesis-verdict.png)
+
+### Council Synthesis Verdict
+
+Completed in 50.6s
+
+**Make Profit the Servant of Purpose, Not Its Master**
+
+The Council of Ancients agrees that profitability is neither an inherent moral good nor an inherent evil, but a material instrument of sustainability. Because the venture itself is unspecified, the decision turns on whether its core purpose—be it commerce, education, or public service—can survive without generating its own surplus, and whether its governance can prevent financial incentives from corrupting its integrity. A venture that cannot sustain itself becomes dependent on the shifting whims of patrons or donors; yet a venture that makes profit its sole master risks sacrificing truth, quality, and public trust.
+
+**Recommended Action:** Structure the venture as a profitable company if and only if self-sustaining revenue is required for its independence, while legally and operationally subordinating profit to its primary mission through transparent governance, clear accountability, and protected editorial or intellectual autonomy. Before incorporating, define the venture's primary end, audit its true operating costs, and establish binding rules (such as a mission-locked charter or independent oversight) so that financial survival never demands moral or intellectual compromise.
+
+**Points of Convergence**
+
+- **Means over Ends:** All three counselors agree that profit is a means to material sustenance and independence, never an end in itself.
+- **Peril of Unchecked Appetite:** Each warns that when the pursuit of wealth becomes the ruling principle of an organization, it clouds judgment, invites flattery or short-termism, and erodes long-term legitimacy.
+- **Need for Clarity of Purpose:** Before choosing a legal or financial structure, the founders must clearly define what the venture is for and what standards of excellence it refuses to compromise.
+
+**Unresolved Tensions**
+
+- **Internal Virtue vs. Institutional Restraint:** Plato and Descartes look to internal order—the soul's temperance or the rational will's générosité—to keep greed in check, whereas Machiavelli argues that relying on personal virtue is naive and that only external laws, competing interests, and strict accountability can restrain ambition.
+- **Methodical Deliberation vs. Decisive Action:** Descartes insists on suspending judgment until the venture's nature and costs are clearly and distinctly understood, while Machiavelli warns that fortuna rewards those who act decisively with imperfect knowledge rather than waiting for theoretical certainty.
+- **Absolute Good vs. Effectual Survival:** Plato maintains that it is better for an enterprise to perish than to endure by corrupting its soul, whereas Machiavelli treats survival and independence as the indispensable foundation of any institutional virtù.
+
+**Counselor Contributions**
+
+- **Plato:** Framed the question around the venture's telos (true end), warning that when appetite rules over reason, an organization degenerates into flattery (kolakeia) and sacrifices truth for applause.
+- **Rene Descartes:** Demanded methodical clarity—separating the mechanics of material sustenance (res extensa) from rational judgment (res cogitans)—and anchored ethical governance in générosité, the firm resolution to use one's will well.
+- **Niccolo Machiavelli:** Grounded the debate in the verità effettuale della cosa, demonstrating that profitability is the sinew of independence from fickle patrons, provided it is bound by laws and accountability.
+
+
 
 
 ## Future work (GitHub issues)
