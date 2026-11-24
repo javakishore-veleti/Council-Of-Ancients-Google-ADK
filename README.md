@@ -79,7 +79,8 @@ What the Facilitator’s lens means here:
 | `Middleware/Agents/` | ADK agents (Facilitator + counselors) |
 | `Middleware/API-Services/` | FastAPI / ADK runtime APIs |
 | `Portals/` | Angular portals |
-| `CICD/Local/` | Local Docker infra (Redis, Jaeger, optional Postgres) |
+| `CICD/Local/` | Local Docker infra (Redis, Jaeger, OTEL; optional Postgres + observability) |
+| `Middleware/Observability/` | LLMOps metrics (TTFT, tokens, cost, OTEL spans) |
 | `CICD/GCP/` | Scripts + templates used by the GCP GitHub Actions |
 | `.github/workflows/` | Manual GCP setup / destroy workflows |
 | [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) | Step-by-step coding lab (type the snippets yourself) |
@@ -127,19 +128,31 @@ Tracked as GitHub **epics/features** below: RAG over texts or company docs, real
 
 ## Local infrastructure
 
-App persistence defaults to **SQLite**. Docker Postgres is optional.
+App persistence defaults to **SQLite**. Docker Postgres is optional. Observability (AIOps / LLMOps / DataOps) is opt-in.
 
 ```bash
-# Redis + Jaeger (default)
+# Redis + Jaeger + OTEL Collector (default)
 npm run local:containers:all:start
 # or: ./CICD/Local/docker-all-up.sh
 
-# Also start Postgres and point the app at it (user/password: postgres/postgres)
+# Also start Postgres (user/password: postgres/postgres)
 npm run local:containers:all:start -- --postgres
+
+# AIOps / LLMOps / DataOps: Prometheus + Grafana + Phoenix + Loki
+npm run local:containers:all:start:observability
+# or: ./CICD/Local/docker-all-up.sh --observability
 
 npm run local:containers:all:status
 npm run local:containers:all:stop
 ```
+
+| Stack | What you get |
+|-------|----------------|
+| Default | Redis, Jaeger traces, OTEL Collector (`:4317`/`:4318`) |
+| `--postgres` | + Postgres |
+| `--observability` | + Prometheus, Grafana (**Council LLMOps Overview**), Phoenix (LLM spans), Loki |
+
+LLMOps metrics (TTFT, tokens, estimated USD cost, duration, per-agent labels) are implemented in [`Middleware/Observability/llmops.py`](Middleware/Observability/llmops.py). Call `setup_observability()` at process start; scrape http://localhost:9108/metrics. Details: [`CICD/Local/README.md`](CICD/Local/README.md).
 
 Copy `.env.template` → `.env` for app config. Compose defaults live under `CICD/Local/.env.example`.
 

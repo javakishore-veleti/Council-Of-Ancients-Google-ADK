@@ -83,8 +83,14 @@ set +a
 
 probe "Redis" "127.0.0.1" "${REDIS_PORT:-6379}"
 probe "Jaeger UI" "127.0.0.1" "${JAEGER_UI_PORT:-16686}"
-probe "Jaeger OTLP gRPC" "127.0.0.1" "${JAEGER_OTLP_GRPC_PORT:-4317}"
+probe "OTEL Collector gRPC" "127.0.0.1" "${OTEL_GRPC_PORT:-4317}"
+probe "OTEL Collector HTTP" "127.0.0.1" "${OTEL_HTTP_PORT:-4318}"
 probe "Postgres" "127.0.0.1" "${POSTGRES_PORT:-5432}"
+probe "Prometheus" "127.0.0.1" "${PROMETHEUS_PORT:-9090}"
+probe "Grafana" "127.0.0.1" "${GRAFANA_PORT:-3000}"
+probe "Phoenix LLMOps" "127.0.0.1" "${PHOENIX_PORT:-6006}"
+probe "Loki" "127.0.0.1" "${LOKI_PORT:-3100}"
+probe "App Prometheus /metrics" "127.0.0.1" "${PROMETHEUS_METRICS_PORT:-9108}"
 
 echo
 echo "=== App DB mode ==="
@@ -101,6 +107,7 @@ fi
 
 echo
 echo "Tips:"
-echo "  Start default stack:  ${SCRIPT_DIR}/docker-all-up.sh"
-echo "  Start with Postgres:  ${SCRIPT_DIR}/docker-all-up.sh --postgres"
-echo "  Stop stack:           ${SCRIPT_DIR}/docker-all-down.sh"
+echo "  Start default stack:     ${SCRIPT_DIR}/docker-all-up.sh"
+echo "  Start with Postgres:     ${SCRIPT_DIR}/docker-all-up.sh --postgres"
+echo "  Start with Observability:${SCRIPT_DIR}/docker-all-up.sh --observability"
+echo "  Stop stack:              ${SCRIPT_DIR}/docker-all-down.sh"

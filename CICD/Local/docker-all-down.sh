@@ -15,7 +15,7 @@ usage() {
   cat <<'EOF'
 Usage: ./docker-all-down.sh [--volumes] [-h|--help]
 
-  --volumes   Also remove named volumes (Redis/Postgres data).
+  --volumes   Also remove named volumes (Redis/Postgres/observability data).
   -h, --help  Show this help.
 EOF
 }
@@ -54,12 +54,13 @@ else
   echo "Stopping stack (volumes preserved)..."
 fi
 
-# Include postgres profile so a previously started Postgres container is torn down too.
+# Include optional profiles so Postgres / observability containers are torn down too.
 # Bash 3.2 + set -u treats empty "${arr[@]}" as unbound; expand only when set.
 docker compose \
   --env-file "${ENV_FILE}" \
   -f "${COMPOSE_FILE}" \
   --profile postgres \
+  --profile observability \
   down \
   --remove-orphans \
   ${EXTRA[@]+"${EXTRA[@]}"}

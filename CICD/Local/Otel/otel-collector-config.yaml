@@ -1,0 +1,58 @@
+# OpenTelemetry Collector — AIOps / LLMOps ingress for Council of Ancients.
+# App sends OTLP → collector → Jaeger (traces) + Prometheus (metrics).
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 5s
+    send_batch_size: 256
+  memory_limiter:
+    check_interval: 2s
+    limit_mib: 400
+  attributes/llmops:
+    actions:
+      - key: service.namespace
+        value: council-of-ancients
+        action: upsert
+      - key: deployment.environment
+        value: local
+        action: upsert
+
+exporters:
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: council
+    const_labels:
+      stack: local
+  debug:
+    verbosity: basic
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch, attributes/llmops]
+      exporters: [otlp/jaeger, debug]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch, attributes/llmops]
+      exporters: [prometheus, debug]
+  telemetry:
+    logs:
+      level: info
