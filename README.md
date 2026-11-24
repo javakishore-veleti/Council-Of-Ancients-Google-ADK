@@ -332,6 +332,8 @@ Follow [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) in order (config → cou
 
 Captured from a local Chamber UI session at `http://127.0.0.1:8080/` (reference `council` app + this project's GCP `.env`). Session `ec0684a6`, completed in **50.6s**. Model Armor: Fail-Closed Active. Blog write-up: [productcognizant.com](https://productcognizant.com/chief-architect-c-suite-conversation-on-friday-morning-make-profit-the-servant-of-purpose-not-its-master/).
 
+Screenshots from that Chrome run live under [`docs/blog/images/local-run/`](docs/blog/images/local-run/).
+
 ### Chamber chrome
 
 - **Council of Ancients** — Live Multi-Agent Philosophical Deliberation on Google ADK
@@ -343,6 +345,24 @@ Captured from a local Chamber UI session at `http://127.0.0.1:8080/` (reference 
 ### Question Before the Council
 
 Should it be a profitable company
+
+### Screenshots (local Chrome run)
+
+![Council synthesis verdict](docs/blog/images/local-run/01-synthesis-verdict.png)
+
+![Wave 1 — Facilitator framing](docs/blog/images/local-run/02-wave1-facilitator-framing.png)
+
+![Plato opening](docs/blog/images/local-run/03-plato-opening.png)
+
+![Wave 2 — opening statements (three columns)](docs/blog/images/local-run/04-wave2-openings-three-columns.png)
+
+![Openings continued](docs/blog/images/local-run/05-openings-continued.png)
+
+![Wave 3 — cross-rebuttals](docs/blog/images/local-run/06-wave3-rebuttals-headers.png)
+
+![Rebuttals body](docs/blog/images/local-run/07-wave3-rebuttals-body.png)
+
+![Rebuttal closings](docs/blog/images/local-run/08-rebuttal-closings.png)
 
 ### Council Synthesis Verdict
 
