@@ -230,4 +230,5 @@ __marimo__/
 # Local middleware API runtime files
 CICD/Local/.coa-agents-api.pid
 CICD/Local/.coa-agents-api.log
+CICD/Local/.portals-run/
 CICD/Local/.env

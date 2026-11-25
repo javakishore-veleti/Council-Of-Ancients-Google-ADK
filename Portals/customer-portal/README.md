@@ -30,10 +30,12 @@ npm start
 # http://localhost:4200
 ```
 
-From repo root:
+From repo root (customer now; admin later on `:4201`):
 
 ```bash
-npm run local:portal:start
+npm run local:portals:all:start
+npm run local:portals:all:status
+npm run local:portals:all:stop
 ```
 
 Sign up locally (stub auth until `coa_auth_api`). Chamber calls `http://localhost:8090/v1/council/deliberate` when agents API is up; otherwise shows an offline preview reply.
