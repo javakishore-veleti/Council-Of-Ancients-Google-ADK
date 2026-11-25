@@ -1,6 +1,8 @@
-# Local runbook — download a page into the Knowledge Base
+# Local runbook — Knowledge Base ingest
 
-Goal: take the seeded DigitalOcean GoF tutorial URL, queue a download in Admin, run the ingest facade, and see Markdown on disk under your local Knowledge Base.
+Goal: run the local stack, queue a **Download** for any allowlisted knowledge source, run the ingest facade, and land Markdown under your local Knowledge Base.
+
+The same path is used as you add more sources over time. Section 4 uses the seeded **DigitalOcean GoF** row as the first walkthrough only.
 
 ---
 
@@ -9,13 +11,14 @@ Goal: take the seeded DigitalOcean GoF tutorial URL, queue a download in Admin, 
 1. [What this does (one picture)](#1-what-this-does-one-picture)
 2. [Prerequisites](#2-prerequisites)
 3. [Start the local stack](#3-start-the-local-stack)
-4. [Open the seeded GoF source](#4-open-the-seeded-gof-source)
-5. [Queue Download](#5-queue-download)
-6. [Run the ingest facade (DAG path)](#6-run-the-ingest-facade-dag-path)
-7. [Confirm files on disk](#7-confirm-files-on-disk)
-8. [Optional — Airflow instead of the local runner](#8-optional--airflow-instead-of-the-local-runner)
-9. [Stop everything](#9-stop-everything)
-10. [Quick troubleshooting](#10-quick-troubleshooting)
+4. [Worked example — DigitalOcean GoF](#4-worked-example--digitalocean-gof)
+5. [Same path for every other source](#5-same-path-for-every-other-source)
+6. [Queue Download](#6-queue-download)
+7. [Run the ingest facade](#7-run-the-ingest-facade)
+8. [Confirm files on disk](#8-confirm-files-on-disk)
+9. [Optional — Airflow](#9-optional--airflow)
+10. [Stop everything](#10-stop-everything)
+11. [Quick troubleshooting](#11-quick-troubleshooting)
 
 ---
 
@@ -24,9 +27,9 @@ Goal: take the seeded DigitalOcean GoF tutorial URL, queue a download in Admin, 
 ```text
 Admin UI  →  coa_admin_api  →  wf_exec_log (queued)
                                     ↓
-                         kb_ingest_facade  (entry workflow)
+                         kb_ingest_facade  (entry workflow in DB)
                                     ↓
-                         kb_extract        (internal DAG / step)
+                         kb_extract        (internal step / DAG)
                                     ↓
               $HOME/.../KnowledgeBase/{category}/{subcategory}/{source_uuid}/
                  content.md   meta.json   original.html
@@ -34,14 +37,12 @@ Admin UI  →  coa_admin_api  →  wf_exec_log (queued)
 
 | Piece | Role |
 |-------|------|
-| **Source** | Allowlisted row (URL + license + workflow) |
-| **Workflow** | Only entry facades in DB — seed: `kb_ingest_facade` |
-| **`wf_exec_log`** | One row per Download click (`wf_id` = facade) |
+| **Source** | Allowlisted row: URL, license, category, **workflow_id**, endpoint maps |
+| **Workflow** | Entry facades only in `knowledge.workflow` (seed: `kb_ingest_facade`) |
+| **`wf_exec_log`** | One row per Download (`wf_id` = that facade) |
 | **Extract** | Internal to the facade — not a Workflows-table row |
 
-Example URL (already seeded):
-
-https://www.digitalocean.com/community/tutorials/gangs-of-four-gof-design-patterns
+You grow the KB by adding more **sources** (same facade). You do not invent a new runbook per URL.
 
 ---
 
@@ -50,22 +51,14 @@ https://www.digitalocean.com/community/tutorials/gangs-of-four-gof-design-patter
 | Need | Notes |
 |------|--------|
 | Docker Desktop | Running |
-| `uv` | Python deps (`uv sync` from repo root) |
-| `psql` | Client on PATH (Liquibase apply waits on Postgres) |
+| `uv` | `uv sync` from repo root |
+| `psql` | On PATH (middleware start waits on Postgres / Liquibase) |
 | Node / npm | Portals |
-| Repo clone | Work from repo root for all commands below |
-
-Optional for HTTPS extract on some Macs:
-
-```bash
-export COA_KB_SSL_INSECURE=1
-```
+| Repo clone | Run all commands from repo root |
 
 ---
 
 ## 3. Start the local stack
-
-From repo root:
 
 ```bash
 uv sync
@@ -73,19 +66,13 @@ npm run local:middleware:api:all:start
 npm run local:portals:all:start
 ```
 
-What middleware start does for you:
-
-1. Postgres + observability containers  
-2. **Liquibase** on the knowledge changelog  
-3. `coa_agents_api` **:8090** and `coa_admin_api` **:8094**
+Middleware start: Postgres + observability → **Liquibase** knowledge changelog → `coa_agents_api` **:8090** + `coa_admin_api` **:8094**.
 
 | URL | What |
 |-----|------|
 | http://127.0.0.1:4201 | Admin portal |
 | http://127.0.0.1:8094/docs | Admin API |
-| http://127.0.0.1:4200 | Customer portal (not needed for this runbook) |
-
-Check:
+| http://127.0.0.1:4200 | Customer portal (not required here) |
 
 ```bash
 npm run local:middleware:api:all:status
@@ -95,57 +82,69 @@ curl -sf http://127.0.0.1:8094/healthz
 
 ---
 
-## 4. Open the seeded GoF source
+## 4. Worked example — DigitalOcean GoF
 
-1. Open http://127.0.0.1:4201  
-2. **Knowledge sources**  
-3. Open **DigitalOcean GoF hub**
+First seed used to prove the path end-to-end.
 
-| Field | Seeded value |
-|-------|----------------|
+| Field | Value |
+|-------|--------|
 | Name | DigitalOcean GoF hub |
 | Id | `d85e1c09-8157-5565-82d3-f9f3cf209509` |
-| URL | DigitalOcean GoF tutorial (link above) |
-| Download workflow | `kb_ingest_facade` |
-| Category / sub | Architecture → Patterns (`software_architecture` / `patterns`) |
+| URL | https://www.digitalocean.com/community/tutorials/gangs-of-four-gof-design-patterns |
+| Workflow | `kb_ingest_facade` |
+| Path leaf | `…/software_architecture/patterns/d85e1c09-8157-5565-82d3-f9f3cf209509/` |
 
-Or via API:
+In Admin: **Knowledge sources** → **DigitalOcean GoF hub**.
 
 ```bash
 curl -sf http://127.0.0.1:8094/v1/knowledge/sources/d85e1c09-8157-5565-82d3-f9f3cf209509 | python3 -m json.tool
 ```
 
+Then continue at [§6 Queue Download](#6-queue-download) with this source id.
+
 ---
 
-## 5. Queue Download
+## 5. Same path for every other source
 
-On the source detail page:
+For Wikipedia, NIST, or any source you add later:
 
-1. Open **Download — from / store to**  
-2. Click **Download**
+1. Source exists in Admin (seed or create) with URL, allowlisted **license**, **workflow** = `kb_ingest_facade`, and **store_to** (and usually **download_from**) endpoint maps.  
+2. Open that source → **Download**.  
+3. Run the facade with the new `wf_exec_log_id` ([§7](#7-run-the-ingest-facade)).  
+4. Files appear under `{category_code}/{subcategory_code}/{source_uuid}/` ([§8](#8-confirm-files-on-disk)).
 
-That only creates a **`wf_exec_log`** (`status=queued`) with `wf_id` = `kb_ingest_facade`. It does **not** fetch the page yet.
-
-Copy the new exec id from **Ops history** (or from the API response):
+List sources:
 
 ```bash
+curl -sf http://127.0.0.1:8094/v1/knowledge/sources | python3 -m json.tool
+```
+
+---
+
+## 6. Queue Download
+
+On the source detail page: **Download — from / store to** → **Download**.
+
+Creates a **`wf_exec_log`** (`queued`) with `wf_id` = the source’s entry workflow. It does **not** fetch the page yet.
+
+```bash
+# Example: GoF. Replace SOURCE_UUID for other sources.
 curl -sf -X POST \
-  http://127.0.0.1:8094/v1/knowledge/sources/d85e1c09-8157-5565-82d3-f9f3cf209509/download \
+  http://127.0.0.1:8094/v1/knowledge/sources/SOURCE_UUID/download \
   | python3 -m json.tool
 ```
 
-Note `wf_exec_log_id` from the JSON.
+Copy `wf_exec_log_id` from the JSON (or from **Ops history**).
 
 ---
 
-## 6. Run the ingest facade (DAG path)
+## 7. Run the ingest facade
 
-Preferred for a new laptop: run the same facade code **without** installing Airflow.
+Same command for every source — only the exec id changes.
 
 ```bash
 export PYTHONPATH=.
 export COA_ADMIN_API_URL=http://127.0.0.1:8094
-# export COA_KB_SSL_INSECURE=1   # if SSL verify fails
 
 uv run python -c "
 from DataOps.kb.pipeline.facade_runner import run_ingest_facade
@@ -153,87 +152,74 @@ print(run_ingest_facade('PASTE_WF_EXEC_LOG_ID_HERE'))
 "
 ```
 
-What runs:
+Steps: license/robots gate → URL → Markdown → write UUID leaf → PATCH `wf_exec_log` (`completed` / `failed`).
 
-1. Load source + license / robots gate  
-2. Extract URL → clean Markdown (`generic_markdown`)  
-3. Write under the Knowledge Base UUID leaf  
-4. PATCH `wf_exec_log` → `completed` (or `failed`)
-
-Refresh source detail → **Ops history** should show **completed**.
+Refresh source → **Ops history** → **completed**.
 
 ---
 
-## 7. Confirm files on disk
-
-Default store path:
+## 8. Confirm files on disk
 
 ```text
 $HOME/runtime_data/apps/datasets/COA/KnowledgeBase/
-  software_architecture/patterns/d85e1c09-8157-5565-82d3-f9f3cf209509/
+  {category_code}/{subcategory_code}/{source_uuid}/
     content.md
     meta.json
     original.html
 ```
 
+GoF example:
+
 ```bash
-ls -la "$HOME/runtime_data/apps/datasets/COA/KnowledgeBase/software_architecture/patterns/d85e1c09-8157-5565-82d3-f9f3cf209509/"
-head -40 "$HOME/runtime_data/apps/datasets/COA/KnowledgeBase/software_architecture/patterns/d85e1c09-8157-5565-82d3-f9f3cf209509/content.md"
+SRC=d85e1c09-8157-5565-82d3-f9f3cf209509
+DIR="$HOME/runtime_data/apps/datasets/COA/KnowledgeBase/software_architecture/patterns/$SRC"
+ls -la "$DIR"
+head -40 "$DIR/content.md"
 ```
 
-Override root with `KB_LOCAL_ROOT` if needed.
-
-**Do not commit** these files — the repo is public; KB blobs stay outside git.
+Override root with `KB_LOCAL_ROOT` if needed. **Never commit** KB files (public repo).
 
 ---
 
-## 8. Optional — Airflow instead of the local runner
-
-If you already run Airflow locally:
+## 9. Optional — Airflow
 
 | DAG id | In Workflows table? | Job |
 |--------|---------------------|-----|
-| `kb_ingest_facade` | Yes (entry) | Gate → trigger extract → PATCH log |
-| `kb_extract` | No (internal) | URL → Markdown on disk |
+| `kb_ingest_facade` | Yes | Gate → extract → PATCH log |
+| `kb_extract` | No | URL → Markdown |
 
 ```bash
 export PYTHONPATH=/absolute/path/to/this/repo
 export COA_ADMIN_API_URL=http://127.0.0.1:8094
-# Point Airflow dags_folder at DataOps/airflow/dags (or symlink)
+# dags_folder → DataOps/airflow/dags
 ```
 
-Trigger facade with conf:
-
-```json
-{ "wf_exec_log_id": "<uuid from Download>" }
-```
-
-Details: [`DataOps/airflow/README.md`](DataOps/airflow/README.md).
+Trigger conf: `{ "wf_exec_log_id": "<uuid>" }`. See [`DataOps/airflow/README.md`](DataOps/airflow/README.md).
 
 ---
 
-## 9. Stop everything
+## 10. Stop everything
 
 ```bash
 npm run local:portals:all:stop
 npm run local:middleware:api:all:stop
 ```
 
-Stop scripts wipe Docker volumes by default — next start re-runs Liquibase on a fresh DB.
+Volumes are wiped by default; next start re-applies Liquibase.
 
 ---
 
-## 10. Quick troubleshooting
+## 11. Quick troubleshooting
 
 | Symptom | Check |
 |---------|--------|
-| Admin blank / API errors | `curl :8094/healthz`; `npm run local:middleware:api:all:status` |
-| No workflows / sources | Middleware start should have run Liquibase; re-run `bash CICD/Local/knowledge-db-apply.sh` |
-| Download 400 `no_store_targets` | Source must map at least one **store_to** endpoint (seeded for GoF) |
-| `denied_license` | License must be allowlisted (`DataOps/kb/pipeline/license_gate.py`) |
-| SSL errors on extract | `export COA_KB_SSL_INSECURE=1` and re-run facade |
-| Ops history stuck `queued` | Facade was never run — step 6 |
-| Empty `content.md` | Origin blocked / robots / network; read `wf_exec_log` error on detail page |
+| Admin / API down | `curl :8094/healthz`; middleware status |
+| No sources / workflows | Re-run `bash CICD/Local/knowledge-db-apply.sh` |
+| Download 400 `no_store_targets` | Map at least one **store_to** endpoint |
+| `denied_license` | License in `DataOps/kb/pipeline/license_gate.py` |
+| SSL verify failed on extract | In **that** shell only: `export COA_KB_SSL_INSECURE=1` then re-run §7 (not needed for `npm run`) |
+| Ops history stuck `queued` | Facade not run — §7 |
+| Empty / bad `content.md` | Origin / robots / network; read exec error on detail |
 
 ---
 
@@ -241,7 +227,7 @@ Stop scripts wipe Docker volumes by default — next start re-runs Liquibase on 
 
 | Doc | When |
 |-----|------|
-| [`CICD/Local/README.md`](CICD/Local/README.md) | Containers / middleware scripts |
+| [`CICD/Local/README.md`](CICD/Local/README.md) | Containers / middleware |
 | [`Portals/admin-portal/README.md`](Portals/admin-portal/README.md) | Admin UI |
 | [`DataOps/airflow/README.md`](DataOps/airflow/README.md) | Facade + extract DAGs |
 | [`Middleware/API-Services/db/liquibase/knowledge/README.md`](Middleware/API-Services/db/liquibase/knowledge/README.md) | Schema / Liquibase |
