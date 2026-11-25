@@ -21,6 +21,7 @@
   background-position: center;
   background-repeat: no-repeat;
   transform: scale(1.02);
+  filter: saturate(1.05) contrast(1.08);
 }
 
 .overview-veil {
@@ -28,9 +29,10 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  /* Keep the scene readable as atmosphere; cards carry solid surfaces for text */
   background:
-    linear-gradient(180deg, rgba(255, 252, 247, 0.88) 0%, rgba(255, 252, 247, 0.78) 42%, rgba(255, 248, 238, 0.92) 100%),
-    linear-gradient(105deg, rgba(255, 250, 243, 0.55) 0%, rgba(255, 250, 243, 0.2) 55%, rgba(255, 250, 243, 0.45) 100%);
+    linear-gradient(180deg, rgba(255, 252, 247, 0.72) 0%, rgba(255, 252, 247, 0.58) 38%, rgba(255, 248, 238, 0.82) 100%),
+    radial-gradient(ellipse 70% 55% at 70% 20%, rgba(255, 250, 243, 0.15), transparent 70%);
 }
 
 .overview-content {
