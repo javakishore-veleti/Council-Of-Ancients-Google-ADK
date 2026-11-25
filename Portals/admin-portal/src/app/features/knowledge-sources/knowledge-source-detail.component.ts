@@ -3,18 +3,20 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
 import {
   APP_ENDPOINT_KIND_LABELS,
   AdminApiService,
   AdminKnowledgeSource,
   AppEndpoint,
   AppEndpointKind,
+  WfExecLog,
 } from '../../core/services/admin-api.service';
 
 @Component({
   selector: 'app-knowledge-source-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, AccordionModule, ButtonModule],
+  imports: [CommonModule, RouterLink, AccordionModule, ButtonModule, TableModule],
   templateUrl: './knowledge-source-detail.component.html',
   styleUrl: './knowledge-source-detail.component.scss',
 })
@@ -26,6 +28,7 @@ export class KnowledgeSourceDetailComponent implements OnInit {
   readonly downloadFrom = signal<AppEndpoint | null>(null);
   readonly storeTo = signal<AppEndpoint[]>([]);
   readonly techStack = signal<AppEndpoint[]>([]);
+  readonly wfLogs = signal<WfExecLog[]>([]);
   readonly loading = signal(true);
   readonly busy = signal(false);
   readonly notice = signal('');
@@ -42,6 +45,16 @@ export class KnowledgeSourceDetailComponent implements OnInit {
     return this.kindLabel[kind] ?? kind;
   }
 
+  endpointName(id: string | null): string {
+    if (!id) return '—';
+    return this.api.resolveEndpoints([id])[0]?.name ?? id.slice(0, 8);
+  }
+
+  storeSummary(ids: string[]): string {
+    if (!ids.length) return '—';
+    return `${ids.length} endpoint${ids.length === 1 ? '' : 's'}`;
+  }
+
   reload(): void {
     const id = this.source()?.id ?? this.route.snapshot.paramMap.get('id') ?? '';
     this.load(id);
@@ -56,10 +69,10 @@ export class KnowledgeSourceDetailComponent implements OnInit {
       next: (job) => {
         this.busy.set(false);
         this.source.update((s) => (s ? { ...s, ingest_status: 'queued' } : s));
-        const targets = job.store_to_endpoint_ids.length;
         this.notice.set(
-          `Queued job ${job.job_id} — fetch from origin, store to ${targets} endpoint${targets === 1 ? '' : 's'}.`,
+          `Created wf_exec_log ${job.wf_exec_log_id} (queued) — DAG/engine will patch status back via admin_api.`,
         );
+        this.refreshLogs(src.id);
       },
       error: (err) => {
         this.busy.set(false);
@@ -69,6 +82,12 @@ export class KnowledgeSourceDetailComponent implements OnInit {
             : 'Failed to queue download via Admin API.';
         this.notice.set(msg);
       },
+    });
+  }
+
+  private refreshLogs(sourceId: string): void {
+    this.api.listWfExecLogs(sourceId).subscribe({
+      next: (logs) => this.wfLogs.set(logs),
     });
   }
 
@@ -90,6 +109,7 @@ export class KnowledgeSourceDetailComponent implements OnInit {
         );
         this.storeTo.set(this.api.resolveEndpoints(src.store_to_endpoint_ids));
         this.techStack.set(this.api.resolveEndpoints(src.tech_stack_endpoint_ids));
+        this.refreshLogs(src.id);
         this.loading.set(false);
       },
       error: () => {

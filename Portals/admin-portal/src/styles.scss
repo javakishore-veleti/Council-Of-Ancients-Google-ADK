@@ -103,7 +103,8 @@ a:hover {
   color: var(--adm-danger);
 }
 
-.adm-status.queued {
+.adm-status.queued,
+.adm-status.started {
   background: color-mix(in srgb, var(--adm-warn) 12%, white);
   border-color: color-mix(in srgb, var(--adm-warn) 35%, var(--adm-line));
   color: var(--adm-warn);
@@ -115,7 +116,14 @@ a:hover {
   color: var(--adm-accent-deep);
 }
 
-.adm-status.failed {
+.adm-status.completed {
+  background: color-mix(in srgb, var(--adm-success) 12%, white);
+  border-color: color-mix(in srgb, var(--adm-success) 35%, var(--adm-line));
+  color: var(--adm-success);
+}
+
+.adm-status.failed,
+.adm-status.cancelled {
   background: color-mix(in srgb, var(--adm-danger) 12%, white);
   border-color: color-mix(in srgb, var(--adm-danger) 35%, var(--adm-line));
   color: var(--adm-danger);

@@ -74,8 +74,43 @@ export interface AdminKnowledgeSource {
   meta?: Record<string, unknown>;
 }
 
+/** Workflow engine that runs the download/index job. */
+export type WfEngine = 'airflow' | 'step_functions' | 'local';
+
+/**
+ * One download/ops run. Created on Download click; DAG / Step Functions
+ * (or local runner) patches status back via admin_api.
+ */
+export type WfExecStatus =
+  | 'queued'
+  | 'started'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
+
+export interface WfExecLog {
+  /** Primary key: UUID as string. */
+  id: string;
+  source_id: string;
+  engine: WfEngine;
+  /** External run id (Airflow dag_run_id, Step Functions execution ARN, …). */
+  external_run_id: string | null;
+  status: WfExecStatus;
+  download_from_endpoint_id: string | null;
+  store_to_endpoint_ids: string[];
+  tech_stack_endpoint_ids: string[];
+  started_at: string | null;
+  finished_at: string | null;
+  created_on: string;
+  updated_on: string;
+  error_message?: string;
+  /** Free-form progress notes from callbacks. */
+  detail?: string;
+}
+
 export interface DownloadJobResponse {
-  job_id: string;
+  wf_exec_log_id: string;
   source_id: string;
   status: 'queued';
   download_from_endpoint_id: string | null;
@@ -493,6 +528,68 @@ export class AdminApiService {
     return ids.map((id) => byId.get(id)).filter((e): e is AppEndpoint => !!e);
   }
 
+  /** In-memory wf_exec_log store (fixtures + rows created by Download). */
+  private readonly wfLogs: WfExecLog[] = [
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc01',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-10T19:30:00+00:00',
+      status: 'completed',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: [
+        'b915d3e2-0d86-560d-b324-0f6e4098f8be',
+        '8f4b32ff-6723-52a8-b798-cf798fc0a8a2',
+      ],
+      tech_stack_endpoint_ids: [
+        '07c51f6f-bccf-5a1a-b92c-090bae7aff3b',
+        '1766fa73-e2ef-58f1-9289-af5f0045f5fc',
+      ],
+      started_at: '2026-11-10T19:30:12Z',
+      finished_at: '2026-11-10T19:32:41Z',
+      created_on: '2026-11-10T19:30:00Z',
+      updated_on: '2026-11-10T19:32:41Z',
+      detail: 'Stored raw + indexed into pgvector + Chroma.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc02',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-18T11:02:00+00:00',
+      status: 'failed',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be'],
+      tech_stack_endpoint_ids: ['07c51f6f-bccf-5a1a-b92c-090bae7aff3b'],
+      started_at: '2026-11-18T11:02:08Z',
+      finished_at: '2026-11-18T11:02:55Z',
+      created_on: '2026-11-18T11:02:00Z',
+      updated_on: '2026-11-18T11:02:55Z',
+      error_message: 'origin_fetch_timeout',
+      detail: 'Retryable — origin timed out after 45s.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc03',
+      source_id: 'a4a5367d-c001-55c1-b041-01e5048391a2',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-12T14:10:00+00:00',
+      status: 'completed',
+      download_from_endpoint_id: '6f536e3f-0b54-52df-a994-017bced3c5e4',
+      store_to_endpoint_ids: [
+        'b915d3e2-0d86-560d-b324-0f6e4098f8be',
+        'd6f6c3ed-f423-5c27-8fa7-aa4903a56dc0',
+      ],
+      tech_stack_endpoint_ids: [
+        '878f0a3b-007a-5f3c-8e7b-46d87a8d917b',
+        '6defc77e-cdec-54f0-80b5-06f56c51d7c5',
+      ],
+      started_at: '2026-11-12T14:10:05Z',
+      finished_at: '2026-11-12T14:11:22Z',
+      created_on: '2026-11-12T14:10:00Z',
+      updated_on: '2026-11-12T14:11:22Z',
+      detail: 'Wikipedia microservices fetch + Qdrant upsert.',
+    },
+  ];
+
   listKnowledgeSources(): Observable<AdminKnowledgeSource[]> {
     return of(this.sources).pipe(delay(120));
   }
@@ -508,7 +605,19 @@ export class AdminApiService {
     );
   }
 
-  /** Queues download: from one origin → fan-out to all store-to endpoints. */
+  /** Ops history for a source — newest first. */
+  listWfExecLogs(sourceId: string): Observable<WfExecLog[]> {
+    const rows = this.wfLogs
+      .filter((r) => r.source_id === sourceId)
+      .slice()
+      .sort((a, b) => b.created_on.localeCompare(a.created_on));
+    return of(rows).pipe(delay(90));
+  }
+
+  /**
+   * Queue download: creates wf_exec_log (queued), then admin_api would hand
+   * the id to Airflow / future Step Functions for status callbacks.
+   */
   downloadSource(sourceId: string): Observable<DownloadJobResponse> {
     const src = this.sources.find((r) => r.id === sourceId);
     if (!src) {
@@ -517,8 +626,27 @@ export class AdminApiService {
     if (!src.store_to_endpoint_ids.length) {
       return throwError(() => new Error('no_store_targets'));
     }
+    const now = new Date().toISOString();
+    const log: WfExecLog = {
+      id: crypto.randomUUID(),
+      source_id: sourceId,
+      engine: 'airflow',
+      external_run_id: null,
+      status: 'queued',
+      download_from_endpoint_id: src.download_from_endpoint_id,
+      store_to_endpoint_ids: [...src.store_to_endpoint_ids],
+      tech_stack_endpoint_ids: [...src.tech_stack_endpoint_ids],
+      started_at: null,
+      finished_at: null,
+      created_on: now,
+      updated_on: now,
+      detail: 'Created by Admin UI Download; waiting for DAG pickup.',
+    };
+    this.wfLogs.unshift(log);
+    src.ingest_status = 'queued';
+
     return of({
-      job_id: `job_${crypto.randomUUID().slice(0, 8)}`,
+      wf_exec_log_id: log.id,
       source_id: sourceId,
       status: 'queued' as const,
       download_from_endpoint_id: src.download_from_endpoint_id,

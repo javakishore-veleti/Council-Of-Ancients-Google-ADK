@@ -35,7 +35,7 @@ Admin: http://127.0.0.1:4201 · Customer: http://127.0.0.1:4200
 |-------|---------|
 | `/dashboard` | Ops overview |
 | `/knowledge/sources` | List sources (name, category, subcategory, ingest status, created on) |
-| `/knowledge/sources/:uuid` | Source detail — download from/store-to + tech-stack App Endpoints |
+| `/knowledge/sources/:uuid` | Source detail — download from/store-to, **Ops history (`wf_exec_log`)**, tech-stack |
 | `/app-endpoints` | Configure dependency targets (Postgres, Chroma, pgvector, AWS/Azure/GCP, …) |
 | `/app-endpoints/:uuid` | Endpoint detail |
 

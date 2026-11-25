@@ -67,11 +67,16 @@ Existing agents/obs APIs stay; auth, customer, knowledge, and admin are **new** 
 ### Admin ingest path (locked)
 
 ```text
-Admin UI → coa_admin_api → coa_knowledge_api (async download) → Airflow DAG
-DAG → knowledge_api callbacks (started / completed / failed)
+Admin UI "Queue download"
+  → coa_admin_api creates wf_exec_log (status=queued, UUID pk)
+  → triggers Airflow DAG today (AWS Step Functions later) with wf_exec_log.id
+  → engine callbacks → coa_admin_api patches wf_exec_log
+       (started / running / completed / failed)
 ```
 
-Admin UI never talks to Airflow or Knowledge API directly.
+Admin UI never talks to Airflow / Step Functions or Knowledge API directly.
+
+**`wf_exec_log` (ops history):** one row per download/index run. Source detail → **Ops history** accordion. Fields include source_id, engine (`airflow` | `step_functions` | `local`), external_run_id, status, download_from / store_to / tech_stack endpoint ids, timestamps, error/detail.
 
 ### App Endpoints (locked)
 
