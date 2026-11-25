@@ -1,57 +1,113 @@
 <section class="overview">
-  <div class="hero-band animate__animated animate__fadeIn">
+  <header class="hero animate__animated animate__fadeIn">
     <div class="hero-copy">
-      <p class="eyebrow">Topic</p>
-      <h1 class="display-font">{{ prefs.activePack().label }}</h1>
+      <p class="eyebrow">Council of Ancients</p>
+      <h1 class="display-font">{{ displayTitle() }}</h1>
       <p class="lede">{{ prefs.activePack().tagline }}</p>
-      <button
-        pButton
-        type="button"
-        label="Enter chamber"
-        icon="pi pi-arrow-right"
-        iconPos="right"
-        class="enter"
-        (click)="openChamber()"
-      ></button>
+      <div class="hero-actions">
+        <button
+          pButton
+          type="button"
+          label="Enter the chamber"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          class="enter"
+          (click)="openChamber()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Browse sessions"
+          class="p-button-outlined secondary"
+          (click)="openSessions()"
+        ></button>
+      </div>
     </div>
     <div
       class="visual"
       [style.backgroundImage]="'url(' + prefs.activePack().heroImage + ')'"
+      role="img"
+      [attr.aria-label]="prefs.activePack().label"
     ></div>
-  </div>
+  </header>
 
-  <div class="row g-3 mt-1">
-    <div class="col-md-4">
-      <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Knowledge</ng-template>
-        <p>
-          @if (prefs.activePack().kbReady) {
-            Curated sources are available for cited answers in this topic.
-          } @else {
-            Knowledge for this topic is being prepared. Chamber chat is available now.
-          }
-        </p>
-      </p-card>
+  <section class="block">
+    <div class="block-head">
+      <h2 class="display-font">How this council works</h2>
+      <p>Pose a dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation.</p>
     </div>
-    <div class="col-md-4">
-      <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Council seats</ng-template>
-        <p>{{ prefs.activePack().seatsLabel }}</p>
-      </p-card>
+    <div class="flow-grid">
+      @for (step of flowSteps; track step.title) {
+        <article class="flow-card">
+          <span class="step-num">{{ step.n }}</span>
+          <i [class]="step.icon"></i>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.body }}</p>
+        </article>
+      }
     </div>
-    <div class="col-md-4">
-      <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Your sessions</ng-template>
-        <p>
-          @if (prefs.projectList().length === 0) {
-            No chamber sessions yet — start one when you are ready.
-          } @else if (prefs.projectList().length === 1) {
-            1 chamber session in this topic.
-          } @else {
-            {{ prefs.projectList().length }} chamber sessions in this topic.
-          }
-        </p>
-      </p-card>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2 class="display-font">Seats at the table</h2>
+      <p>Each counselor brings a distinct lens for {{ prefs.activePack().shortLabel }}.</p>
     </div>
-  </div>
+    <div class="seat-grid">
+      @for (seat of seats(); track seat.id) {
+        <button type="button" class="seat-card" (click)="openSeat(seat.id)">
+          <div class="seat-top">
+            <span class="seat-mark">{{ seat.initial }}</span>
+            <span class="seat-cta">Ask this seat</span>
+          </div>
+          <h3>{{ seat.name }}</h3>
+          <p>{{ seat.focus }}</p>
+        </button>
+      }
+      <button type="button" class="seat-card full-council" (click)="openChamber()">
+        <div class="seat-top">
+          <span class="seat-mark full">∞</span>
+          <span class="seat-cta">Deliberate</span>
+        </div>
+        <h3>Full council</h3>
+        <p>Hear every seat, then a Facilitator synthesis with trade-offs and a recommendation.</p>
+      </button>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2 class="display-font">Explore this topic</h2>
+      <p>Jump into a focus area — the chamber opens with that lens ready.</p>
+    </div>
+    <div class="path-grid">
+      @for (path of pathways(); track path.id) {
+        <button type="button" class="path-card" (click)="openPath(path.id, path.route)">
+          <i [class]="path.icon"></i>
+          <span>{{ path.label }}</span>
+        </button>
+      }
+    </div>
+  </section>
+
+  <section class="block session-band">
+    <div class="session-copy">
+      <h2 class="display-font">Your chamber sessions</h2>
+      @if (prefs.projectList().length === 0) {
+        <p>No sessions yet. Start one when you have a design question or dilemma ready.</p>
+      } @else if (prefs.projectList().length === 1) {
+        <p>You have 1 open session in this topic.</p>
+      } @else {
+        <p>You have {{ prefs.projectList().length }} open sessions in this topic.</p>
+      }
+    </div>
+    <button
+      pButton
+      type="button"
+      [label]="prefs.projectList().length ? 'Continue in chamber' : 'Start first session'"
+      icon="pi pi-comments"
+      class="enter"
+      (click)="openChamber()"
+    ></button>
+  </section>
 </section>
