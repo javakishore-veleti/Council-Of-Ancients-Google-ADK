@@ -567,6 +567,115 @@ export class AdminApiService {
       error_message: 'origin_fetch_timeout',
       detail: 'Retryable — origin timed out after 45s.',
     },
+
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc04',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-20T08:00:00+00:00',
+      status: 'completed',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be'],
+      tech_stack_endpoint_ids: ['07c51f6f-bccf-5a1a-b92c-090bae7aff3b'],
+      started_at: '2026-11-20T08:00:10Z',
+      finished_at: '2026-11-20T08:01:02Z',
+      created_on: '2026-11-20T08:00:00Z',
+      updated_on: '2026-11-20T08:01:02Z',
+      detail: 'Re-index after prompt tweak.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc05',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'local',
+      external_run_id: 'local_2026-11-21T09:15:00',
+      status: 'running',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be', '663865e6-1dc5-5e9d-b9c3-132cdbe83a32'],
+      tech_stack_endpoint_ids: ['1766fa73-e2ef-58f1-9289-af5f0045f5fc'],
+      started_at: '2026-11-21T09:15:05Z',
+      finished_at: null,
+      created_on: '2026-11-21T09:15:00Z',
+      updated_on: '2026-11-21T09:15:05Z',
+      detail: 'Local runner — writing Azure blob copy.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc06',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'step_functions',
+      external_run_id: 'arn:aws:states:us-east-1:123:execution:coa-kb:run-06',
+      status: 'queued',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['8f4b32ff-6723-52a8-b798-cf798fc0a8a2'],
+      tech_stack_endpoint_ids: ['0316cfc6-b095-5571-9ca3-782ba500a537'],
+      started_at: null,
+      finished_at: null,
+      created_on: '2026-11-22T10:00:00Z',
+      updated_on: '2026-11-22T10:00:00Z',
+      detail: 'Future Step Functions path — not started.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc07',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-23T12:00:00+00:00',
+      status: 'cancelled',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be'],
+      tech_stack_endpoint_ids: [],
+      started_at: '2026-11-23T12:00:08Z',
+      finished_at: '2026-11-23T12:00:40Z',
+      created_on: '2026-11-23T12:00:00Z',
+      updated_on: '2026-11-23T12:00:40Z',
+      error_message: 'cancelled_by_operator',
+      detail: 'Cancelled before store fan-out.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc08',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-24T07:45:00+00:00',
+      status: 'started',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be', 'd6f6c3ed-f423-5c27-8fa7-aa4903a56dc0'],
+      tech_stack_endpoint_ids: ['07c51f6f-bccf-5a1a-b92c-090bae7aff3b'],
+      started_at: '2026-11-24T07:45:04Z',
+      finished_at: null,
+      created_on: '2026-11-24T07:45:00Z',
+      updated_on: '2026-11-24T07:45:04Z',
+      detail: 'Fetch started.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc09',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-24T16:20:00+00:00',
+      status: 'completed',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be'],
+      tech_stack_endpoint_ids: ['07c51f6f-bccf-5a1a-b92c-090bae7aff3b', '1766fa73-e2ef-58f1-9289-af5f0045f5fc'],
+      started_at: '2026-11-24T16:20:06Z',
+      finished_at: '2026-11-24T16:21:18Z',
+      created_on: '2026-11-24T16:20:00Z',
+      updated_on: '2026-11-24T16:21:18Z',
+      detail: 'Nightly refresh completed.',
+    },
+    {
+      id: 'c1a2b3c4-d5e6-4789-a012-3456789abc10',
+      source_id: 'd85e1c09-8157-5565-82d3-f9f3cf209509',
+      engine: 'airflow',
+      external_run_id: 'kb_ingest_2026-11-25T01:00:00+00:00',
+      status: 'failed',
+      download_from_endpoint_id: '34031dd4-0cfb-555d-8958-dea3037de640',
+      store_to_endpoint_ids: ['b915d3e2-0d86-560d-b324-0f6e4098f8be'],
+      tech_stack_endpoint_ids: ['07c51f6f-bccf-5a1a-b92c-090bae7aff3b'],
+      started_at: '2026-11-25T01:00:05Z',
+      finished_at: '2026-11-25T01:00:22Z',
+      created_on: '2026-11-25T01:00:00Z',
+      updated_on: '2026-11-25T01:00:22Z',
+      error_message: 'disk_full',
+      detail: 'Local KnowledgeBase volume full.',
+    },
+
     {
       id: 'c1a2b3c4-d5e6-4789-a012-3456789abc03',
       source_id: 'a4a5367d-c001-55c1-b041-01e5048391a2',
@@ -612,6 +721,17 @@ export class AdminApiService {
       .slice()
       .sort((a, b) => b.created_on.localeCompare(a.created_on));
     return of(rows).pipe(delay(90));
+  }
+
+  getWfExecLog(id: string): Observable<WfExecLog> {
+    return of(this.wfLogs).pipe(
+      delay(70),
+      map((list) => {
+        const row = list.find((r) => r.id === id);
+        if (!row) throw new Error('not_found');
+        return row;
+      }),
+    );
   }
 
   /**

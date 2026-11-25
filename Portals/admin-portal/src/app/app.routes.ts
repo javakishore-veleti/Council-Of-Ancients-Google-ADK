@@ -5,6 +5,7 @@ import { KnowledgeSourcesComponent } from './features/knowledge-sources/knowledg
 import { KnowledgeSourceDetailComponent } from './features/knowledge-sources/knowledge-source-detail.component';
 import { AppEndpointsComponent } from './features/app-endpoints/app-endpoints.component';
 import { AppEndpointDetailComponent } from './features/app-endpoints/app-endpoint-detail.component';
+import { WfExecLogDetailComponent } from './features/wf-exec-logs/wf-exec-log-detail.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,8 @@ export const routes: Routes = [
       { path: 'knowledge/sources/:id', component: KnowledgeSourceDetailComponent },
       { path: 'app-endpoints', component: AppEndpointsComponent },
       { path: 'app-endpoints/:id', component: AppEndpointDetailComponent },
+      /** Reusable ops execution detail — back link returns to owning source. */
+      { path: 'wf-exec-logs/:id', component: WfExecLogDetailComponent },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },

@@ -1,0 +1,158 @@
+.page {
+  width: 100%;
+  max-width: none;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--adm-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--adm-accent-deep);
+  margin-bottom: 0.85rem;
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.kicker {
+  margin: 0 0 0.3rem;
+  font-family: var(--adm-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--adm-accent-deep);
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.lede {
+  margin: 0.35rem 0 0;
+  color: var(--adm-muted);
+}
+
+.muted {
+  color: var(--adm-muted);
+}
+
+.link {
+  font-family: var(--adm-mono);
+  font-size: 0.85rem;
+  word-break: break-all;
+  color: var(--adm-accent-deep);
+}
+
+.kv {
+  margin: 0 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 1.25rem;
+}
+
+.kv > div {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--adm-panel);
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+}
+
+.kv dt {
+  margin: 0;
+  font-family: var(--adm-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+}
+
+.kv dd {
+  margin: 0;
+}
+
+.mono {
+  font-family: var(--adm-mono);
+  font-size: 0.85rem;
+}
+
+.break {
+  word-break: break-all;
+}
+
+.block {
+  margin-bottom: 1.15rem;
+}
+
+.block h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-family: var(--adm-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--adm-deep);
+}
+
+.err {
+  color: var(--adm-danger);
+  margin: 0 0 0.35rem;
+}
+
+.detail {
+  margin: 0;
+  color: var(--adm-muted);
+}
+
+.ep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.65rem;
+}
+
+.ep-card {
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+  background: var(--adm-panel);
+  padding: 0.7rem 0.85rem;
+}
+
+.ep-name {
+  font-weight: 600;
+  color: var(--adm-ink);
+}
+
+.ep-name:hover {
+  color: var(--adm-accent-deep);
+}
+
+.ep-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+  margin-top: 0.4rem;
+  color: var(--adm-muted);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 800px) {
+  .kv {
+    grid-template-columns: 1fr;
+  }
+}

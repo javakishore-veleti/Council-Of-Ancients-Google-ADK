@@ -119,25 +119,98 @@
               "
               (click)="download()"
             ></button>
-            <span class="hint-inline">Each click creates a <code>wf_exec_log</code> row (see Ops history).</span>
           </div>
         </p-accordion-content>
       </p-accordion-panel>
 
       <p-accordion-panel value="ops">
-        <p-accordion-header>Ops history (wf_exec_log) — {{ wfLogs().length }}</p-accordion-header>
+        <p-accordion-header>Ops history — {{ filteredLogs().length }} / {{ wfLogs().length }}</p-accordion-header>
         <p-accordion-content>
-          <p class="panel-lede">
-            Admin UI → admin_api creates <code>wf_exec_log</code> → Airflow DAG (or future Step Functions)
-            runs and patches status back to admin_api. This is the download / index audit trail for this source.
-          </p>
+          <section class="criteria" [class.open]="opsCriteriaOpen()">
+            <button type="button" class="criteria-toggle" (click)="toggleOpsCriteria()">
+              <span class="criteria-title">
+                <i
+                  class="bi"
+                  [class.bi-chevron-down]="opsCriteriaOpen()"
+                  [class.bi-chevron-right]="!opsCriteriaOpen()"
+                  aria-hidden="true"
+                ></i>
+                Criteria
+              </span>
+              <span class="criteria-summary">{{ opsCriteriaSummary() }}</span>
+              <span class="criteria-action">{{ opsCriteriaOpen() ? 'Hide' : 'Show' }}</span>
+            </button>
+            @if (opsCriteriaOpen()) {
+              <div class="criteria-body ops-criteria">
+                <label class="field">
+                  <span>Status</span>
+                  <p-select
+                    [options]="statusOptions"
+                    [ngModel]="criteriaStatus()"
+                    (ngModelChange)="criteriaStatus.set($event)"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="criteria-select"
+                  />
+                </label>
+                <label class="field">
+                  <span>Engine</span>
+                  <p-select
+                    [options]="engineOptions"
+                    [ngModel]="criteriaEngine()"
+                    (ngModelChange)="criteriaEngine.set($event)"
+                    optionLabel="label"
+                    optionValue="value"
+                    styleClass="criteria-select"
+                  />
+                </label>
+                <label class="field">
+                  <span>From</span>
+                  <input
+                    pInputText
+                    type="search"
+                    [ngModel]="criteriaFrom()"
+                    (ngModelChange)="criteriaFrom.set($event)"
+                    placeholder="Contains…"
+                  />
+                </label>
+                <label class="field">
+                  <span>External run</span>
+                  <input
+                    pInputText
+                    type="search"
+                    [ngModel]="criteriaExternal()"
+                    (ngModelChange)="criteriaExternal.set($event)"
+                    placeholder="Contains…"
+                  />
+                </label>
+                <div class="criteria-actions">
+                  <button
+                    pButton
+                    type="button"
+                    label="Clear"
+                    class="p-button-text p-button-sm"
+                    (click)="clearOpsCriteria()"
+                  ></button>
+                </div>
+              </div>
+            }
+          </section>
+
+          <div class="table-meta">
+            <span>{{ filteredLogs().length }} execution{{ filteredLogs().length === 1 ? '' : 's' }}</span>
+          </div>
+
           @if (wfLogs().length) {
             <div class="table-wrap">
               <p-table
-                [value]="wfLogs()"
+                [value]="filteredLogs()"
                 styleClass="p-datatable-sm admin-table ops-table"
-                [paginator]="wfLogs().length > 8"
-                [rows]="8"
+                [paginator]="true"
+                [rows]="pageSize"
+                [rowsPerPageOptions]="pageSizeOptions"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="{first}–{last} of {totalRecords}"
               >
                 <ng-template pTemplate="header">
                   <tr>
@@ -149,9 +222,68 @@
                     <th>External run</th>
                     <th>Detail</th>
                   </tr>
+                  <tr class="col-filters">
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="search"
+                        class="col-input"
+                        [ngModel]="colStatus()"
+                        (ngModelChange)="colStatus.set($event)"
+                        placeholder="Search…"
+                        aria-label="Filter status"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="search"
+                        class="col-input"
+                        [ngModel]="colEngine()"
+                        (ngModelChange)="colEngine.set($event)"
+                        placeholder="Search…"
+                        aria-label="Filter engine"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="search"
+                        class="col-input"
+                        [ngModel]="colFrom()"
+                        (ngModelChange)="colFrom.set($event)"
+                        placeholder="Search…"
+                        aria-label="Filter from"
+                      />
+                    </th>
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="search"
+                        class="col-input"
+                        [ngModel]="colExternal()"
+                        (ngModelChange)="colExternal.set($event)"
+                        placeholder="Search…"
+                        aria-label="Filter external run"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="search"
+                        class="col-input"
+                        [ngModel]="colDetail()"
+                        (ngModelChange)="colDetail.set($event)"
+                        placeholder="Search…"
+                        aria-label="Filter detail"
+                      />
+                    </th>
+                  </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-row>
-                  <tr>
+                  <tr class="row-link" [routerLink]="['/wf-exec-logs', row.id]">
                     <td class="mono">{{ row.created_on | date: 'short' }}</td>
                     <td>
                       <span class="adm-status" [class]="row.status">{{ row.status }}</span>
@@ -172,10 +304,15 @@
                     </td>
                   </tr>
                 </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="7">No executions match the current criteria.</td>
+                  </tr>
+                </ng-template>
               </p-table>
             </div>
           } @else {
-            <p class="muted">No executions yet — Queue download to create the first wf_exec_log.</p>
+            <p class="muted">No executions yet.</p>
           }
         </p-accordion-content>
       </p-accordion-panel>

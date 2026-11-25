@@ -1,0 +1,108 @@
+<section class="page">
+  @if (loading()) {
+    <p class="muted">Loading execution…</p>
+  } @else if (notFound() || !log()) {
+    <a routerLink="/knowledge/sources" class="back">
+      <i class="bi bi-arrow-left" aria-hidden="true"></i> Sources
+    </a>
+    <p class="muted">Execution not found.</p>
+  } @else {
+    <a [routerLink]="sourceBackLink()" class="back">
+      <i class="bi bi-arrow-left" aria-hidden="true"></i> Source detail
+    </a>
+
+    <header class="page-head">
+      <div>
+        <p class="kicker">wf_exec_log · {{ log()!.engine }}</p>
+        <h1>Execution</h1>
+        <p class="lede mono break">{{ log()!.id }}</p>
+      </div>
+      <span class="adm-status" [class]="log()!.status">{{ log()!.status }}</span>
+    </header>
+
+    <dl class="kv">
+      <div><dt>Id</dt><dd class="mono break">{{ log()!.id }}</dd></div>
+      <div>
+        <dt>Source</dt>
+        <dd>
+          <a [routerLink]="sourceBackLink()" class="link">{{ log()!.source_id }}</a>
+        </dd>
+      </div>
+      <div><dt>Engine</dt><dd class="mono">{{ log()!.engine }}</dd></div>
+      <div><dt>External run</dt><dd class="mono break">{{ log()!.external_run_id || '—' }}</dd></div>
+      <div><dt>Created</dt><dd class="mono">{{ log()!.created_on | date: 'medium' }}</dd></div>
+      <div><dt>Updated</dt><dd class="mono">{{ log()!.updated_on | date: 'medium' }}</dd></div>
+      <div><dt>Started</dt><dd class="mono">{{ log()!.started_at ? (log()!.started_at | date: 'medium') : '—' }}</dd></div>
+      <div><dt>Finished</dt><dd class="mono">{{ log()!.finished_at ? (log()!.finished_at | date: 'medium') : '—' }}</dd></div>
+    </dl>
+
+    @if (log()!.error_message || log()!.detail) {
+      <section class="block">
+        <h2>Result</h2>
+        @if (log()!.error_message) {
+          <p class="err mono">{{ log()!.error_message }}</p>
+        }
+        @if (log()!.detail) {
+          <p class="detail">{{ log()!.detail }}</p>
+        }
+      </section>
+    }
+
+    <section class="block">
+      <h2>Downloaded from</h2>
+      @if (downloadFrom(); as from) {
+        <div class="ep-card">
+          <a [routerLink]="['/app-endpoints', from.id]" class="ep-name">{{ from.name }}</a>
+          <div class="ep-meta">
+            <span class="adm-status">{{ kindLabel[from.kind] }}</span>
+            <span class="mono">{{ from.provider }}</span>
+            <span class="mono break">{{ from.endpoint_url }}</span>
+          </div>
+        </div>
+      } @else {
+        <p class="muted">—</p>
+      }
+    </section>
+
+    <section class="block">
+      <h2>Stored as ({{ storeTo().length }})</h2>
+      @if (storeTo().length) {
+        <ul class="ep-list">
+          @for (ep of storeTo(); track ep.id) {
+            <li class="ep-card">
+              <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
+              <div class="ep-meta">
+                <span class="adm-status">{{ kindLabel[ep.kind] }}</span>
+                <span class="mono">{{ ep.provider }}</span>
+                <span class="mono break">{{ ep.endpoint_url }}</span>
+                <span class="mono">{{ ep.resource }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="muted">—</p>
+      }
+    </section>
+
+    <section class="block">
+      <h2>Tech stack ({{ techStack().length }})</h2>
+      @if (techStack().length) {
+        <ul class="ep-list">
+          @for (ep of techStack(); track ep.id) {
+            <li class="ep-card">
+              <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
+              <div class="ep-meta">
+                <span class="adm-status">{{ kindLabel[ep.kind] }}</span>
+                <span class="mono">{{ ep.provider }}</span>
+                <span class="mono break">{{ ep.endpoint_url }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="muted">—</p>
+      }
+    </section>
+  }
+</section>
