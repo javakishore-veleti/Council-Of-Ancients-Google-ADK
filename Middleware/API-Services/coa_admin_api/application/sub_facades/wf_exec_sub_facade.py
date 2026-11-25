@@ -20,12 +20,16 @@ class WfExecSubFacade:
         self,
         *,
         source_id: UUID,
+        wf_id: UUID,
+        engine: str,
         download_from_endpoint_id: UUID | None,
         store_to_endpoint_ids: list[UUID],
         tech_stack_endpoint_ids: list[UUID],
     ) -> WfExecLog:
         return self._dao.create_queued(
             source_id=source_id,
+            wf_id=wf_id,
+            engine=engine,
             download_from_endpoint_id=download_from_endpoint_id,
             store_to_endpoint_ids=store_to_endpoint_ids,
             tech_stack_endpoint_ids=tech_stack_endpoint_ids,

@@ -33,6 +33,21 @@
             <div><dt>URL</dt><dd class="mono break">{{ source()!.url || '—' }}</dd></div>
             <div><dt>License</dt><dd>{{ source()!.license || '—' }}</dd></div>
             <div>
+              <dt>Download workflow</dt>
+              <dd>
+                @if (workflow(); as wf) {
+                  <a [routerLink]="['/workflows', wf.id]" class="ep-name">{{ wf.name }}</a>
+                  <span class="cite"> · {{ wf.engine }}</span>
+                } @else if (source()!.workflow_id) {
+                  <a [routerLink]="['/workflows', source()!.workflow_id]" class="mono">{{
+                    source()!.workflow_id
+                  }}</a>
+                } @else {
+                  —
+                }
+              </dd>
+            </div>
+            <div>
               <dt>Store path</dt>
               <dd class="mono break">
                 …/KnowledgeBase/{{ source()!.category_code }}/{{ source()!.subcategory_code }}/{{ source()!.id }}/

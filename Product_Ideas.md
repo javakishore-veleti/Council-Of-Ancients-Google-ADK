@@ -69,12 +69,26 @@ Existing agents/obs APIs stay; auth, customer, knowledge, and admin are **new** 
 ```text
 Admin UI "Queue download"
   → coa_admin_api creates wf_exec_log (status=queued, UUID pk)
-  → triggers Airflow DAG today (AWS Step Functions later) with wf_exec_log.id
-  → engine callbacks → coa_admin_api patches wf_exec_log
-       (started / running / completed / failed)
+  → triggers Airflow **facade** DAG today (AWS Step Functions later) with wf_exec_log.id
+  → facade patches wf_exec_log (started / running / completed / failed)
 ```
 
 Admin UI never talks to Airflow / Step Functions or Knowledge API directly.
+
+**Workflows registry (locked):** `knowledge.workflow` rows (name, description, **engine**, external_ref, status). Engine is open-ended (`airflow`, `step_functions`, `emr`, `spring_batch`, `local`, …). Admin has **Workflows** list + detail (criteria + searchable columns).
+
+- Each `knowledge_source.workflow_id` points at the workflow used on **Download**.
+- Each `wf_exec_log.wf_id` stores that workflow’s primary key at queue time (plus denormalized `engine`).
+
+**Facade vs extract (locked):** Admin only triggers the source’s registered **facade** workflow (seed: `kb_ingest_facade`). That workflow is **not** an extractor — it orchestrates one download run and **invokes** extract (`kb_extract`). Extract is swappable without changing Admin or `wf_exec_log`.
+
+```text
+Download → source.workflow_id → create wf_exec_log(wf_id=…)
+kb_ingest_facade (wf_exec_log.id)
+  → load source + license/robots gate
+  → trigger kb_extract (url, store_dir, strategy)
+  → finalize store under UUID leaf + PATCH wf_exec_log
+```
 
 **`wf_exec_log` (ops history):** one row per download/index run. Source detail → **Ops history** accordion. Fields include source_id, engine (`airflow` | `step_functions` | `local`), external_run_id, status, download_from / store_to / tech_stack endpoint ids, timestamps, error/detail.
 
@@ -397,22 +411,37 @@ Sitemap `post-sitemap*.xml` files are CMS URL batches, **not** year curricula. I
 
 ```text
 sources registry (url, license, domain, status)
-  → fetch (robots.txt, rate limit, ETag)
-  → license_gate (US gov PD, CC-*, explicit open; deny unknown/ARR)
-  → blob store (local FS or S3 — same keys)
-  → normalize (HTML/PDF → text)
-  → subcategorize (rules / classifier)
+  → kb_ingest_facade (Airflow)
+       → license_gate + robots
+       → kb_extract (swappable strategy: default generic_markdown)
+       → store content.md + meta.json (+ original.html when cheap)
+  → subcategorize (rules / classifier) — later
   → chunk → embed → topic-scoped index (later)
 ```
+
+### Extract strategies (locked)
+
+- Extract is **URL-agnostic**: any allowlisted `knowledge_source.url` — not a DigitalOcean-only parser.
+- Default strategy: **`generic_markdown`** — HTTP fetch → strip chrome → clean Markdown for RAG.
+- Optional **host extractors** (sparse, later): registry by host/path when structured fields matter; always still emit Markdown.
+- Facade triggers extract by strategy id / extract DAG id so vendors or local libs can be swapped without rewriting the facade.
+- No multi-page Crawl/Map on single-source Download (v1). No hard dependency on a third-party scrape SaaS.
 
 ### Storage (locked)
 
 KB content lives in **exactly one** of:
 
-1. **Laptop** — `KB_LOCAL_ROOT` (prefer **outside** the git clone)  
+1. **Laptop** — `KB_LOCAL_ROOT` (prefer **outside** the git clone); default App Endpoint leaf is UUID under KnowledgeBase  
 2. **Private AWS S3** — `KB_BLOB_BACKEND=s3`, `KB_S3_BUCKET`
 
 ```text
+# Preferred (Admin App Endpoint / source UUID leaf)
+KnowledgeBase/{category_code}/{subcategory_code}/{source_uuid}/
+  content.md
+  meta.json
+  original.html   # optional
+
+# Legacy topic layout (still supported by pipeline helpers)
 kb/
   raw/{domain}/{source_id}/original.*
   raw/{domain}/{source_id}/meta.json

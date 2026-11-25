@@ -18,6 +18,7 @@ _SOURCE_SQL = """
       s.url,
       s.license,
       s.status AS ingest_status,
+      s.workflow_id,
       s.meta,
       s.created_at AS created_on,
       s.updated_at AS updated_on,
@@ -64,6 +65,7 @@ def _row(r: dict[str, Any], maps: dict[str, list[UUID]]) -> AdminKnowledgeSource
         download_from_endpoint_id=(maps.get("download_from") or [None])[0],
         store_to_endpoint_ids=maps.get("store_to") or [],
         tech_stack_endpoint_ids=maps.get("tech_stack") or [],
+        workflow_id=r.get("workflow_id"),
         meta=meta,
     )
 

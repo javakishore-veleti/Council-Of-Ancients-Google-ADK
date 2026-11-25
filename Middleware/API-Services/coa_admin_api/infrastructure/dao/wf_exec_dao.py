@@ -8,11 +8,18 @@ from coa_admin_api.domain.models import WfExecLog
 from coa_admin_api.infrastructure.dao.db import connection
 
 _SELECT = """
-    SELECT id, source_id, engine, external_run_id, status,
+    SELECT id, source_id, wf_id, engine, external_run_id, status,
            download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
            started_at, finished_at, error_message, detail,
            created_at AS created_on, updated_at AS updated_on
     FROM knowledge.wf_exec_log
+"""
+
+_RETURNING = """
+    id, source_id, wf_id, engine, external_run_id, status,
+    download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
+    started_at, finished_at, error_message, detail,
+    created_at AS created_on, updated_at AS updated_on
 """
 
 
@@ -26,6 +33,7 @@ def _row(r: dict[str, Any]) -> WfExecLog:
     return WfExecLog(
         id=r["id"],
         source_id=r["source_id"],
+        wf_id=r.get("wf_id"),
         engine=r["engine"],
         external_run_id=r.get("external_run_id"),
         status=r["status"],
@@ -61,33 +69,32 @@ class WfExecDao:
         self,
         *,
         source_id: UUID,
+        wf_id: UUID,
+        engine: str,
         download_from_endpoint_id: UUID | None,
         store_to_endpoint_ids: list[UUID],
         tech_stack_endpoint_ids: list[UUID],
-        engine: str = "airflow",
         detail: str | None = None,
     ) -> WfExecLog:
         with connection() as conn:
             row = conn.execute(
-                """
+                f"""
                 INSERT INTO knowledge.wf_exec_log (
-                  source_id, engine, status,
+                  source_id, wf_id, engine, status,
                   download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
                   detail
-                ) VALUES (%s, %s, 'queued', %s, %s, %s, %s)
-                RETURNING id, source_id, engine, external_run_id, status,
-                          download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
-                          started_at, finished_at, error_message, detail,
-                          created_at AS created_on, updated_at AS updated_on
+                ) VALUES (%s, %s, %s, 'queued', %s, %s, %s, %s)
+                RETURNING {_RETURNING}
                 """,
                 (
                     source_id,
+                    wf_id,
                     engine,
                     download_from_endpoint_id,
                     store_to_endpoint_ids,
                     tech_stack_endpoint_ids,
                     detail
-                    or "Created by Admin UI Download; waiting for DAG pickup.",
+                    or "Created by Admin UI Download; waiting for facade workflow pickup.",
                 ),
             ).fetchone()
         return _row(row)
@@ -128,10 +135,7 @@ class WfExecDao:
                 UPDATE knowledge.wf_exec_log
                 SET {', '.join(sets)}
                 WHERE id = %s
-                RETURNING id, source_id, engine, external_run_id, status,
-                          download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
-                          started_at, finished_at, error_message, detail,
-                          created_at AS created_on, updated_at AS updated_on
+                RETURNING {_RETURNING}
                 """,
                 params,
             ).fetchone()

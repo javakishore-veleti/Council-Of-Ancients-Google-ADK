@@ -5,7 +5,8 @@ from uuid import UUID
 
 from coa_admin_api.application.tasks.endpoint_crud_task import EndpointCrudTask
 from coa_admin_api.application.tasks.source_ops_task import SourceOpsTask
-from coa_admin_api.domain.models import AdminKnowledgeSource, AppEndpoint, WfExecLog
+from coa_admin_api.application.tasks.workflow_crud_task import WorkflowCrudTask
+from coa_admin_api.domain.models import AdminKnowledgeSource, AppEndpoint, WfExecLog, Workflow
 
 
 class AdminFacade:
@@ -13,15 +14,29 @@ class AdminFacade:
         self,
         endpoints: EndpointCrudTask | None = None,
         sources: SourceOpsTask | None = None,
+        workflows: WorkflowCrudTask | None = None,
     ) -> None:
         self._endpoints = endpoints or EndpointCrudTask()
         self._sources = sources or SourceOpsTask()
+        self._workflows = workflows or WorkflowCrudTask()
 
     def list_endpoints(self) -> list[AppEndpoint]:
         return self._endpoints.list()
 
     def get_endpoint(self, endpoint_id: UUID) -> AppEndpoint:
         return self._endpoints.get(endpoint_id)
+
+    def list_workflows(self) -> list[Workflow]:
+        return self._workflows.list()
+
+    def get_workflow(self, workflow_id: UUID) -> Workflow:
+        return self._workflows.get(workflow_id)
+
+    def create_workflow(self, data: dict[str, Any]) -> Workflow:
+        return self._workflows.create(data)
+
+    def update_workflow(self, workflow_id: UUID, data: dict[str, Any]) -> Workflow:
+        return self._workflows.update(workflow_id, data)
 
     def list_sources(self) -> list[AdminKnowledgeSource]:
         return self._sources.list_sources()

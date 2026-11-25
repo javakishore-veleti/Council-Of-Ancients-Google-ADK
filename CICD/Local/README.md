@@ -62,7 +62,7 @@ App Prometheus scrape target (host): http://localhost:9108/metrics
 
 API docs: [`Middleware/API-Services/coa_observability_api/README.md`](../../Middleware/API-Services/coa_observability_api/README.md)
 
-## Middleware APIs (obs + agents)
+## Middleware APIs (Postgres + obs + agents + admin)
 
 ```bash
 npm run local:middleware:api:all:start
@@ -70,7 +70,10 @@ npm run local:middleware:api:all:status
 npm run local:middleware:api:all:stop
 ```
 
-Starts observability containers (including `coa_observability_api` on **:8088**) and host `coa_agents_api` on **:8090**.  
+Starts **Postgres** + observability (`coa_observability_api` **:8088**), runs **Liquibase**
+(`knowledge-db-apply.sh` → `db.changelog-master.xml` via Docker image), then host
+`coa_agents_api` **:8090** and `coa_admin_api` **:8094**. No manual `psql` for local start.
+
 Needs repo-root `.env` with GCP / Model Armor for deliberation.  
 Each model turn POSTs into `COA_OBS_API_URL` (default `http://localhost:8088`) `/v1/obs/feed`.
 

@@ -64,10 +64,34 @@ export interface AdminKnowledgeSource {
   download_from_endpoint_id: string | null;
   store_to_endpoint_ids: string[];
   tech_stack_endpoint_ids: string[];
+  /** Workflow used when Download is clicked. */
+  workflow_id: string | null;
   meta?: Record<string, unknown>;
 }
 
-export type WfEngine = 'airflow' | 'step_functions' | 'local';
+/** Open-ended engine; known values labeled in UI. */
+export type WfEngine =
+  | 'airflow'
+  | 'step_functions'
+  | 'emr'
+  | 'spring_batch'
+  | 'local'
+  | 'other'
+  | string;
+
+export type WorkflowStatus = 'active' | 'draft' | 'disabled';
+
+export interface Workflow {
+  id: string;
+  name: string;
+  description?: string;
+  engine: WfEngine;
+  external_ref?: string | null;
+  status: WorkflowStatus;
+  meta?: Record<string, unknown>;
+  created_on?: string;
+  updated_on?: string;
+}
 
 export type WfExecStatus =
   | 'queued'
@@ -80,6 +104,7 @@ export type WfExecStatus =
 export interface WfExecLog {
   id: string;
   source_id: string;
+  wf_id: string | null;
   engine: WfEngine;
   external_run_id: string | null;
   status: WfExecStatus;
@@ -97,10 +122,20 @@ export interface WfExecLog {
 export interface DownloadJobResponse {
   wf_exec_log_id: string;
   source_id: string;
+  wf_id: string | null;
   status: 'queued';
   download_from_endpoint_id: string | null;
   store_to_endpoint_ids: string[];
 }
+
+export const WORKFLOW_ENGINE_LABELS: Record<string, string> = {
+  airflow: 'Airflow',
+  step_functions: 'AWS Step Functions',
+  emr: 'AWS EMR',
+  spring_batch: 'Spring Batch',
+  local: 'Local',
+  other: 'Other',
+};
 
 export const APP_ENDPOINT_KIND_LABELS: Record<AppEndpointKind, string> = {
   relational_db: 'Relational DB',
@@ -146,6 +181,14 @@ export class AdminApiService {
     return ids
       .map((id) => this.endpointCache.get(id))
       .filter((e): e is AppEndpoint => !!e);
+  }
+
+  listWorkflows(): Observable<Workflow[]> {
+    return this.http.get<Workflow[]>(`${this.base}/v1/workflows`);
+  }
+
+  getWorkflow(id: string): Observable<Workflow> {
+    return this.http.get<Workflow>(`${this.base}/v1/workflows/${id}`);
   }
 
   listKnowledgeSources(): Observable<AdminKnowledgeSource[]> {

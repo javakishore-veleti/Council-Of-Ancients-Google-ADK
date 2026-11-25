@@ -5,13 +5,14 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <!-- Seeds applied via bootstrap-admin-ops.sql for local; this changeset documents intent. -->
-  <changeSet id="knowledge-008-seed-admin-ops-marker" author="javakishore-veleti">
-    <comment>
-      Apply Middleware/API-Services/db/liquibase/knowledge/bootstrap-admin-ops.sql for local seeds
-      (fixed UUIDs matching Admin UI fixtures). Liquibase SQL seed kept out of XML for readability.
-    </comment>
-    <sql>SELECT 1</sql>
+  <changeSet id="knowledge-008-seed-admin-ops-data" author="javakishore-veleti">
+    <comment>Fixed-UUID admin ops seeds (endpoints, sources, maps, sample wf_exec_log).</comment>
+    <sqlFile
+      path="sql/004-seed-admin-ops.sql"
+      relativeToChangelogFile="true"
+      splitStatements="true"
+      stripComments="true"
+      endDelimiter=";"/>
   </changeSet>
 
 </databaseChangeLog>

@@ -1,0 +1,42 @@
+<section class="page">
+  <a routerLink="/workflows" class="back">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i> Workflows
+  </a>
+
+  @if (loading()) {
+    <p class="muted">Loading workflow…</p>
+  } @else if (notFound() || !workflow()) {
+    <p class="muted">Workflow not found.</p>
+  } @else {
+    <header class="page-head">
+      <div>
+        <p class="kicker">{{ labelFor(workflow()!.engine) }}</p>
+        <h1>{{ workflow()!.name }}</h1>
+      </div>
+      <span class="adm-status" [class]="workflow()!.status">{{ workflow()!.status }}</span>
+    </header>
+
+    @if (workflow()!.description) {
+      <p class="notes">{{ workflow()!.description }}</p>
+    }
+
+    <dl class="kv">
+      <div><dt>Engine</dt><dd>{{ labelFor(workflow()!.engine) }}</dd></div>
+      <div><dt>External ref</dt><dd class="mono">{{ workflow()!.external_ref || '—' }}</dd></div>
+      <div><dt>Workflow id</dt><dd class="mono break">{{ workflow()!.id }}</dd></div>
+      <div>
+        <dt>Created on</dt>
+        <dd class="mono">{{ workflow()!.created_on | date: 'medium' }}</dd>
+      </div>
+      <div>
+        <dt>Updated on</dt>
+        <dd class="mono">{{ workflow()!.updated_on | date: 'medium' }}</dd>
+      </div>
+    </dl>
+
+    @if (workflow()!.meta && (workflow()!.meta | json) !== '{}') {
+      <h2 class="subhead">Meta</h2>
+      <pre class="meta mono">{{ workflow()!.meta | json }}</pre>
+    }
+  }
+</section>

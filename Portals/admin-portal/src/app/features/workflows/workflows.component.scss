@@ -1,0 +1,205 @@
+.page {
+  width: 100%;
+  max-width: none;
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.kicker {
+  margin: 0 0 0.3rem;
+  font-family: var(--adm-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--adm-accent-deep);
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.lede {
+  margin: 0.35rem 0 0;
+  color: var(--adm-muted);
+  max-width: 44rem;
+}
+
+.criteria {
+  margin-bottom: 0.75rem;
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+  overflow: hidden;
+}
+
+.criteria-toggle {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 0;
+  background: var(--adm-panel);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--adm-deep);
+}
+
+.criteria.open .criteria-toggle {
+  border-bottom: 1px solid var(--adm-line);
+}
+
+.criteria-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--adm-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.criteria-summary {
+  font-size: 0.82rem;
+  color: var(--adm-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.criteria-action {
+  font-family: var(--adm-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--adm-accent-deep);
+}
+
+.criteria-body {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 0.65rem 0.75rem;
+  padding: 0.85rem;
+  align-items: end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.field > span {
+  font-family: var(--adm-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+}
+
+.field input {
+  width: 100%;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--adm-line);
+  border-radius: 4px;
+  font: inherit;
+  background: #fff;
+}
+
+.table-meta {
+  margin-bottom: 0.4rem;
+  font-family: var(--adm-mono);
+  font-size: 0.72rem;
+  color: var(--adm-muted);
+}
+
+.table-wrap {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+  overflow: hidden;
+}
+
+.name {
+  font-weight: 600;
+  color: var(--adm-ink);
+}
+
+.cite {
+  font-size: 0.78rem;
+  color: var(--adm-muted);
+  margin-top: 0.12rem;
+}
+
+.mono {
+  font-family: var(--adm-mono);
+  font-size: 0.8rem;
+}
+
+.col-input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.3rem 0.45rem !important;
+  font-size: 0.78rem !important;
+  border: 1px solid var(--adm-line) !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+}
+
+:host ::ng-deep tr.row-link {
+  cursor: pointer;
+}
+
+:host ::ng-deep tr.row-link:hover > td {
+  background: color-mix(in srgb, var(--adm-accent-soft) 55%, white) !important;
+}
+
+:host ::ng-deep .admin-table .p-datatable-thead > tr > th {
+  background: var(--adm-deep) !important;
+  color: #e8eef3 !important;
+  border: 0 !important;
+  font-family: var(--adm-mono) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  padding: 0.65rem 0.85rem !important;
+}
+
+:host ::ng-deep .admin-table .p-datatable-thead > tr.col-filters > th {
+  background: var(--adm-panel) !important;
+  color: var(--adm-deep) !important;
+  border-bottom: 1px solid var(--adm-line) !important;
+  padding: 0.45rem 0.55rem !important;
+  text-transform: none !important;
+}
+
+:host ::ng-deep .admin-table .p-datatable-tbody > tr > td {
+  border-color: var(--adm-line) !important;
+  padding: 0.7rem 0.85rem !important;
+}
+
+:host ::ng-deep .p-button-outlined {
+  color: var(--adm-accent-deep) !important;
+  border-color: color-mix(in srgb, var(--adm-accent) 45%, var(--adm-line)) !important;
+}
+
+@media (max-width: 900px) {
+  .criteria-body {
+    grid-template-columns: 1fr;
+  }
+}

@@ -7,7 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import {
   APP_ENDPOINT_KIND_LABELS,
   AdminApiService,
@@ -17,6 +18,7 @@ import {
   WfEngine,
   WfExecLog,
   WfExecStatus,
+  Workflow,
 } from '../../core/services/admin-api.service';
 
 @Component({
@@ -40,6 +42,7 @@ export class KnowledgeSourceDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly source = signal<AdminKnowledgeSource | null>(null);
+  readonly workflow = signal<Workflow | null>(null);
   readonly downloadFrom = signal<AppEndpoint | null>(null);
   readonly storeTo = signal<AppEndpoint[]>([]);
   readonly techStack = signal<AppEndpoint[]>([]);
@@ -199,23 +202,35 @@ export class KnowledgeSourceDetailComponent implements OnInit {
     forkJoin({
       endpoints: this.api.listAppEndpoints(),
       src: this.api.getKnowledgeSource(id),
-    }).subscribe({
-      next: ({ src }) => {
-        this.source.set(src);
-        this.downloadFrom.set(
-          src.download_from_endpoint_id
-            ? this.api.resolveEndpoints([src.download_from_endpoint_id])[0] ?? null
-            : null,
-        );
-        this.storeTo.set(this.api.resolveEndpoints(src.store_to_endpoint_ids));
-        this.techStack.set(this.api.resolveEndpoints(src.tech_stack_endpoint_ids));
-        this.refreshLogs(src.id);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.notFound.set(true);
-        this.loading.set(false);
-      },
-    });
+    })
+      .pipe(
+        switchMap(({ src }) =>
+          forkJoin({
+            src: of(src),
+            wf: src.workflow_id
+              ? this.api.getWorkflow(src.workflow_id).pipe(catchError(() => of(null)))
+              : of(null),
+          }),
+        ),
+      )
+      .subscribe({
+        next: ({ src, wf }) => {
+          this.source.set(src);
+          this.workflow.set(wf);
+          this.downloadFrom.set(
+            src.download_from_endpoint_id
+              ? this.api.resolveEndpoints([src.download_from_endpoint_id])[0] ?? null
+              : null,
+          );
+          this.storeTo.set(this.api.resolveEndpoints(src.store_to_endpoint_ids));
+          this.techStack.set(this.api.resolveEndpoints(src.tech_stack_endpoint_ids));
+          this.refreshLogs(src.id);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.notFound.set(true);
+          this.loading.set(false);
+        },
+      });
   }
 }

@@ -3,6 +3,8 @@ from __future__ import annotations
 ALLOWED = {
     "CC-BY-SA-4.0",
     "CC-BY-4.0",
+    "CC-BY-NC-SA-4.0",
+    "CC-BY-NC-4.0",
     "CC0-1.0",
     "US-Government-Work",
     "public-domain",

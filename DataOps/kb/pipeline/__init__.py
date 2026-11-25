@@ -1,10 +1,13 @@
-"""Architecture topic knowledge pipeline — fetch, gate, normalize, index."""
+"""Architecture topic knowledge pipeline — fetch, gate, extract, store."""
 
 __all__ = [
     "paths",
     "license_gate",
+    "robots",
     "fetch",
-    "normalize",
-    "subcategorize",
-    "embed",
+    "extract",
+    "extract_runner",
+    "facade_runner",
+    "store",
+    "admin_callback",
 ]

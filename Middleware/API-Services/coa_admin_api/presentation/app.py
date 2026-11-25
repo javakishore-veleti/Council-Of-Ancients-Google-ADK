@@ -18,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from coa_admin_api.presentation.routes.endpoints import router as endpoints_router
 from coa_admin_api.presentation.routes.sources import router as sources_router
 from coa_admin_api.presentation.routes.wf_exec import router as wf_router
+from coa_admin_api.presentation.routes.workflows import router as workflows_router
 
 load_dotenv()
 
@@ -30,7 +31,7 @@ app = FastAPI(
     title="Council of Ancients — Admin API",
     version="0.1.0",
     description=(
-        "Admin BFF: knowledge sources, app endpoints, wf_exec_log. "
+        "Admin BFF: knowledge sources, workflows, app endpoints, wf_exec_log. "
         "Admin UI talks only to this service (:8094)."
     ),
 )
@@ -44,6 +45,7 @@ app.add_middleware(
 )
 
 app.include_router(endpoints_router)
+app.include_router(workflows_router)
 app.include_router(sources_router)
 app.include_router(wf_router)
 

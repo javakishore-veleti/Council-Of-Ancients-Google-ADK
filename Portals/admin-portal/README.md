@@ -11,12 +11,12 @@ Angular 19 ops console for Knowledge Bank ingest. Port **`:4201`**.
 ```text
 Admin UI (:4201)
   → coa_admin_api (:8094)     # only backend this UI calls
-      → coa_knowledge_api     # async queue download / status
-          → Airflow DAG
-              → callbacks to knowledge_api (started / completed / failed)
+      → Postgres (sources, workflows, endpoints, wf_exec_log)
+      → queue Download → wf_exec_log.wf_id = source.workflow_id
+          → facade workflow (Airflow today) → extract → PATCH callbacks
 ```
 
-Requires `coa_admin_api` on `:8094` (Postgres-backed). Apply knowledge bootstrap + `bootstrap-admin-ops.sql`, then `npm run local:middleware:api:all:start`.
+Requires `coa_admin_api` on `:8094`. Prefer `npm run local:middleware:api:all:start` — it brings up Postgres, applies knowledge SQL (including workflows), and starts admin.
 
 ## Run (from repo root — preferred)
 
@@ -35,7 +35,9 @@ Admin: http://127.0.0.1:4201 · Customer: http://127.0.0.1:4200
 |-------|---------|
 | `/dashboard` | Ops overview |
 | `/knowledge/sources` | List sources (name, category, subcategory, ingest status, created on) |
-| `/knowledge/sources/:uuid` | Source detail — download from/store-to, **Ops history (`wf_exec_log`)**, tech-stack |
+| `/knowledge/sources/:uuid` | Source detail — download workflow, from/store-to, **Ops history**, tech-stack |
+| `/workflows` | Workflow registry (criteria + searchable columns) |
+| `/workflows/:uuid` | Workflow detail (engine, external ref, meta) |
 | `/wf-exec-logs/:uuid` | Reusable execution detail — **Back** returns to owning source detail |
 | `/app-endpoints` | Configure dependency targets (Postgres, Chroma, pgvector, AWS/Azure/GCP, …) |
 | `/app-endpoints/:uuid` | Endpoint detail |

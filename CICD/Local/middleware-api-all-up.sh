@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Start middleware APIs: observability Docker + coa_agents_api + coa_admin_api (host).
+# Start middleware APIs: Postgres + observability Docker + knowledge schema
+# + coa_agents_api + coa_admin_api (host).
+# Knowledge SQL (bootstrap + admin-ops + workflows) is applied here — no manual psql.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -9,7 +11,7 @@ AGENTS_LOG="${SCRIPT_DIR}/.coa-agents-api.log"
 ADMIN_PID="${SCRIPT_DIR}/.coa-admin-api.pid"
 ADMIN_LOG="${SCRIPT_DIR}/.coa-admin-api.log"
 
-bash "${SCRIPT_DIR}/docker-all-up.sh" --observability
+bash "${SCRIPT_DIR}/docker-all-up.sh" --postgres --observability
 
 export PYTHONPATH="${REPO_ROOT}/Middleware/API-Services:${REPO_ROOT}/Middleware:${REPO_ROOT}:${PYTHONPATH:-}"
 export COA_OBS_API_URL="${COA_OBS_API_URL:-http://localhost:8088}"
@@ -31,6 +33,8 @@ if [[ -f "${REPO_ROOT}/.env" ]]; then
     fi
   done < "${REPO_ROOT}/.env"
 fi
+
+bash "${SCRIPT_DIR}/knowledge-db-apply.sh"
 
 start_uvicorn() {
   local name="$1"

@@ -23,6 +23,38 @@ class AppEndpointOut(BaseModel):
     model_config = {"from_attributes": True, "populate_by_name": True}
 
 
+class WorkflowOut(BaseModel):
+    id: UUID
+    name: str
+    description: str | None = None
+    engine: str
+    external_ref: str | None = None
+    status: str
+    meta: dict[str, Any] = Field(default_factory=dict)
+    created_on: datetime | None = None
+    updated_on: datetime | None = None
+
+    model_config = {"from_attributes": True}
+
+
+class WorkflowCreate(BaseModel):
+    name: str
+    engine: str
+    description: str | None = None
+    external_ref: str | None = None
+    status: str = "active"
+    meta: dict[str, Any] = Field(default_factory=dict)
+
+
+class WorkflowPatch(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    engine: str | None = None
+    external_ref: str | None = None
+    status: str | None = None
+    meta: dict[str, Any] | None = None
+
+
 class AdminSourceOut(BaseModel):
     id: UUID
     name: str
@@ -41,6 +73,7 @@ class AdminSourceOut(BaseModel):
     download_from_endpoint_id: UUID | None = None
     store_to_endpoint_ids: list[UUID] = Field(default_factory=list)
     tech_stack_endpoint_ids: list[UUID] = Field(default_factory=list)
+    workflow_id: UUID | None = None
     meta: dict[str, Any] = Field(default_factory=dict)
 
     model_config = {"from_attributes": True}
@@ -49,6 +82,7 @@ class AdminSourceOut(BaseModel):
 class WfExecLogOut(BaseModel):
     id: UUID
     source_id: UUID
+    wf_id: UUID | None = None
     engine: str
     external_run_id: str | None = None
     status: str
@@ -68,6 +102,7 @@ class WfExecLogOut(BaseModel):
 class DownloadJobOut(BaseModel):
     wf_exec_log_id: UUID
     source_id: UUID
+    wf_id: UUID | None = None
     status: Literal["queued"] = "queued"
     download_from_endpoint_id: UUID | None = None
     store_to_endpoint_ids: list[UUID] = Field(default_factory=list)

@@ -28,6 +28,16 @@
           <a [routerLink]="sourceBackLink()" class="link">{{ log()!.source_id }}</a>
         </dd>
       </div>
+      <div>
+        <dt>Workflow</dt>
+        <dd>
+          @if (log()!.wf_id) {
+            <a [routerLink]="['/workflows', log()!.wf_id]" class="link mono">{{ log()!.wf_id }}</a>
+          } @else {
+            —
+          }
+        </dd>
+      </div>
       <div><dt>Engine</dt><dd class="mono">{{ log()!.engine }}</dd></div>
       <div><dt>External run</dt><dd class="mono break">{{ log()!.external_run_id || '—' }}</dd></div>
       <div><dt>Created</dt><dd class="mono">{{ log()!.created_on | date: 'medium' }}</dd></div>

@@ -22,6 +22,21 @@ class AppEndpoint:
 
 
 @dataclass
+class Workflow:
+    """Registered ingest/ops workflow (Airflow DAG, Step Functions, EMR, …)."""
+
+    id: UUID
+    name: str
+    description: str | None
+    engine: str
+    external_ref: str | None
+    status: str
+    meta: dict[str, Any] = field(default_factory=dict)
+    created_on: datetime | None = None
+    updated_on: datetime | None = None
+
+
+@dataclass
 class AdminKnowledgeSource:
     id: UUID
     name: str
@@ -40,6 +55,7 @@ class AdminKnowledgeSource:
     download_from_endpoint_id: UUID | None
     store_to_endpoint_ids: list[UUID] = field(default_factory=list)
     tech_stack_endpoint_ids: list[UUID] = field(default_factory=list)
+    workflow_id: UUID | None = None
     meta: dict[str, Any] = field(default_factory=dict)
 
 
@@ -57,5 +73,6 @@ class WfExecLog:
     finished_at: datetime | None
     created_on: datetime
     updated_on: datetime
+    wf_id: UUID | None = None
     error_message: str | None = None
     detail: str | None = None

@@ -50,9 +50,10 @@ def queue_download(source_id: UUID) -> DownloadJobOut:
         raise HTTPException(status_code=404, detail=str(e)) from e
     except ValidationError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
-    return DownloadJobOut(
+    return DownloadJobOut(  # wf_id copied from source.workflow_id via create_queued
         wf_exec_log_id=log.id,
         source_id=log.source_id,
+        wf_id=log.wf_id,
         status="queued",
         download_from_endpoint_id=log.download_from_endpoint_id,
         store_to_endpoint_ids=list(log.store_to_endpoint_ids),
