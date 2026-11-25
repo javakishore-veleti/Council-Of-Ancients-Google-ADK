@@ -1,8 +1,8 @@
 # Local runbook — Knowledge Base ingest
 
-Goal: run the local stack, queue a **Download** for any allowlisted knowledge source, run the ingest facade, and land Markdown under your local Knowledge Base.
+Goal: run the local stack, use the **Admin UI** to queue **Download** on an allowlisted knowledge source, run the ingest facade, and land Markdown under your local Knowledge Base.
 
-The same path is used as you add more sources over time. Section 4 uses the seeded **DigitalOcean GoF** row as the first walkthrough only.
+**First source to run:** the seeded **DigitalOcean GoF** hub (§4). After that, every other source uses the same Admin → Download → facade path (§5+).
 
 ---
 
@@ -11,7 +11,7 @@ The same path is used as you add more sources over time. Section 4 uses the seed
 1. [What this does (one picture)](#1-what-this-does-one-picture)
 2. [Prerequisites](#2-prerequisites)
 3. [Start the local stack](#3-start-the-local-stack)
-4. [Worked example — DigitalOcean GoF](#4-worked-example--digitalocean-gof)
+4. [First source — DigitalOcean GoF](#4-first-source--digitalocean-gof)
 5. [Same path for every other source](#5-same-path-for-every-other-source)
 6. [Queue Download](#6-queue-download)
 7. [Run the ingest facade](#7-run-the-ingest-facade)
@@ -82,9 +82,9 @@ curl -sf http://127.0.0.1:8094/healthz
 
 ---
 
-## 4. Worked example — DigitalOcean GoF
+## 4. First source — DigitalOcean GoF
 
-First seed used to prove the path end-to-end.
+This is the **first real ingest**, not a toy demo. Liquibase seeds this row; you drive it from the **Admin UI**.
 
 | Field | Value |
 |-------|--------|
@@ -94,26 +94,29 @@ First seed used to prove the path end-to-end.
 | Workflow | `kb_ingest_facade` |
 | Path leaf | `…/software_architecture/patterns/d85e1c09-8157-5565-82d3-f9f3cf209509/` |
 
-In Admin: **Knowledge sources** → **DigitalOcean GoF hub**.
+1. Open http://127.0.0.1:4201 → **Knowledge sources**.  
+2. Open **DigitalOcean GoF hub**.  
+3. Confirm URL, workflow `kb_ingest_facade`, and **store_to** mapping.  
+4. Continue at [§6 Queue Download](#6-queue-download) (use the **Download** button on that page).
+
+Optional API check (UI is enough):
 
 ```bash
 curl -sf http://127.0.0.1:8094/v1/knowledge/sources/d85e1c09-8157-5565-82d3-f9f3cf209509 | python3 -m json.tool
 ```
 
-Then continue at [§6 Queue Download](#6-queue-download) with this source id.
-
 ---
 
 ## 5. Same path for every other source
 
-For Wikipedia, NIST, or any source you add later:
+After GoF lands, Wikipedia, NIST, or any source you add later follows the **same Admin UI path**:
 
 1. Source exists in Admin (seed or create) with URL, allowlisted **license**, **workflow** = `kb_ingest_facade`, and **store_to** (and usually **download_from**) endpoint maps.  
-2. Open that source → **Download**.  
+2. **Knowledge sources** → open that source → **Download**.  
 3. Run the facade with the new `wf_exec_log_id` ([§7](#7-run-the-ingest-facade)).  
 4. Files appear under `{category_code}/{subcategory_code}/{source_uuid}/` ([§8](#8-confirm-files-on-disk)).
 
-List sources:
+Optional — list via API:
 
 ```bash
 curl -sf http://127.0.0.1:8094/v1/knowledge/sources | python3 -m json.tool
@@ -123,18 +126,22 @@ curl -sf http://127.0.0.1:8094/v1/knowledge/sources | python3 -m json.tool
 
 ## 6. Queue Download
 
+**Primary: Admin UI**
+
 On the source detail page: **Download — from / store to** → **Download**.
 
 Creates a **`wf_exec_log`** (`queued`) with `wf_id` = the source’s entry workflow. It does **not** fetch the page yet.
 
+Copy `wf_exec_log_id` from **Ops history** on that page (needed for §7).
+
+Optional — same action via API:
+
 ```bash
-# Example: GoF. Replace SOURCE_UUID for other sources.
+# Replace SOURCE_UUID (GoF: d85e1c09-8157-5565-82d3-f9f3cf209509).
 curl -sf -X POST \
   http://127.0.0.1:8094/v1/knowledge/sources/SOURCE_UUID/download \
   | python3 -m json.tool
 ```
-
-Copy `wf_exec_log_id` from the JSON (or from **Ops history**).
 
 ---
 
@@ -168,7 +175,7 @@ $HOME/runtime_data/apps/datasets/COA/KnowledgeBase/
     original.html
 ```
 
-GoF example:
+GoF leaf (first source):
 
 ```bash
 SRC=d85e1c09-8157-5565-82d3-f9f3cf209509
