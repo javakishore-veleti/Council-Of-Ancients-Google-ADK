@@ -41,8 +41,9 @@
   font-family: var(--coa-font-display);
   font-size: 1.55rem;
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.25;
   letter-spacing: -0.02em;
+  overflow: visible;
   color: #fff8ee;
   cursor: pointer;
   white-space: nowrap;
