@@ -1,3 +1,7 @@
+.settings {
+  max-width: 42rem;
+}
+
 .settings h2 {
   margin: 0;
   color: var(--coa-deep);
@@ -5,7 +9,15 @@
 
 .lede {
   color: var(--coa-muted);
-  margin: 0.35rem 0 1.25rem;
+  margin: 0.35rem 0 1rem;
+  max-width: 36rem;
+}
+
+.panel {
+  border: 1px solid #e4d8c8;
+  border-radius: 14px;
+  background: #faf7f2;
+  padding: 0.25rem 1rem;
 }
 
 .field {
@@ -13,8 +25,12 @@
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid color-mix(in srgb, var(--coa-teal) 20%, transparent);
+  padding: 0.85rem 0;
+  border-bottom: 1px solid #e4d8c8;
+}
+
+.field.last {
+  border-bottom: 0;
 }
 
 .field.stacked {
@@ -24,22 +40,11 @@
 
 .label {
   font-weight: 700;
-  color: var(--coa-deep);
+  color: var(--coa-ink);
 }
 
 .help {
   font-size: 0.86rem;
   color: var(--coa-muted);
-}
-
-.preview {
-  margin-top: 1.25rem;
-}
-
-.preview pre {
-  background: var(--coa-mist);
-  padding: 0.85rem;
-  border-radius: 12px;
-  white-space: pre-wrap;
-  font-size: 0.8rem;
+  margin-top: 0.15rem;
 }

@@ -4,40 +4,39 @@
   </h2>
   <p class="lede">
     @if (scope() === 'global') {
-      Defaults for your whole account. Each topic can refine these, and a single chat can refine them further.
+      Defaults for your whole account. Each topic can refine these, and a single chat can refine them
+      further.
     } @else {
-      Defaults for <strong>{{ prefs.activePack().label }}</strong>. A single chamber chat can still override these.
+      Defaults for <strong>{{ prefs.activePack().label }}</strong>. A single chamber chat can still
+      override these.
     }
   </p>
 
-  <div class="field">
-    <div>
-      <div class="label">Cite sources by default</div>
-      <div class="help">When knowledge for this topic is ready, prefer citations in replies.</div>
+  <div class="panel">
+    <div class="field">
+      <div>
+        <div class="label">Cite sources by default</div>
+        <div class="help">When knowledge for this topic is ready, prefer citations in replies.</div>
+      </div>
+      <p-toggleswitch [(ngModel)]="citeSources" />
     </div>
-    <p-toggleswitch [(ngModel)]="citeSources" />
-  </div>
 
-  <div class="field stacked">
-    <div class="label">Response tone</div>
-    <p-selectButton
-      [options]="toneOptions"
-      [(ngModel)]="tone"
-      optionLabel="label"
-      optionValue="value"
-    />
-  </div>
-
-  <div class="field">
-    <div>
-      <div class="label">Fitness disclaimer acknowledged</div>
-      <div class="help">Required before Fitness chamber guidance.</div>
+    <div class="field stacked">
+      <div class="label">Response tone</div>
+      <p-selectButton
+        [options]="toneOptions"
+        [(ngModel)]="tone"
+        optionLabel="label"
+        optionValue="value"
+      />
     </div>
-    <p-toggleswitch [(ngModel)]="disclaimerAck" />
-  </div>
 
-  <div class="preview">
-    <div class="label">Effective now</div>
-    <pre>{{ prefs.effectiveSettings() | json }}</pre>
+    <div class="field last">
+      <div>
+        <div class="label">Fitness disclaimer acknowledged</div>
+        <div class="help">Required before Fitness chamber guidance.</div>
+      </div>
+      <p-toggleswitch [(ngModel)]="disclaimerAck" />
+    </div>
   </div>
 </div>

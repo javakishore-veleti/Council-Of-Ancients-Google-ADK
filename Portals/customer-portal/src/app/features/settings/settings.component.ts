@@ -1,23 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { ButtonModule } from 'primeng/button';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { UserSettings } from '../../core/models/pack';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ToggleSwitchModule,
-    SelectButtonModule,
-    ButtonModule,
-  ],
+  imports: [FormsModule, ToggleSwitchModule, SelectButtonModule],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
 })
