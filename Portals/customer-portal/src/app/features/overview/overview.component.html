@@ -51,35 +51,8 @@
 
     <section class="block">
       <div class="block-head panel">
-        <h2 class="display-font">Seats at the table</h2>
-        <p>Each counselor brings a distinct lens for {{ prefs.activePack().shortLabel }}.</p>
-      </div>
-      <div class="seat-grid">
-        @for (seat of seats(); track seat.id) {
-          <button type="button" class="seat-card" (click)="openSeat(seat.id)">
-            <div class="seat-top">
-              <span class="seat-mark">{{ seat.initial }}</span>
-              <span class="seat-cta">Ask this seat</span>
-            </div>
-            <h3>{{ seat.name }}</h3>
-            <p>{{ seat.focus }}</p>
-          </button>
-        }
-        <button type="button" class="seat-card full-council" (click)="openChamber()">
-          <div class="seat-top">
-            <span class="seat-mark full">∞</span>
-            <span class="seat-cta">Deliberate</span>
-          </div>
-          <h3>Full council</h3>
-          <p>Hear every seat, then a Facilitator synthesis with trade-offs and a recommendation.</p>
-        </button>
-      </div>
-    </section>
-
-    <section class="block">
-      <div class="block-head panel">
         <h2 class="display-font">Explore this topic</h2>
-        <p>Jump into a focus area — the chamber opens with that lens ready.</p>
+        <p>Jump into a focus area — open its section hub, then enter the chamber when ready.</p>
       </div>
       <div class="path-grid">
         @for (path of pathways(); track path.id) {

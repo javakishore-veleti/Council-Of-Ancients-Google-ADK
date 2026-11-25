@@ -43,6 +43,14 @@ export class ChamberComponent {
     { label: 'Thorough', value: 'thorough' },
   ];
 
+  readonly sectionLabel = computed(() => {
+    const navId = this.prefs.activeNavId();
+    if (!navId || navId === 'chamber' || navId === 'overview' || navId === 'sessions') {
+      return '';
+    }
+    return this.prefs.activePack().nav.find((n) => n.id === navId)?.label ?? navId;
+  });
+
   readonly criteriaSummary = computed(() => {
     const parts: string[] = [];
     parts.push(this.prefs.deepThink() ? 'Deep think' : 'Balanced mode');

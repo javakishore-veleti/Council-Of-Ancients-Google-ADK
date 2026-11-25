@@ -7,6 +7,7 @@ import { OverviewComponent } from './features/overview/overview.component';
 import { ChamberComponent } from './features/chamber/chamber.component';
 import { SessionsComponent } from './features/sessions/sessions.component';
 import { SettingsComponent } from './features/settings/settings.component';
+import { SectionHubComponent } from './features/section-hub/section-hub.component';
 import { PackId } from './core/models/pack';
 import { inject } from '@angular/core';
 import { PreferencesService } from './core/services/preferences.service';
@@ -46,6 +47,7 @@ export const routes: Routes = [
         children: [
           { path: '', pathMatch: 'full', redirectTo: 'overview' },
           { path: 'overview', component: OverviewComponent },
+          { path: 'section', component: SectionHubComponent },
           { path: 'chamber', component: ChamberComponent },
           { path: 'sessions', component: SessionsComponent },
           {

@@ -1,0 +1,56 @@
+<section class="section-hub">
+  <header class="hub-hero">
+    <p class="eyebrow">Topic section</p>
+    <div class="title-row">
+      <i [class]="section().icon"></i>
+      <h1 class="display-font">{{ section().label }}</h1>
+    </div>
+    <p class="lede">{{ section().intro }}</p>
+    <p class="topic-line">{{ prefs.activePack().label }}</p>
+    <div class="actions">
+      <button
+        pButton
+        type="button"
+        label="Enter chamber"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        class="enter"
+        (click)="openChamber()"
+      ></button>
+    </div>
+  </header>
+
+  @if (options().length) {
+    <div class="options-block">
+      <h2 class="display-font">Focus options</h2>
+      <p class="hint">Optional — narrow what the council emphasizes when you enter the chamber.</p>
+      <div class="chips">
+        @for (opt of options(); track opt.id) {
+          <button
+            type="button"
+            class="coa-chip"
+            [class.active]="isSelected(opt.id)"
+            (click)="toggleOption(opt.id)"
+          >
+            {{ opt.label }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="next-step">
+    <div>
+      <h2 class="display-font">Ready to deliberate?</h2>
+      <p>Your selections travel with you into the chamber for this section.</p>
+    </div>
+    <button
+      pButton
+      type="button"
+      label="Enter chamber"
+      icon="pi pi-comments"
+      class="enter"
+      (click)="openChamber()"
+    ></button>
+  </div>
+</section>

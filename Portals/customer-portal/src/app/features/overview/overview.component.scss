@@ -196,102 +196,6 @@
   line-height: 1.35;
 }
 
-.seat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.85rem;
-}
-
-.seat-card {
-  text-align: left;
-  border: 1px solid #e0d4c4;
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 1.1rem 1.15rem 1.2rem;
-  cursor: pointer;
-  box-shadow: 0 8px 20px rgba(42, 31, 24, 0.06);
-  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.seat-card:hover {
-  border-color: color-mix(in srgb, var(--coa-copper) 45%, #e8ddd0);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(122, 53, 20, 0.12);
-}
-
-.seat-card.full-council {
-  background: linear-gradient(135deg, #7a3514 0%, #c45c26 100%);
-  border-color: transparent;
-  color: #fff8ee;
-}
-
-.seat-card.full-council:hover {
-  box-shadow: 0 12px 28px rgba(122, 53, 20, 0.28);
-}
-
-.seat-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.seat-mark {
-  width: 2.35rem;
-  height: 2.35rem;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--coa-font-display);
-  font-weight: 800;
-  background: var(--coa-mist);
-  color: var(--coa-copper);
-}
-
-.seat-mark.full {
-  background: rgba(255, 248, 238, 0.2);
-  color: #fff8ee;
-}
-
-.seat-cta {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--coa-copper);
-}
-
-.full-council .seat-cta {
-  color: #ffe2b8;
-}
-
-.seat-card h3 {
-  margin: 0 0 0.45rem;
-  font-family: var(--coa-font-body);
-  font-size: 1.12rem;
-  font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1.4;
-  color: var(--coa-deep);
-}
-
-.full-council h3 {
-  color: #fff8ee;
-}
-
-.seat-card p {
-  margin: 0;
-  color: var(--coa-muted);
-  font-size: 0.94rem;
-  line-height: 1.5;
-}
-
-.full-council p {
-  color: rgba(255, 248, 238, 0.88);
-}
-
 .path-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
@@ -362,8 +266,7 @@
     font-size: clamp(1.4rem, 5.5vw, 1.85rem);
   }
 
-  .flow-grid,
-  .seat-grid {
+  .flow-grid {
     grid-template-columns: 1fr;
   }
 }

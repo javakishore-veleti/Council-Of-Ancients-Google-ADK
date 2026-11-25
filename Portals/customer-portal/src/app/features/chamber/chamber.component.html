@@ -4,6 +4,9 @@
       <h2 class="display-font">Chamber</h2>
       <p class="sub">
         {{ prefs.activePack().label }}
+        @if (sectionLabel()) {
+          <span> · {{ sectionLabel() }}</span>
+        }
       </p>
     </div>
     <div class="head-actions">
