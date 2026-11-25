@@ -10,7 +10,7 @@ FastAPI / ADK runtime services that expose Council agents to portals and other c
 ## Local run
 
 ```bash
-npm run local:containers:all:start:observability   # obs tools + coa_observability_api :8088
-npm run local:apis:agents:start                    # coa_agents_api :8090
-# or both: npm run local:apis:all:start
+npm run local:middleware:api:all:start    # obs stack + coa_observability_api :8088 + coa_agents_api :8090
+npm run local:middleware:api:all:status
+npm run local:middleware:api:all:stop
 ```

@@ -221,3 +221,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local middleware API runtime files
+CICD/Local/.coa-agents-api.pid
+CICD/Local/.coa-agents-api.log
+CICD/Local/.env

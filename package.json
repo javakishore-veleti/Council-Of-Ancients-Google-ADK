@@ -9,9 +9,9 @@
     "local:containers:all:start:observability": "bash CICD/Local/docker-all-up.sh --observability",
     "local:containers:all:stop": "bash CICD/Local/docker-all-down.sh",
     "local:containers:all:status": "bash CICD/Local/docker-all-status.sh",
-    "local:apis:agents:start": "bash CICD/Local/agents-api-up.sh",
-    "local:apis:observability:start": "bash CICD/Local/docker-all-up.sh --observability",
-    "local:apis:all:start": "bash CICD/Local/docker-all-up.sh --observability && bash CICD/Local/agents-api-up.sh"
+    "local:middleware:api:all:start": "bash CICD/Local/middleware-api-all-up.sh",
+    "local:middleware:api:all:stop": "bash CICD/Local/middleware-api-all-down.sh",
+    "local:middleware:api:all:status": "bash CICD/Local/middleware-api-all-status.sh"
   },
   "author": "",
   "license": "ISC"

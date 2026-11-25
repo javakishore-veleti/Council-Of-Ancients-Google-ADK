@@ -62,23 +62,19 @@ App Prometheus scrape target (host): http://localhost:9108/metrics
 
 API docs: [`Middleware/API-Services/coa_observability_api/README.md`](../../Middleware/API-Services/coa_observability_api/README.md)
 
-## Agents API (host process)
-
-Facilitator + counselors run via uvicorn on the host (needs repo-root `.env` with GCP / Model Armor):
+## Middleware APIs (obs + agents)
 
 ```bash
-npm run local:apis:agents:start
-# or: ./agents-api-up.sh
-# → http://localhost:8090/docs   POST /v1/council/deliberate
+npm run local:middleware:api:all:start
+npm run local:middleware:api:all:status
+npm run local:middleware:api:all:stop
 ```
 
-Bring up obs stack + agents API together:
-
-```bash
-npm run local:apis:all:start
-```
-
+Starts observability containers (including `coa_observability_api` on **:8088**) and host `coa_agents_api` on **:8090**.  
+Needs repo-root `.env` with GCP / Model Armor for deliberation.  
 Each model turn POSTs into `COA_OBS_API_URL` (default `http://localhost:8088`) `/v1/obs/feed`.
+
+Foreground agents-only (debug): `./agents-api-up.sh`
 
 ### Combine flags
 

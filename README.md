@@ -144,15 +144,11 @@ npm run local:containers:all:start -- --postgres
 npm run local:containers:all:start:observability
 # → Prometheus, Grafana, Phoenix, Loki, + coa_observability_api (:8088)
 
-# Agents API (Facilitator + counselors; needs GCP/.env)
-npm run local:apis:agents:start
-# → coa_agents_api :8090  (POST /v1/council/deliberate)
-
-# Obs stack + agents API
-npm run local:apis:all:start
-
-npm run local:containers:all:status
-npm run local:containers:all:stop
+# Middleware APIs (obs containers + coa_observability_api + coa_agents_api)
+npm run local:middleware:api:all:start
+npm run local:middleware:api:all:status
+npm run local:middleware:api:all:stop
+# → agents :8090 (POST /v1/council/deliberate) · obs :8088 (POST /v1/obs/feed)
 ```
 
 | Stack | What you get |

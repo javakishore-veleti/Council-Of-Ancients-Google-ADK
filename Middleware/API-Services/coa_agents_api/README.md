@@ -25,12 +25,8 @@ POST /v1/council/deliberate
 ## Run
 
 ```bash
-# Obs stack (optional but recommended)
-npm run local:containers:all:start:observability
-
-# Agents API
-npm run local:apis:agents:start
-# → http://localhost:8090/docs
+npm run local:middleware:api:all:start
+# → agents http://localhost:8090/docs · obs http://localhost:8088/docs
 ```
 
 Sample:
