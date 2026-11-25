@@ -10,6 +10,62 @@
   min-height: calc(100vh - 10.5rem);
 }
 
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.45rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--coa-muted);
+  flex-shrink: 0;
+}
+
+.crumbs a {
+  color: var(--coa-copper);
+  font-weight: 600;
+}
+
+.crumbs .sep {
+  color: #b59a82;
+}
+
+.crumbs .here {
+  color: var(--coa-deep);
+  font-weight: 600;
+}
+
+.crumb-chat {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  color: var(--coa-deep);
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  max-width: min(28rem, 100%);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.crumb-chat:hover {
+  color: var(--coa-copper);
+  text-decoration: underline;
+}
+
+.rename-input {
+  border: 1px solid color-mix(in srgb, var(--coa-copper) 35%, #cbb8a0);
+  border-radius: 8px;
+  padding: 0.2rem 0.55rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--coa-deep);
+  min-width: 12rem;
+  max-width: min(28rem, 100%);
+}
+
 .chamber-head {
   display: flex;
   justify-content: space-between;
