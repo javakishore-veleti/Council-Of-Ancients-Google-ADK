@@ -9,9 +9,10 @@ Captured product and research directions. These are backlog ideas, not committed
 A single shared KB (entrepreneurship + SRE + fitness + architecture + …) confuses users and pollutes retrieval. Each **domain pack** is a plug: its own corpora, seats, prompts, and (later) RAG tools. The portal makes the active pack obvious so users always know which “brain” they are talking to.
 
 ```text
-Top menu bar     → domain packs (product lines)
-Left nav         → workflows within the active pack only
-Main canvas      → chamber chat bound to that pack’s Facilitator + KB
+Top menu bar     → domain packs (product lines) + Account / Settings
+Left nav         → workflows within the active pack only (+ pack settings)
+Main canvas      → chamber chat project / window bound to that pack’s Facilitator + KB
+Right rail       → sources / effective settings preview (collapsible)
 ```
 
 Hard rules:
@@ -19,6 +20,105 @@ Hard rules:
 - No cross-pack retrieval.
 - Empty packs show **coming soon / KB not loaded** — never silently answer from another pack.
 - KB blobs never live in this **public** git repo (laptop or private S3 only).
+
+---
+
+## Portal UI shell (locked)
+
+**Chat-first three-region app**, not a dashboard/widget admin template.
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│ Brand │ Entrepreneurship │ Leadership │ SRE │ Fitness │ Arch │ Account │
+├──────────┬──────────────────────────────────┬───────────────┤
+│ Left nav │  Chat project + history + chips  │ Sources/ctx   │
+│ (pack)   │  + composer                      │ + eff. prefs  │
+└──────────┴──────────────────────────────────┴───────────────┘
+```
+
+| Region | Role |
+|--------|------|
+| **Top bar** | Brand + five packs; **Global Settings**; Sign in / Sign out |
+| **Left nav** | Pack-specific list (below); pack-level Settings entry |
+| **Center** | Chat **projects** and **windows** with history + domain option chips + composer |
+| **Right rail** | Citations / KB hits / seat labels; preview of settings sent to the council |
+
+Take from common AI-chat galleries: three-column chat, distinct user vs agent bubbles. Do **not** make a multi-widget analytics home or a floating AI bubble the primary surface.
+
+Angular app lives under `Portals/`. v0: Architecture chamber live; other packs chrome + coming soon.
+
+---
+
+## Auth, customer, and settings (locked)
+
+### Services (separate FastAPI apps)
+
+| Service | Role | Local port (proposed) | Postgres schema |
+|---------|------|----------------------|-----------------|
+| `coa_auth_api` | Signup, signin, signout, tokens/sessions only | `:8091` | `auth` |
+| `coa_customer_api` | Customer create/update, global + pack prefs, chat projects, chat overrides, history index | `:8092` | `customer` |
+| `coa_agents_api` | Council `POST /v1/council/deliberate` | `:8090` | `agents` |
+| `coa_observability_api` | LLMOps ingest | `:8088` | `observability` |
+
+Existing agents/obs APIs stay; auth and customer are **new** peers under `Middleware/API-Services/`. Preferences do **not** live inside `coa_agents_api`.
+
+### Settings layers (later wins)
+
+1. **Global (per user)** — defaults in customer-service (tone, cite-sources default, last pack, UI prefs, Fitness disclaimer ack, …).  
+2. **Pack (top menu)** — overrides for that domain (default seats, preferred left-nav section, …).  
+3. **Chat project / chat window** — overrides for that conversation only (domain chips, seat focus, cite on/off). History attaches here.
+
+Left-nav selection drives domain option chips; when the user changes them, store as **chat-window overrides**.
+
+### What the portal sends to the council API
+
+Each Send → existing deliberate body:
+
+```json
+{
+  "session_id": "<chat_window_id>",
+  "user_id": "<customer_id>",
+  "message": "<composer text>",
+  "ctx_data": {
+    "pack_id": "software_architecture",
+    "left_nav": "patterns",
+    "domain_options": {},
+    "settings": {},
+    "chat_project_id": "...",
+    "recent_turns": []
+  }
+}
+```
+
+`settings` is the **merged** global → pack → chat override map. Transcript index lives in customer-service; ADK session continuity uses `session_id`.
+
+---
+
+## Neal Ford API shape + Postgres / Liquibase (locked)
+
+Every stateful API follows:
+
+```text
+presentation/     FastAPI routes + Pydantic (thin HTTP)
+application/      Facade(s) — orchestration only; no SQL
+infrastructure/   DAO(s) — SQL against this service’s schema only
+domain/           models, errors, toggles
+```
+
+```text
+API route → Facade → DAO → postgres.<service_schema>
+```
+
+(Observability already uses API → Facade → tasks → sub-facades → plugins; auth/customer use Facade → DAO for CRUD.)
+
+### Database
+
+- Local container already in `CICD/Local` (`--postgres`): DB **`council`**, user/password **`postgres` / `postgres`**, port **`5432`**.  
+- **One shared DB**, **one dedicated schema per API** (`auth`, `customer`, `agents`, `observability`). No shared tables across services; cross-service refs are opaque IDs.
+
+### Liquibase (outside Python packages)
+
+Schema management is **not** Alembic inside each app. Dedicated tree, e.g. `Middleware/API-Services/db/liquibase/` with per-service changelogs. Migrate against `postgresql://postgres:postgres@localhost:5432/council` before middleware APIs start. App packages consume schemas; they do not own migration files.
 
 ---
 
@@ -266,17 +366,19 @@ Fetch into the domain first; label subcats offline (URL/title rules + optional c
 
 ## Suggested build order
 
-1. Document (this file) — done as living product IA.  
-2. Portal shell: five top menus + left-nav configs + coming-soon states.  
-3. Ingest v0: local blob store + license gate + Architecture allowlist.  
-4. Chamber options for Architecture left-nav sections.  
-5. Wire RAG retrieval pack-scoped.  
-6. Entrepreneurship (SBA) → Leadership → SRE → Fitness packs.  
-7. Optional S3 backend with same keys.
+1. Document (this file) — living product IA (including UI / auth / DB notes below).  
+2. Liquibase schemas + local Postgres migrate; scaffold `coa_auth_api` + `coa_customer_api` (Neal Ford + DAO).  
+3. Angular portal: signup/signin, five top menus, left-nav, Architecture chamber, settings merge → deliberate.  
+4. Ingest v0: local blob store + license gate + Architecture allowlist.  
+5. Chamber options for Architecture left-nav sections.  
+6. Wire RAG retrieval pack-scoped.  
+7. Entrepreneurship (SBA) → Leadership → SRE → Fitness packs.  
+8. Optional S3 backend with same keys.
 
 ---
 
 ## Notes
 
 - Observability (`coa_observability_api`) should later label retrieval hits (corpus id, subcategory, latency) like LLM calls.  
+- v0 auth is email+password tokens; OAuth/SSO later. Agents may trust portal-supplied `user_id` first; JWT validation on agents later.  
 - This file records **ideas and locked product decisions**, not a promise of implementation order beyond the suggested sequence above.
