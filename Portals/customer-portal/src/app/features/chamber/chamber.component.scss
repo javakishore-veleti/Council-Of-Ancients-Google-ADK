@@ -79,9 +79,9 @@
 
 .criteria {
   flex-shrink: 0;
-  border: 1px solid #e4d8c8;
+  border: 1px solid #e6e6e6;
   border-radius: 12px;
-  background: #faf7f2;
+  background: #ffffff;
 }
 
 .criteria-toggle {
@@ -125,7 +125,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  border-top: 1px solid #e4d8c8;
+  border-top: 1px solid #e6e6e6;
   padding-top: 0.85rem;
 }
 
@@ -191,8 +191,8 @@
 .welcome {
   padding: 1.25rem 1.4rem;
   border-radius: 14px;
-  background: #f7f1e8;
-  border: 1px solid #e4d8c8;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
 }
 
 .welcome h3 {
@@ -220,8 +220,8 @@
 
 .bubble.agent {
   align-self: flex-start;
-  background: #f7f1e8;
-  border: 1px solid #e4d8c8;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
   color: var(--coa-text);
 }
 
@@ -243,9 +243,9 @@
 
 .composer {
   flex-shrink: 0;
-  border-top: 1px solid #e4d8c8;
+  border-top: 1px solid #e6e6e6;
   padding-top: 0.85rem;
-  background: #fff;
+  background: #ffffff;
 }
 
 .composer-input,

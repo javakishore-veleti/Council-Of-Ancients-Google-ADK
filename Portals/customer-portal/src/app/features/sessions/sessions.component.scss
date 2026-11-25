@@ -15,12 +15,13 @@
 }
 
 :host ::ng-deep .session-table .p-datatable-thead > tr > th {
-  background: var(--coa-mist) !important;
+  background: #ffffff !important;
   color: var(--coa-deep) !important;
   border: 0 !important;
+  border-bottom: 1px solid #e6e6e6 !important;
 }
 
 :host ::ng-deep .session-table .p-datatable-tbody > tr > td {
-  background: var(--coa-panel) !important;
-  border-color: color-mix(in srgb, var(--coa-teal) 18%, transparent) !important;
+  background: #ffffff !important;
+  border-color: #e6e6e6 !important;
 }

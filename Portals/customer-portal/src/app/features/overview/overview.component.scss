@@ -51,8 +51,8 @@
 }
 
 :host ::ng-deep .stat-card {
-  background: var(--coa-panel) !important;
-  border: 1px solid color-mix(in srgb, var(--coa-teal) 20%, transparent) !important;
+  background: #ffffff !important;
+  border: 1px solid #e6e6e6 !important;
   border-radius: 14px !important;
   box-shadow: none !important;
   color: var(--coa-text);
