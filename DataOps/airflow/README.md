@@ -5,7 +5,11 @@ Admin never talks to Airflow. `coa_admin_api` queues a `wf_exec_log` with **`wf_
 | DAG id | Role | Conf |
 |--------|------|------|
 | `kb_ingest_facade` | Facade — gate, invoke extract, PATCH `wf_exec_log` | `{ "wf_exec_log_id": "<uuid>" }` |
-| `kb_extract` | Extract only — URL → Markdown under UUID leaf | url, source_id, category_code, subcategory_code, optional strategy_id |
+| `kb_extract` | Extract only — URL → Markdown under UUID leaf | url, source_id, category_code, subcategory_code, optional strategy_id / wf_exec_log_id |
+
+On **start**: PATCH `started` + Airflow `run_id` as `external_run_id`.  
+On **any task/DAG failure**: PATCH `failed` (callbacks never swallow the need to update Admin).  
+On **success**: PATCH `completed`.
 
 Set `AIRFLOW_HOME` / `dags_folder` to this directory (or symlink). `PYTHONPATH` must include the repo root.
 

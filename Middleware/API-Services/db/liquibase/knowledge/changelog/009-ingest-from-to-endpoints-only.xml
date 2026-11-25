@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-014-ingest-from-to-endpoints-only" author="javakishore-veleti">
+    <comment>
+      Ingest execs record from (origin) + to (active local object store) only.
+      Drop draft cloud store_to and tech_stack maps until those steps exist.
+    </comment>
+    <sql>
+      DELETE FROM knowledge.knowledge_source_endpoint k
+      USING knowledge.app_endpoint e
+      WHERE k.endpoint_id = e.id
+        AND k.role = 'store_to'
+        AND (e.status &lt;&gt; 'active' OR e.kind &lt;&gt; 'object_store');
+
+      DELETE FROM knowledge.knowledge_source_endpoint
+      WHERE role = 'tech_stack';
+
+      UPDATE knowledge.wf_exec_log w
+      SET store_to_endpoint_ids = ARRAY(
+            SELECT unnest(w.store_to_endpoint_ids)
+            INTERSECT
+            SELECT e.id FROM knowledge.app_endpoint e
+            WHERE e.status = 'active' AND e.kind = 'object_store'
+          ),
+          tech_stack_endpoint_ids = '{}'::uuid[],
+          updated_at = NOW();
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

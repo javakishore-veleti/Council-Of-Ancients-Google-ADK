@@ -183,23 +183,14 @@ DELETE FROM knowledge.knowledge_source_endpoint
  WHERE source_id = 'd85e1c09-8157-5565-82d3-f9f3cf209509';
 INSERT INTO knowledge.knowledge_source_endpoint (source_id, endpoint_id, role) VALUES
   ('d85e1c09-8157-5565-82d3-f9f3cf209509', '34031dd4-0cfb-555d-8958-dea3037de640', 'download_from'),
-  ('d85e1c09-8157-5565-82d3-f9f3cf209509', 'b915d3e2-0d86-560d-b324-0f6e4098f8be', 'store_to'),
-  ('d85e1c09-8157-5565-82d3-f9f3cf209509', '8f4b32ff-6723-52a8-b798-cf798fc0a8a2', 'store_to'),
-  ('d85e1c09-8157-5565-82d3-f9f3cf209509', '663865e6-1dc5-5e9d-b9c3-132cdbe83a32', 'store_to'),
-  ('d85e1c09-8157-5565-82d3-f9f3cf209509', '07c51f6f-bccf-5a1a-b92c-090bae7aff3b', 'tech_stack'),
-  ('d85e1c09-8157-5565-82d3-f9f3cf209509', '1766fa73-e2ef-58f1-9289-af5f0045f5fc', 'tech_stack'),
-  ('d85e1c09-8157-5565-82d3-f9f3cf209509', '6defc77e-cdec-54f0-80b5-06f56c51d7c5', 'tech_stack');
+  ('d85e1c09-8157-5565-82d3-f9f3cf209509', 'b915d3e2-0d86-560d-b324-0f6e4098f8be', 'store_to');
 
 -- Maps for Wikipedia Microservices
 DELETE FROM knowledge.knowledge_source_endpoint
  WHERE source_id = 'a4a5367d-c001-55c1-b041-01e5048391a2';
 INSERT INTO knowledge.knowledge_source_endpoint (source_id, endpoint_id, role) VALUES
   ('a4a5367d-c001-55c1-b041-01e5048391a2', '6f536e3f-0b54-52df-a994-017bced3c5e4', 'download_from'),
-  ('a4a5367d-c001-55c1-b041-01e5048391a2', 'b915d3e2-0d86-560d-b324-0f6e4098f8be', 'store_to'),
-  ('a4a5367d-c001-55c1-b041-01e5048391a2', 'd6f6c3ed-f423-5c27-8fa7-aa4903a56dc0', 'store_to'),
-  ('a4a5367d-c001-55c1-b041-01e5048391a2', '878f0a3b-007a-5f3c-8e7b-46d87a8d917b', 'tech_stack'),
-  ('a4a5367d-c001-55c1-b041-01e5048391a2', '6defc77e-cdec-54f0-80b5-06f56c51d7c5', 'tech_stack');
-
+  ('a4a5367d-c001-55c1-b041-01e5048391a2', 'b915d3e2-0d86-560d-b324-0f6e4098f8be', 'store_to');
 -- Default maps for remaining sources: wiki origin + local KB store
 INSERT INTO knowledge.knowledge_source_endpoint (source_id, endpoint_id, role)
 SELECT s.id, '6f536e3f-0b54-52df-a994-017bced3c5e4'::uuid, 'download_from'

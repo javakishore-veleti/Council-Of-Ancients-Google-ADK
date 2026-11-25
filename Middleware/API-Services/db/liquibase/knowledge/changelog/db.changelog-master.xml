@@ -13,5 +13,6 @@
   <include file="006-seed-workflows.xml" relativeToChangelogFile="true"/>
   <include file="007-remove-internal-extract-workflow.xml" relativeToChangelogFile="true"/>
   <include file="008-remove-sample-wf-exec-logs.xml" relativeToChangelogFile="true"/>
+  <include file="009-ingest-from-to-endpoints-only.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

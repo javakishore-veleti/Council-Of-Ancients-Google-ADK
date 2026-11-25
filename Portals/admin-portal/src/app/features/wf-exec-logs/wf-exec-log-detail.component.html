@@ -59,7 +59,7 @@
     }
 
     <section class="block">
-      <h2>Downloaded from</h2>
+      <h2>From</h2>
       @if (downloadFrom(); as from) {
         <div class="ep-card">
           <a [routerLink]="['/app-endpoints', from.id]" class="ep-name">{{ from.name }}</a>
@@ -75,7 +75,7 @@
     </section>
 
     <section class="block">
-      <h2>Stored as ({{ storeTo().length }})</h2>
+      <h2>To ({{ storeTo().length }})</h2>
       @if (storeTo().length) {
         <ul class="ep-list">
           @for (ep of storeTo(); track ep.id) {
@@ -95,9 +95,9 @@
       }
     </section>
 
-    <section class="block">
-      <h2>Tech stack ({{ techStack().length }})</h2>
-      @if (techStack().length) {
+    @if (techStack().length) {
+      <section class="block">
+        <h2>Tech stack ({{ techStack().length }})</h2>
         <ul class="ep-list">
           @for (ep of techStack(); track ep.id) {
             <li class="ep-card">
@@ -110,9 +110,7 @@
             </li>
           }
         </ul>
-      } @else {
-        <p class="muted">—</p>
-      }
-    </section>
+      </section>
+    }
   }
 </section>

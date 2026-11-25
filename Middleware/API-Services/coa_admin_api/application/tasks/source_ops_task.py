@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
+from coa_admin_api.application.sub_facades.endpoint_sub_facade import EndpointSubFacade
 from coa_admin_api.application.sub_facades.source_sub_facade import SourceSubFacade
 from coa_admin_api.application.sub_facades.wf_exec_sub_facade import WfExecSubFacade
 from coa_admin_api.application.sub_facades.workflow_sub_facade import WorkflowSubFacade
@@ -20,10 +21,12 @@ class SourceOpsTask(BaseAdminTask):
         sources: SourceSubFacade | None = None,
         wf: WfExecSubFacade | None = None,
         workflows: WorkflowSubFacade | None = None,
+        endpoints: EndpointSubFacade | None = None,
     ) -> None:
         self._sources = sources or SourceSubFacade()
         self._wf = wf or WfExecSubFacade()
         self._workflows = workflows or WorkflowSubFacade()
+        self._endpoints = endpoints or EndpointSubFacade()
 
     def list_sources(self) -> list[AdminKnowledgeSource]:
         return self._sources.list()
@@ -44,16 +47,28 @@ class SourceOpsTask(BaseAdminTask):
         if workflow.status != "active":
             raise ValidationError(f"workflow_not_active:{workflow.name}")
 
+        # Exec log records only endpoints this ingest run actually uses:
+        # active object_store targets. Indexing (tech_stack) is a later step.
+        by_id = {e.id: e for e in self._endpoints.list()}
+        store_to = [
+            eid
+            for eid in (maps.get("store_to") or [])
+            if (ep := by_id.get(eid)) is not None
+            and ep.status == "active"
+            and ep.kind == "object_store"
+        ]
+        if not store_to:
+            raise ValidationError("no_active_store_targets")
+
         log = self._wf.create_queued(
             source_id=source_id,
             wf_id=workflow.id,
             engine=workflow.engine,
             download_from_endpoint_id=download_from,
-            store_to_endpoint_ids=list(maps.get("store_to") or []),
-            tech_stack_endpoint_ids=list(maps.get("tech_stack") or []),
+            store_to_endpoint_ids=store_to,
+            tech_stack_endpoint_ids=[],
         )
         self._sources.set_status(source_id, "queued")
-        # Facade workflow trigger is stubbed — engine callbacks PATCH /v1/wf-exec-logs/{id}
         return log, self._sources.get(source_id)
 
     def list_wf_logs(self, source_id: UUID) -> list[WfExecLog]:
