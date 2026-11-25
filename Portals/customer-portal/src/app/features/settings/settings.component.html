@@ -1,0 +1,43 @@
+<div class="settings">
+  <h2 class="display-font">
+    {{ scope() === 'global' ? 'Global settings' : 'Pack settings' }}
+  </h2>
+  <p class="lede">
+    @if (scope() === 'global') {
+      Defaults for your account. Pack and chat overrides can refine these.
+    } @else {
+      Overrides for <strong>{{ prefs.activePack().label }}</strong> only.
+    }
+  </p>
+
+  <div class="field">
+    <div>
+      <div class="label">Cite sources by default</div>
+      <div class="help">When the pack KB is ready, prefer citations in replies.</div>
+    </div>
+    <p-toggleswitch [(ngModel)]="citeSources" />
+  </div>
+
+  <div class="field stacked">
+    <div class="label">Response tone</div>
+    <p-selectButton
+      [options]="toneOptions"
+      [(ngModel)]="tone"
+      optionLabel="label"
+      optionValue="value"
+    />
+  </div>
+
+  <div class="field">
+    <div>
+      <div class="label">Fitness disclaimer acknowledged</div>
+      <div class="help">Required before Fitness chamber guidance.</div>
+    </div>
+    <p-toggleswitch [(ngModel)]="disclaimerAck" />
+  </div>
+
+  <div class="preview">
+    <div class="label">Effective now</div>
+    <pre>{{ prefs.effectiveSettings() | json }}</pre>
+  </div>
+</div>

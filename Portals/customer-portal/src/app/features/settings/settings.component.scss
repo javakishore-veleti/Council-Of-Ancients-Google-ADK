@@ -1,0 +1,45 @@
+.settings h2 {
+  margin: 0;
+  color: var(--coa-deep);
+}
+
+.lede {
+  color: var(--coa-muted);
+  margin: 0.35rem 0 1.25rem;
+}
+
+.field {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--coa-teal) 20%, transparent);
+}
+
+.field.stacked {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label {
+  font-weight: 700;
+  color: var(--coa-deep);
+}
+
+.help {
+  font-size: 0.86rem;
+  color: var(--coa-muted);
+}
+
+.preview {
+  margin-top: 1.25rem;
+}
+
+.preview pre {
+  background: var(--coa-mist);
+  padding: 0.85rem;
+  border-radius: 12px;
+  white-space: pre-wrap;
+  font-size: 0.8rem;
+}

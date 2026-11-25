@@ -1,0 +1,61 @@
+.hero-band {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
+  align-items: stretch;
+  margin-bottom: 0.5rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: var(--coa-copper);
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.hero-band h1 {
+  margin: 0;
+  color: var(--coa-deep);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.lede {
+  color: var(--coa-muted);
+  max-width: 36rem;
+  margin: 0.6rem 0 1.2rem;
+}
+
+:host ::ng-deep .enter.p-button {
+  background: linear-gradient(90deg, var(--coa-teal), var(--coa-copper)) !important;
+  border: 0 !important;
+}
+
+.visual {
+  min-height: 220px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--coa-shadow);
+  border: 3px solid color-mix(in srgb, var(--coa-amber) 55%, transparent);
+}
+
+:host ::ng-deep .stat-card {
+  background: var(--coa-panel) !important;
+  border: 1px solid color-mix(in srgb, var(--coa-teal) 20%, transparent) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  color: var(--coa-text);
+}
+
+:host ::ng-deep .stat-card .p-card-title {
+  font-family: var(--coa-font-display);
+  color: var(--coa-deep);
+}
+
+@media (max-width: 900px) {
+  .hero-band {
+    grid-template-columns: 1fr;
+  }
+}

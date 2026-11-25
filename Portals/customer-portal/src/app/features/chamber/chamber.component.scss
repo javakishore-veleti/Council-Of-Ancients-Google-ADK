@@ -1,0 +1,206 @@
+.chamber {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  height: 100%;
+  min-height: 70vh;
+}
+
+.chamber-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.chamber-head h2 {
+  margin: 0;
+  color: var(--coa-deep);
+}
+
+.sub {
+  margin: 0.25rem 0 0;
+  color: var(--coa-muted);
+}
+
+.soon {
+  color: var(--coa-copper);
+  font-weight: 600;
+}
+
+.empty-pack {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f7e2d4, var(--coa-mist));
+  color: var(--coa-ink);
+}
+
+.empty-pack i {
+  font-size: 1.4rem;
+  color: var(--coa-copper);
+}
+
+.empty-pack p {
+  margin: 0.25rem 0 0;
+  font-size: 0.92rem;
+}
+
+.projects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.proj {
+  border: 1px solid color-mix(in srgb, var(--coa-teal) 30%, transparent);
+  background: var(--coa-mist);
+  color: var(--coa-deep);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.proj.active {
+  background: var(--coa-copper);
+  border-color: var(--coa-copper);
+  color: var(--coa-ivory);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.override-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.lbl {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--coa-copper);
+  font-weight: 700;
+}
+
+.lenses,
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.lens-row,
+.option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.lens {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: var(--coa-mist);
+  color: var(--coa-deep);
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.thread {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0.15rem;
+  min-height: 240px;
+}
+
+.welcome {
+  padding: 1.5rem;
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(18, 122, 134, 0.12), rgba(196, 92, 38, 0.12)),
+    var(--coa-panel);
+}
+
+.welcome h3 {
+  margin: 0 0 0.35rem;
+  color: var(--coa-deep);
+}
+
+.welcome p {
+  margin: 0;
+  color: var(--coa-muted);
+}
+
+.bubble {
+  max-width: min(720px, 92%);
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  white-space: pre-wrap;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #127a86, #0a4f5c);
+  color: var(--coa-ivory);
+}
+
+.bubble.agent {
+  align-self: flex-start;
+  background: var(--coa-ivory);
+  border: 1px solid color-mix(in srgb, var(--coa-teal) 25%, transparent);
+  color: var(--coa-text);
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-bottom: 0.35rem;
+}
+
+.thinking {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--coa-muted);
+}
+
+.composer {
+  border-top: 1px solid color-mix(in srgb, var(--coa-teal) 22%, transparent);
+  padding-top: 0.85rem;
+}
+
+.composer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.55rem;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--coa-muted);
+}
+
+:host ::ng-deep .send-btn.p-button {
+  background: linear-gradient(90deg, var(--coa-teal), var(--coa-copper)) !important;
+  border: 0 !important;
+}

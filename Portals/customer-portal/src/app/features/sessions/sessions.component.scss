@@ -1,0 +1,26 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.head h2 {
+  margin: 0;
+  color: var(--coa-deep);
+}
+
+:host ::ng-deep .session-table {
+  background: transparent;
+}
+
+:host ::ng-deep .session-table .p-datatable-thead > tr > th {
+  background: var(--coa-mist) !important;
+  color: var(--coa-deep) !important;
+  border: 0 !important;
+}
+
+:host ::ng-deep .session-table .p-datatable-tbody > tr > td {
+  background: var(--coa-panel) !important;
+  border-color: color-mix(in srgb, var(--coa-teal) 18%, transparent) !important;
+}

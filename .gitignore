@@ -1,3 +1,8 @@
+# Node / Angular portals
+node_modules/
+Portals/**/dist/
+Portals/**/.angular/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

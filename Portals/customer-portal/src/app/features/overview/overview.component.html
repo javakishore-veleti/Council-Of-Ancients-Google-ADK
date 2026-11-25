@@ -1,0 +1,53 @@
+<section class="overview">
+  <div class="hero-band animate__animated animate__fadeIn">
+    <div>
+      <p class="eyebrow">Domain pack</p>
+      <h1 class="display-font">{{ prefs.activePack().label }}</h1>
+      <p class="lede">{{ prefs.activePack().tagline }}</p>
+      <button
+        pButton
+        type="button"
+        label="Enter chamber"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        class="enter"
+        (click)="openChamber()"
+      ></button>
+    </div>
+    <div
+      class="visual"
+      [style.backgroundImage]="
+        'url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80)'
+      "
+    ></div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-md-4">
+      <p-card styleClass="stat-card">
+        <ng-template pTemplate="title">Knowledge</ng-template>
+        <p>
+          @if (prefs.activePack().kbReady) {
+            Ready for local ingest &amp; citation.
+          } @else {
+            Coming soon — navigation is available now.
+          }
+        </p>
+      </p-card>
+    </div>
+    <div class="col-md-4">
+      <p-card styleClass="stat-card">
+        <ng-template pTemplate="title">Sessions</ng-template>
+        <p>{{ prefs.projectList().length }} chat project(s) in this pack.</p>
+      </p-card>
+    </div>
+    <div class="col-md-4">
+      <p-card styleClass="stat-card">
+        <ng-template pTemplate="title">Settings</ng-template>
+        <p>
+          Global defaults merge with pack and chat overrides before every deliberate call.
+        </p>
+      </p-card>
+    </div>
+  </div>
+</section>

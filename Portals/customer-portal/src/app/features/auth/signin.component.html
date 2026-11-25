@@ -1,0 +1,51 @@
+<div class="auth-page">
+  <div class="auth-hero animate__animated animate__fadeInLeft">
+    <div class="hero-inner">
+      <fa-icon [icon]="brandIcon" class="hero-icon"></fa-icon>
+      <h1 class="brand-mark">Council of Ancients</h1>
+      <p>
+        A professional chamber for architecture, ventures, leadership, reliability, and fitness —
+        each pack with its own brain.
+      </p>
+      <ul>
+        <li><i class="bi bi-check2-circle"></i> Domain packs with focused left navigation</li>
+        <li><i class="bi bi-check2-circle"></i> Settings you can override per chat</li>
+        <li><i class="bi bi-check2-circle"></i> Live council deliberation when APIs are up</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth-card coa-glass animate__animated animate__fadeInRight">
+    <h2>Sign in</h2>
+    <p class="lede">Welcome back to your customer portal.</p>
+
+    @if (error()) {
+      <p-message severity="error" [text]="error()" styleClass="w-100 mb-3" />
+    }
+
+    <form class="auth-form" (ngSubmit)="submit()">
+      <label>
+        Email
+        <input pInputText type="email" [(ngModel)]="email" name="email" class="w-100" required />
+      </label>
+      <label>
+        Password
+        <p-password
+          [(ngModel)]="password"
+          name="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          styleClass="w-100"
+          inputStyleClass="w-100"
+          required
+        />
+      </label>
+      <button pButton type="submit" label="Sign in" icon="pi pi-sign-in" class="w-100 cta"></button>
+    </form>
+
+    <p class="switch">
+      New here?
+      <a routerLink="/signup">Create an account</a>
+    </p>
+  </div>
+</div>

@@ -83,6 +83,8 @@ Each Send → existing deliberate body:
     "pack_id": "software_architecture",
     "left_nav": "patterns",
     "domain_options": {},
+    "lenses": ["startup_cto", "developer"],
+    "mode": "balanced",
     "settings": {},
     "chat_project_id": "...",
     "recent_turns": []
@@ -162,7 +164,9 @@ Named classics (GoF, many J2EE / architecture pattern books) are **copyrighted**
 | Codd / relational theory books | Partial | Prefer open DB docs + OA |
 | **v0 open spines** | **Yes** | Microsoft Learn, Azure Architecture Center, AWS Architecture Center / Well-Architected (per ToS), PostgreSQL/MySQL/MariaDB docs, Jakarta EE docs (check license), OA architecture papers, relevant NIST/IT guidance |
 
-Subcats after download (examples): `architecture_styles`, `microservices`, `integration`, `data_modeling`, `enterprise_java`, `cloud_architectures`, `gof_style_patterns` (open explanations only).
+Subcats after download (examples): `architecture_styles`, `microservices`, `integration`, `data_modeling`, `enterprise_java`, `cloud_architectures`, `databases_storage`, `event_systems`, `ai_agentic`, `gof_style_patterns` (open explanations only).
+
+MCP for external agents is a **later** second interface on the same structured store — not a v0 dependency. GraphRAG / compatibility tools after pack-scoped retrieval works in the chamber.
 
 ---
 
@@ -190,7 +194,12 @@ Overview · Chamber · Sessions · Reliability · Incidents & postmortems · Kno
 Overview · Chamber · Sessions · Training · Nutrition & recovery · Knowledge · Seats (Training / Nutrition / Recovery) · **Disclaimer** (not medical advice)
 
 ### Software Architecture & Design *(first KB)*
-Overview · Chamber · Sessions · Patterns · Architecture styles · Data & modeling · Knowledge · Seats (Patterns / Architecture / Data)
+
+Workflow / domain pillars (not textbook chapters). **Role is never mandatory** — optional curated “start here” hubs later; primary spine is problem layers:
+
+Overview · Chamber · Sessions · Patterns · Architecture styles · Data & modeling · **Cloud & infrastructure** · **Databases & storage** · **Event systems** · **AI & agentic systems** · Knowledge · Seats (Patterns / Architecture / Data) · Pack settings
+
+Cross-link topics later with `pairs_with` / `conflicts_with` metadata (admin ingest). Customer portal only consumes structured entries.
 
 ---
 
@@ -203,9 +212,26 @@ Session chat: history panel + composer. Context for each turn:
 2. Selected seats’ instructions
 3. Retrieved KB chunks (this pack + subcategory filters only)
 4. Session summary + last N turns
-5. User-selected domain options
-6. Current user message (+ optional attach)
+5. User-selected domain options (from left nav)
+6. Optional chat lenses + mode (deep_think | balanced)
+7. Current user message (+ optional attach)
 ```
+
+### Chat lenses (optional, multi-select in composer)
+
+Never force a job-title wall. Default = **no lenses** (balanced architect tone). Checkboxes in the chamber toolbar:
+
+| Lens | Bias |
+|------|------|
+| Aspiring | Plain language, prerequisites |
+| Developer | Code / diagrams / local setup |
+| Startup CTO | Time-to-market, managed services, cost |
+| Enterprise | Governance, multi-region, compliance flags |
+| Coding agent | Guardrails + compact machine-oriented output |
+
+Plus **Deep think** toggle → `mode: deep_think` for richer multi-facet reasoning when retrieval exists.
+
+Admin KB entries should eventually support facet blocks (`summary`, `tradeoff_matrix`, `enterprise_governance`, `implementation_code`, `agent_guardrails`) filtered by lenses; v0 UI sends lenses in `ctx_data` even before facets land.
 
 ### Conversation kinds (by pack)
 
@@ -227,9 +253,13 @@ All other chips come from **active top menu + left nav**. Switching pack/nav swa
 #### Software Architecture & Design
 | Left nav | Options |
 |----------|---------|
-| Patterns | Family (creational / structural / behavioral); fit constraint; compare 2 patterns |
-| Architecture styles | Style (monolith / modular monolith / microservices / event-driven / serverless); trade-off (latency / team topology / consistency) |
-| Data & modeling | Normalization vs access paths; consistency model; schema evolution |
+| Patterns | Family (creational / structural / behavioral / resilience); compare 2 patterns |
+| Architecture styles | Style (monolith / modular monolith / microservices / event-driven / serverless) |
+| Data & modeling | Normalization vs access; consistency; schema evolution |
+| Cloud & infrastructure | K8s vs serverless; multi-region; IaC |
+| Databases & storage | OLTP vs OLAP; sharding; CAP trade-offs |
+| Event systems | Pub/sub vs queue; streaming; idempotency / DLQ |
+| AI & agentic systems | Orchestration; hybrid RAG; evals / guardrails |
 | Chamber / Overview | Full council vs single seat (Patterns / Architecture / Data) |
 | Knowledge | Subcategory browse filter only |
 

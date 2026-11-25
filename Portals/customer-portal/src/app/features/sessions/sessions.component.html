@@ -1,0 +1,42 @@
+<div class="sessions">
+  <div class="head">
+    <h2 class="display-font">Sessions</h2>
+    <button
+      pButton
+      type="button"
+      label="New session"
+      icon="pi pi-plus"
+      (click)="create()"
+    ></button>
+  </div>
+
+  <p-table [value]="prefs.projectList()" styleClass="p-datatable-sm session-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Title</th>
+        <th>Updated</th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr>
+        <td>{{ row.title }}</td>
+        <td>{{ row.updatedAt | date: 'medium' }}</td>
+        <td class="text-end">
+          <button
+            pButton
+            type="button"
+            label="Open"
+            class="p-button-text"
+            (click)="open(row.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3">No sessions in this pack yet.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

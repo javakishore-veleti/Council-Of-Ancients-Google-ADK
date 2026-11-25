@@ -11,7 +11,9 @@
     "local:containers:all:status": "bash CICD/Local/docker-all-status.sh",
     "local:middleware:api:all:start": "bash CICD/Local/middleware-api-all-up.sh",
     "local:middleware:api:all:stop": "bash CICD/Local/middleware-api-all-down.sh",
-    "local:middleware:api:all:status": "bash CICD/Local/middleware-api-all-status.sh"
+    "local:middleware:api:all:status": "bash CICD/Local/middleware-api-all-status.sh",
+    "local:portal:start": "npm --prefix Portals/customer-portal start",
+    "local:portal:build": "npm --prefix Portals/customer-portal run build"
   },
   "author": "",
   "license": "ISC"
