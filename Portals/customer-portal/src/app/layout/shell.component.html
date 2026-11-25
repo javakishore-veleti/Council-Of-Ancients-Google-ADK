@@ -1,15 +1,32 @@
 <div class="shell animate__animated animate__fadeIn">
   <header class="topbar">
-    <div class="brand" routerLink="/app">
-      <fa-icon [icon]="brandIcon" class="brand-icon"></fa-icon>
+    <div class="brand">
+      <fa-icon [icon]="brandIcon" class="brand-icon" routerLink="/app"></fa-icon>
       <div class="brand-copy">
-        <div class="brand-mark">Council of Ancients</div>
-        <div class="brand-sub">
-          A council is a group of people gathered or chosen for consultation, advice,
-          deliberation, or decision-making, or an assembly/meeting held for those purposes.
-        </div>
+        <button type="button" class="brand-mark" routerLink="/app">Council of Ancients</button>
+        <button
+          type="button"
+          class="professor-hat"
+          (click)="openCouncilMeaning($event)"
+          pTooltip="What is a council?"
+          tooltipPosition="bottom"
+          aria-label="What is a council?"
+        >
+          <fa-icon [icon]="professorHat"></fa-icon>
+        </button>
       </div>
     </div>
+
+    <p-dialog
+      header="What is a council?"
+      [(visible)]="councilMeaningVisible"
+      [modal]="true"
+      [draggable]="false"
+      [style]="{ width: 'min(480px, 92vw)' }"
+      styleClass="council-meaning-dialog"
+    >
+      <p class="council-meaning-text">{{ councilMeaning }}</p>
+    </p-dialog>
 
     <nav class="pack-nav" aria-label="Domain packs">
       @for (pack of packs; track pack.id) {

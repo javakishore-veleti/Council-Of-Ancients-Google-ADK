@@ -39,7 +39,7 @@ Hard rules:
 
 | Region | Role |
 |--------|------|
-| **Top bar** | Brand + council definition + five packs; **Global Settings**; Sign in / Sign out |
+| **Top bar** | Large **Council of Ancients** mark; professor-hat icon opens “what is a council?”; five packs; **Global Settings**; Sign in / Sign out |
 | **Left nav** | Pack-specific list (below); pack-level Settings entry |
 | **Center** | Full-width chat **projects** / **windows** with history + domain chips + composer |
 
