@@ -51,14 +51,7 @@ export class ChamberComponent implements OnInit {
     { label: 'Thorough', value: 'thorough' },
   ];
 
-  readonly sectionLabel = computed(() => {
-    const navId = this.prefs.activeNavId();
-    if (!navId || navId === 'overview' || navId === 'sessions' || navId === 'settings') {
-      return 'Full topic';
-    }
-    const fromNav = this.prefs.activePack().nav.find((n) => n.id === navId)?.label;
-    return fromNav ?? navId;
-  });
+  readonly sectionLabel = computed(() => this.prefs.sectionLabel());
 
   readonly criteriaSummary = computed(() => {
     const parts: string[] = [];

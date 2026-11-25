@@ -16,7 +16,7 @@ const MESSAGES_KEY = 'coa_chat_messages';
 @Injectable({ providedIn: 'root' })
 export class PreferencesService {
   readonly activePackId = signal<PackId>('software_architecture');
-  readonly activeNavId = signal<string>('chamber');
+  readonly activeNavId = signal<string>('overview');
   readonly activeProjectId = signal<string>('');
   readonly selectedOptions = signal<string[]>([]);
   readonly selectedLenses = signal<string[]>([]);
@@ -88,7 +88,8 @@ export class PreferencesService {
   }
 
   setNav(id: string): void {
-    this.activeNavId.set(id);
+    // Chamber is a canvas, not a left-nav section id.
+    this.activeNavId.set(id === 'chamber' ? 'overview' : id);
     this.selectedOptions.set([]);
   }
 
@@ -134,7 +135,11 @@ export class PreferencesService {
   }
 
   sectionLabel(sectionId = this.activeNavId()): string {
-    return this.activePack().nav.find((n) => n.id === sectionId)?.label ?? sectionId;
+    const id = !sectionId || sectionId === 'chamber' ? 'overview' : sectionId;
+    if (id === 'overview') {
+      return 'Overview';
+    }
+    return this.activePack().nav.find((n) => n.id === id)?.label ?? id;
   }
 
   ensureProject(title?: string): string {
@@ -157,7 +162,8 @@ export class PreferencesService {
   }
 
   createProject(title?: string): string {
-    const sectionId = this.activeNavId();
+    const rawSection = this.activeNavId();
+    const sectionId = !rawSection || rawSection === 'chamber' ? 'overview' : rawSection;
     const label = this.sectionLabel(sectionId);
     const id = `proj_${crypto.randomUUID().slice(0, 8)}`;
     const project: ChatProject = {
@@ -250,7 +256,7 @@ export class PreferencesService {
     );
     return raw.map((p) => ({
       ...p,
-      sectionId: p.sectionId || 'overview',
+      sectionId: !p.sectionId || p.sectionId === 'chamber' ? 'overview' : p.sectionId,
       updatedAt: new Date(p.updatedAt),
     }));
   }
