@@ -31,7 +31,7 @@ export class ShellComponent {
   readonly brandIcon = faScaleBalanced;
   readonly professorHat = faGraduationCap;
   readonly councilMeaning =
-    'A council is a group of people gathered or chosen for consultation, advice, deliberation, or decision-making, or an assembly/meeting held for those purposes.';
+    'A council is a Facilitator plus counselors at the table — gathered for consultation, advice, and deliberation. Each topic pack (Architecture, SRE, and the others) brings its own seats; the pattern stays the same.';
 
   councilMeaningVisible = false;
 

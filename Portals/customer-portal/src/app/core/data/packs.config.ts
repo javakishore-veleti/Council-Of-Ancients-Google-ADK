@@ -12,11 +12,18 @@ export const PACKS: PackDefinition[] = [
     kbReady: false,
     tagline: 'Plan, fund, and launch with disciplined judgment.',
     heroImage:
-      'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
     howItWorksImage:
-      'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1400&q=80',
     howItWorksCaption:
-      'Founders and operators pressure-test the plan: Vision, Capital, and Execution each take a seat before you commit.',
+      'Vision, Capital, and Execution pressure-test the venture before you lock a path.',
+    howItWorksIntro:
+      'Pose a founder dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for this venture’s stage, runway, and bet.',
+    howItWorksSteps: [
+      'Bring a real venture question: pricing, raise, launch timing, or what to cut.',
+      'Vision, Capital, and Execution each argue the trade-offs — disagreement is useful.',
+      'The Facilitator synthesizes a recommendation you can act on this week.',
+    ],
     seatsLabel: 'Vision / Capital / Execution',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -73,11 +80,18 @@ export const PACKS: PackDefinition[] = [
     kbReady: false,
     tagline: 'People, culture, and one-way-door decisions.',
     heroImage:
-      'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
     howItWorksImage:
-      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1542744173-8e2bd585f227?auto=format&fit=crop&w=1400&q=80',
     howItWorksCaption:
-      'Leadership dilemmas need more than one lens: People, Culture, and Judgment deliberate before the Facilitator synthesizes.',
+      'People, Culture, and Judgment sit with the decision before it becomes irreversible.',
+    howItWorksIntro:
+      'Pose a leadership dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for people, culture, and one-way-door choices.',
+    howItWorksSteps: [
+      'Bring a people or decision question: hiring, conflict, org design, or a hard call.',
+      'People, Culture, and Judgment each speak — trust, norms, and reversibility surface.',
+      'The Facilitator names a path and what to watch if you choose otherwise.',
+    ],
     seatsLabel: 'People / Culture / Judgment',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -136,9 +150,16 @@ export const PACKS: PackDefinition[] = [
     heroImage:
       'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
     howItWorksImage:
-      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&w=1400&q=80',
     howItWorksCaption:
-      'When systems are under stress, Reliability, Capacity, and Response argue the trade-offs — then the Facilitator names the next move.',
+      'Reliability, Capacity, and Response deliberate like an SRE review — SLOs, load, and incidents.',
+    howItWorksIntro:
+      'Pose a reliability dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for SLOs, capacity, and calm incident response.',
+    howItWorksSteps: [
+      'Bring an SRE question: error budgets, toil, paging noise, or a postmortem decision.',
+      'Reliability, Capacity, and Response each argue risk vs cost vs recovery.',
+      'The Facilitator synthesizes the next operational move and what to measure.',
+    ],
     seatsLabel: 'Reliability / Capacity / Response',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -199,11 +220,18 @@ export const PACKS: PackDefinition[] = [
     kbReady: false,
     tagline: 'Training and recovery guidance — not medical advice.',
     heroImage:
-      'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1476480862126-209badba8baf?auto=format&fit=crop&w=1200&q=80',
     howItWorksImage:
-      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1400&q=80',
     howItWorksCaption:
-      'Training, Nutrition, and Recovery each weigh in so the plan stays sustainable — never a substitute for medical care.',
+      'Training, Nutrition, and Recovery balance effort with fuel and rest — not gym-only advice.',
+    howItWorksIntro:
+      'Pose a fitness dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for training, fueling, and recovery (not medical advice).',
+    howItWorksSteps: [
+      'Bring a whole-person question: progression, plateaus, meals, sleep, or burnout.',
+      'Training, Nutrition, and Recovery each weigh sustainability vs intensity.',
+      'The Facilitator synthesizes a plan that respects recovery — see a clinician for medical concerns.',
+    ],
     seatsLabel: 'Training / Nutrition / Recovery',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -265,11 +293,18 @@ export const PACKS: PackDefinition[] = [
     kbReady: true,
     tagline: 'Patterns, cloud, data, events, and AI systems with the council.',
     heroImage:
-      'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80',
     howItWorksImage:
-      'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1400&q=80',
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1400&q=80',
     howItWorksCaption:
-      'Patterns, Architecture, and Data take the whiteboard: trade-offs first, then a Facilitator recommendation you can ship against.',
+      'Patterns, Architecture, and Data deliberate software trade-offs — system design, not civil engineering.',
+    howItWorksIntro:
+      'Pose a software design dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for patterns, system shape, and data.',
+    howItWorksSteps: [
+      'Bring a software architecture question: style, boundaries, consistency, or scale.',
+      'Patterns, Architecture, and Data each argue the engineering trade-offs.',
+      'The Facilitator synthesizes a recommendation you can take back to the codebase.',
+    ],
     seatsLabel: 'Patterns / Architecture / Data',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },

@@ -34,6 +34,9 @@ export interface PackDefinition {
   /** Pack-specific visual for Overview “How this council works” */
   howItWorksImage: string;
   howItWorksCaption: string;
+  /** Shared council framing + one sentence of topic context */
+  howItWorksIntro: string;
+  howItWorksSteps: [string, string, string];
   seatsLabel: string;
   nav: NavItem[];
   optionsByNav: Record<string, DomainOption[]>;

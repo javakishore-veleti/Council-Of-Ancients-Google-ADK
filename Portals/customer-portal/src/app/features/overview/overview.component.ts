@@ -33,26 +33,29 @@ export class OverviewComponent {
   readonly prefs = inject(PreferencesService);
   private readonly router = inject(Router);
 
-  readonly flowSteps = [
-    {
-      n: '01',
-      icon: 'bi bi-chat-left-quote',
-      title: 'You bring the question',
-      body: 'A dilemma, design choice, or trade-off — not a quiz. The chamber is for judgment under uncertainty.',
-    },
-    {
-      n: '02',
-      icon: 'bi bi-people',
-      title: 'Seats deliberate',
-      body: 'Each counselor answers from their seat. Disagreement is useful; it surfaces the real tensions.',
-    },
-    {
-      n: '03',
-      icon: 'bi bi-signpost-split',
-      title: 'Facilitator synthesizes',
-      body: 'A clear recommendation, the trade-offs that matter, and what to watch if you choose otherwise.',
-    },
-  ];
+  readonly flowSteps = computed(() => {
+    const [q, seats, synth] = this.prefs.activePack().howItWorksSteps;
+    return [
+      {
+        n: '01',
+        icon: 'bi bi-chat-left-quote',
+        title: 'You bring the question',
+        body: q,
+      },
+      {
+        n: '02',
+        icon: 'bi bi-people',
+        title: 'Seats deliberate',
+        body: seats,
+      },
+      {
+        n: '03',
+        icon: 'bi bi-signpost-split',
+        title: 'Facilitator synthesizes',
+        body: synth,
+      },
+    ];
+  });
 
   readonly seats = computed(() => {
     const pack = this.prefs.activePack();

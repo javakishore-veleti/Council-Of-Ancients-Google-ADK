@@ -68,13 +68,21 @@
   color: #ffd08a;
 }
 
+.council-diagram-frame {
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid color-mix(in srgb, var(--coa-teal) 25%, transparent);
+  /* Hide the repeated “Counselor” legend strip at the bottom of the art */
+  max-height: 22rem;
+}
+
 .council-diagram {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  border: 1px solid color-mix(in srgb, var(--coa-teal) 25%, transparent);
+  margin-bottom: 0;
+  transform: translateY(-4%);
 }
 
 .council-meaning-text {

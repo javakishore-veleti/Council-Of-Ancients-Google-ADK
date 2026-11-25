@@ -34,7 +34,7 @@
   <section class="block how-council">
     <div class="block-head">
       <h2 class="display-font">How this council works</h2>
-      <p>Pose a dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation.</p>
+      <p>{{ prefs.activePack().howItWorksIntro }}</p>
     </div>
 
     <figure class="council-figure">
@@ -48,7 +48,7 @@
     </figure>
 
     <div class="flow-grid">
-      @for (step of flowSteps; track step.title) {
+      @for (step of flowSteps(); track step.n) {
         <article class="flow-card">
           <span class="step-num">{{ step.n }}</span>
           <i [class]="step.icon"></i>
