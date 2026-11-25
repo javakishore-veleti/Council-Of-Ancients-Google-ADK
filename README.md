@@ -80,7 +80,8 @@ What the Facilitator’s lens means here:
 | `Middleware/API-Services/` | FastAPI / ADK runtime APIs |
 | `Portals/` | Angular portals |
 | `CICD/Local/` | Local Docker infra (Redis, Jaeger, OTEL; optional Postgres + observability) |
-| `Middleware/Observability/` | LLMOps metrics (TTFT, tokens, cost, OTEL spans) |
+| `Middleware/Observability/` | Thin LLMOps helpers → ObservabilityFacade |
+| `Middleware/API-Services/coa_observability_api/` | Observability ingest API + plugin fan-out |
 | `CICD/GCP/` | Scripts + templates used by the GCP GitHub Actions |
 | `.github/workflows/` | Manual GCP setup / destroy workflows |
 | [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) | Step-by-step coding lab (type the snippets yourself) |
@@ -152,7 +153,7 @@ npm run local:containers:all:stop
 | `--postgres` | + Postgres |
 | `--observability` | + Prometheus, Grafana (**Council LLMOps Overview**), Phoenix (LLM spans), Loki |
 
-LLMOps metrics (TTFT, tokens, estimated USD cost, duration, per-agent labels) are implemented in [`Middleware/Observability/llmops.py`](Middleware/Observability/llmops.py). Call `setup_observability()` at process start; scrape http://localhost:9108/metrics. Details: [`CICD/Local/README.md`](CICD/Local/README.md).
+LLMOps ingest API: [`Middleware/API-Services/coa_observability_api/`](Middleware/API-Services/coa_observability_api/) (`POST /v1/obs/feed`, operationId `ingest_obs_feed`). Fan-out is gated by `OBS_TASK_EMIT_*` (default `false`). Thin helpers in [`Middleware/Observability/llmops.py`](Middleware/Observability/llmops.py) emit into the facade. With metrics enabled, scrape http://localhost:9108/metrics. Details: [`CICD/Local/README.md`](CICD/Local/README.md) and the [API README](Middleware/API-Services/coa_observability_api/README.md).
 
 Copy `.env.template` → `.env` for app config. Compose defaults live under `CICD/Local/.env.example`.
 

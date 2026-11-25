@@ -147,7 +147,7 @@ if [[ "${WITH_OBSERVABILITY}" -eq 1 ]]; then
   echo "  Grafana:        http://localhost:${GRAFANA_PORT:-3000} (admin/admin) — dashboard: Council LLMOps Overview"
   echo "  Phoenix LLMOps: http://localhost:${PHOENIX_PORT:-6006}"
   echo "  Loki:           http://localhost:${LOKI_PORT:-3100}"
-  echo "  App /metrics:   http://localhost:${PROMETHEUS_METRICS_PORT:-9108}/metrics (after setup_observability())"
+  echo "  App /metrics:   http://localhost:${PROMETHEUS_METRICS_PORT:-9108}/metrics (OBS_TASK_EMIT_METRICS=true + coa_observability_api)"
 else
   echo "  Observability:  not started. Re-run with --observability for Prometheus/Grafana/Phoenix/Loki."
 fi

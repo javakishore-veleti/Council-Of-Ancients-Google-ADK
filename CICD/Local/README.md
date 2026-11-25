@@ -35,7 +35,17 @@
 
 ### LLMOps metrics the app records
 
-From `Middleware/Observability/llmops.py` after `setup_observability()`:
+Ingest path: `coa_observability_api` (`POST /v1/obs/feed`) → `ObservabilityFacade` → toggle-gated tasks → plugins.  
+Thin helpers: `Middleware/Observability/llmops.py` (`estimate_cost_usd`, `record_llm_call` → facade).
+
+Fan-out is **off by default**. Enable in repo-root `.env`:
+
+```bash
+OBS_TASK_EMIT_METRICS=true   # Prometheus local plugin
+OBS_TASK_EMIT_TRACES=true    # OTEL / Phoenix
+OBS_TASK_EMIT_LOGS=true      # Loki
+OBS_TASK_EMIT_LLMOPS=true    # combined LLMOps plugins
+```
 
 | Metric | Meaning |
 |--------|---------|
@@ -46,7 +56,9 @@ From `Middleware/Observability/llmops.py` after `setup_observability()`:
 | `council_llm_ttft_seconds` | Time-to-first-token histogram |
 | OTEL spans `llm.<agent>` | Timestamps, tokens, cost, wave, session_id |
 
-App Prometheus scrape target (host): http://localhost:9108/metrics
+App Prometheus scrape target (host): http://localhost:9108/metrics  
+
+API docs: [`Middleware/API-Services/coa_observability_api/README.md`](../../Middleware/API-Services/coa_observability_api/README.md)
 
 ### Combine flags
 
