@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -16,7 +15,6 @@ import { PreferencesService } from '../core/services/preferences.service';
   selector: 'app-shell',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     RouterLink,
     ButtonModule,
@@ -43,10 +41,6 @@ export class ShellComponent {
   goNav(route: string, navId: string): void {
     this.prefs.setNav(navId);
     void this.router.navigate(['/app', this.prefs.activePackId(), route]);
-  }
-
-  toggleSources(): void {
-    this.prefs.sourcesOpen.update((v: boolean) => !v);
   }
 
   signOut(): void {

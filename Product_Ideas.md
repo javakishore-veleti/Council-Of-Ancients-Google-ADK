@@ -12,8 +12,9 @@ A single shared KB (entrepreneurship + SRE + fitness + architecture + …) confu
 Top menu bar     → domain packs (product lines) + Account / Settings
 Left nav         → workflows within the active pack only (+ pack settings)
 Main canvas      → chamber chat project / window bound to that pack’s Facilitator + KB
-Right rail       → sources / effective settings preview (collapsible)
 ```
+
+No permanent right-hand “context/debug” rail — it cramps the chamber and feels too technical for customers. Citations/sources surface inside the chamber thread when KB retrieval returns them.
 
 Hard rules:
 
@@ -25,25 +26,24 @@ Hard rules:
 
 ## Portal UI shell (locked)
 
-**Chat-first three-region app**, not a dashboard/widget admin template.
+**Chat-first two-column app** (top bar + left nav + full canvas), not a dashboard/widget admin template.
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
-│ Brand │ Entrepreneurship │ Leadership │ SRE │ Fitness │ Arch │ Account │
-├──────────┬──────────────────────────────────┬───────────────┤
-│ Left nav │  Chat project + history + chips  │ Sources/ctx   │
-│ (pack)   │  + composer                      │ + eff. prefs  │
-└──────────┴──────────────────────────────────┴───────────────┘
+│ Brand + council definition │ packs… │ Account               │
+├──────────┬──────────────────────────────────────────────────┤
+│ Left nav │  Chamber / overview — full width canvas          │
+│ (pack)   │  history + chips + composer                      │
+└──────────┴──────────────────────────────────────────────────┘
 ```
 
 | Region | Role |
 |--------|------|
-| **Top bar** | Brand + five packs; **Global Settings**; Sign in / Sign out |
+| **Top bar** | Brand + council definition + five packs; **Global Settings**; Sign in / Sign out |
 | **Left nav** | Pack-specific list (below); pack-level Settings entry |
-| **Center** | Chat **projects** and **windows** with history + domain option chips + composer |
-| **Right rail** | Citations / KB hits / seat labels; preview of settings sent to the council |
+| **Center** | Full-width chat **projects** / **windows** with history + domain chips + composer |
 
-Take from common AI-chat galleries: three-column chat, distinct user vs agent bubbles. Do **not** make a multi-widget analytics home or a floating AI bubble the primary surface.
+Two-column shell (top + left + canvas). Do **not** make a multi-widget analytics home or a floating AI bubble the primary surface.
 
 Angular app lives under `Portals/`. v0: Architecture chamber live; other packs chrome + coming soon.
 

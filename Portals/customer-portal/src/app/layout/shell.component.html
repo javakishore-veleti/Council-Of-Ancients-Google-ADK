@@ -2,9 +2,12 @@
   <header class="topbar">
     <div class="brand" routerLink="/app">
       <fa-icon [icon]="brandIcon" class="brand-icon"></fa-icon>
-      <div>
+      <div class="brand-copy">
         <div class="brand-mark">Council of Ancients</div>
-        <div class="brand-sub">Customer portal</div>
+        <div class="brand-sub">
+          A council is a group of people gathered or chosen for consultation, advice,
+          deliberation, or decision-making, or an assembly/meeting held for those purposes.
+        </div>
       </div>
     </div>
 
@@ -36,14 +39,6 @@
         routerLink="/app/settings/global"
         pTooltip="Global settings"
       ></button>
-      <button
-        pButton
-        type="button"
-        class="p-button-text p-button-rounded"
-        [icon]="prefs.sourcesOpen() ? 'pi pi-eye-slash' : 'pi pi-eye'"
-        (click)="toggleSources()"
-        pTooltip="Sources rail"
-      ></button>
       <div class="account">
         <p-avatar
           [label]="(auth.user()?.displayName || 'U').slice(0, 1).toUpperCase()"
@@ -58,7 +53,7 @@
     </div>
   </header>
 
-  <div class="body-grid" [class.sources-collapsed]="!prefs.sourcesOpen()">
+  <div class="body-grid">
     <aside class="left-nav coa-glass">
       <div class="pack-title">
         <h2>{{ prefs.activePack().label }}</h2>
@@ -89,58 +84,5 @@
     <main class="canvas coa-glass">
       <router-outlet />
     </main>
-
-    @if (prefs.sourcesOpen()) {
-      <aside class="sources coa-glass animate__animated animate__fadeInRight">
-        <h3><i class="bi bi-journal-richtext me-2"></i>Context</h3>
-        <p class="hint">What the council will receive on Send.</p>
-        <div class="ctx-block">
-          <div class="lbl">Pack</div>
-          <div>{{ prefs.activePack().label }}</div>
-        </div>
-        <div class="ctx-block">
-          <div class="lbl">Left nav</div>
-          <div>{{ prefs.activeNavId() }}</div>
-        </div>
-        <div class="ctx-block">
-          <div class="lbl">Mode / lenses</div>
-          <div>
-            <span class="coa-chip active me-1 mb-1">{{
-              prefs.deepThink() ? 'deep_think' : 'balanced'
-            }}</span>
-            @for (l of prefs.selectedLenses(); track l) {
-              <span class="coa-chip active me-1 mb-1">{{ l }}</span>
-            }
-            @if (prefs.selectedLenses().length === 0) {
-              <span class="muted">No lenses (balanced tone)</span>
-            }
-          </div>
-        </div>
-        <div class="ctx-block">
-          <div class="lbl">Options</div>
-          <div>
-            @if (prefs.selectedOptions().length === 0) {
-              <span class="muted">None selected</span>
-            } @else {
-              @for (o of prefs.selectedOptions(); track o) {
-                <span class="coa-chip active me-1 mb-1">{{ o }}</span>
-              }
-            }
-          </div>
-        </div>
-        <div class="ctx-block">
-          <div class="lbl">Effective settings</div>
-          <pre>{{ prefs.effectiveSettings() | json }}</pre>
-        </div>
-        <div class="ctx-block">
-          <div class="lbl">Sources</div>
-          @if (prefs.activePack().kbReady) {
-            <p>Architecture KB ready (local ingest). Citations appear after retrieval.</p>
-          } @else {
-            <p class="muted">KB not loaded for this pack — coming soon.</p>
-          }
-        </div>
-      </aside>
-    }
   </div>
 </div>
