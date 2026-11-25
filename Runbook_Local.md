@@ -96,7 +96,15 @@ This is the **first real ingest**, not a toy demo. Liquibase seeds this row; you
 
 1. Open http://127.0.0.1:4201 → **Knowledge sources**.  
 2. Open **DigitalOcean GoF hub**.  
-3. Confirm URL, workflow `kb_ingest_facade`, and **store_to** mapping.  
+3. On the detail page, confirm:
+
+| UI field | Expected |
+|----------|----------|
+| **URL** | `https://www.digitalocean.com/community/tutorials/gangs-of-four-gof-design-patterns` |
+| **Download workflow** | `kb_ingest_facade` |
+| **Downloaded from** | **DigitalOcean community (origin)** |
+| **Stored as** | Must include **COA KnowledgeBase (local datasets)** (required for local ingest). Seed may also list AWS S3 / Azure Blob — those are optional for this run. |
+
 4. Continue at [§6 Queue Download](#6-queue-download) (use the **Download** button on that page).
 
 Optional API check (UI is enough):
