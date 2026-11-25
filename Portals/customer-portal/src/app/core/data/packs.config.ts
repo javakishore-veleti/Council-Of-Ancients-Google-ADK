@@ -5,7 +5,7 @@ import { PackDefinition } from '../models/pack';
  * Left nav + options mirror Product_Ideas.md.
  */
 export const PACKS: PackDefinition[] = [
-  {
+{
     id: 'entrepreneurship',
     label: 'Entrepreneurship',
     shortLabel: 'Entrepreneurship',
@@ -72,7 +72,7 @@ export const PACKS: PackDefinition[] = [
       { id: 'first_time', label: 'First-time founder' },
     ],
   },
-  {
+{
     id: 'leadership',
     label: 'Leadership',
     shortLabel: 'Leadership',
@@ -139,150 +139,7 @@ export const PACKS: PackDefinition[] = [
       { id: 'hr_partner', label: 'People partner' },
     ],
   },
-  {
-    id: 'sre',
-    label: 'SRE',
-    shortLabel: 'SRE',
-    kbReady: false,
-    tagline: 'Reliability, budgets, and calm incident response.',
-    heroImage:
-      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
-    howItWorksImage:
-      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=80',
-    howItWorksCaption:
-      'Reliability, Capacity, and Response deliberate like an SRE review — SLOs, load, and incidents.',
-    howItWorksIntro:
-      'Pose a reliability dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for SLOs, capacity, and calm incident response.',
-    howItWorksSteps: [
-      'Bring an SRE question: error budgets, toil, paging noise, or a postmortem decision.',
-      'Reliability, Capacity, and Response each argue risk vs cost vs recovery.',
-      'The Facilitator synthesizes the next operational move and what to measure.',
-    ],
-    seatsLabel: 'Reliability / Capacity / Response',
-    nav: [
-      { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
-      { id: 'reliability', label: 'Reliability', icon: 'bi-shield-check', route: 'section' },
-      {
-        id: 'incidents',
-        label: 'Incidents & postmortems',
-        icon: 'bi-lightning-charge',
-        route: 'section',
-      },
-      {
-        id: 'knowledge',
-        label: 'Knowledge',
-        icon: 'bi-journal-bookmark',
-        route: 'overview',
-        disabledUntilKb: true,
-      },
-      { id: 'seats', label: 'Seats', icon: 'bi-hdd-rack', route: 'section' },
-      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
-    ],
-    optionsByNav: {
-      reliability: [
-        { id: 'slo', label: 'SLO class' },
-        { id: 'budget', label: 'Error-budget policy' },
-        { id: 'customer_impact', label: 'Customer impact' },
-      ],
-      incidents: [
-        { id: 'sev', label: 'Severity' },
-        { id: 'detect', label: 'Phase: detect' },
-        { id: 'mitigate', label: 'Phase: mitigate' },
-        { id: 'review', label: 'Phase: review' },
-      ],
-      seats: [
-        { id: 'seat_reliability', label: 'Seat: Reliability' },
-        { id: 'seat_capacity', label: 'Seat: Capacity' },
-        { id: 'seat_response', label: 'Seat: Response' },
-      ],
-      chamber: [
-        { id: 'seat_reliability', label: 'Seat: Reliability' },
-        { id: 'seat_capacity', label: 'Seat: Capacity' },
-        { id: 'seat_response', label: 'Seat: Response' },
-        { id: 'full_council', label: 'Full council' },
-      ],
-    },
-    lenses: [
-      { id: 'oncall', label: 'On-call' },
-      { id: 'sre_lead', label: 'SRE lead' },
-      { id: 'platform', label: 'Platform' },
-      { id: 'exec_risk', label: 'Exec risk' },
-    ],
-  },
-  {
-    id: 'fitness',
-    label: 'Fitness',
-    shortLabel: 'Fitness',
-    kbReady: false,
-    tagline: 'Training and recovery guidance — not medical advice.',
-    heroImage:
-      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=80',
-    howItWorksImage:
-      'https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1600&q=80',
-    howItWorksCaption:
-      'Training, Nutrition, and Recovery balance effort with fuel and rest — not gym-only advice.',
-    howItWorksIntro:
-      'Pose a fitness dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for training, fueling, and recovery (not medical advice).',
-    howItWorksSteps: [
-      'Bring a whole-person question: progression, plateaus, meals, sleep, or burnout.',
-      'Training, Nutrition, and Recovery each weigh sustainability vs intensity.',
-      'The Facilitator synthesizes a plan that respects recovery — see a clinician for medical concerns.',
-    ],
-    seatsLabel: 'Training / Nutrition / Recovery',
-    nav: [
-      { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
-      { id: 'training', label: 'Training', icon: 'bi-activity', route: 'section' },
-      {
-        id: 'recovery',
-        label: 'Nutrition & recovery',
-        icon: 'bi-heart-pulse',
-        route: 'section',
-      },
-      {
-        id: 'knowledge',
-        label: 'Knowledge',
-        icon: 'bi-journal-bookmark',
-        route: 'overview',
-        disabledUntilKb: true,
-      },
-      { id: 'seats', label: 'Seats', icon: 'bi-bicycle', route: 'section' },
-      { id: 'disclaimer', label: 'Disclaimer', icon: 'bi-exclamation-triangle', route: 'overview' },
-      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
-    ],
-    optionsByNav: {
-      training: [
-        { id: 'strength', label: 'Goal: strength' },
-        { id: 'endurance', label: 'Goal: endurance' },
-        { id: 'mobility', label: 'Goal: mobility' },
-        { id: 'experience', label: 'Experience level' },
-      ],
-      recovery: [
-        { id: 'constraints', label: 'Time / equipment constraints' },
-        { id: 'no_diagnosis', label: 'No medical diagnosis' },
-      ],
-      seats: [
-        { id: 'seat_training', label: 'Seat: Training' },
-        { id: 'seat_nutrition', label: 'Seat: Nutrition' },
-        { id: 'seat_recovery', label: 'Seat: Recovery' },
-      ],
-      chamber: [
-        { id: 'seat_training', label: 'Seat: Training' },
-        { id: 'seat_nutrition', label: 'Seat: Nutrition' },
-        { id: 'seat_recovery', label: 'Seat: Recovery' },
-        { id: 'disclaimer', label: 'Disclaimer on' },
-        { id: 'full_council', label: 'Full council' },
-      ],
-      disclaimer: [{ id: 'disclaimer', label: 'Not medical advice' }],
-    },
-    lenses: [
-      { id: 'beginner', label: 'Beginner' },
-      { id: 'intermediate', label: 'Intermediate' },
-      { id: 'coach', label: 'Coach lens' },
-    ],
-  },
-  {
+{
     id: 'software_architecture',
     label: 'Software Architecture & Design',
     shortLabel: 'Architecture',
@@ -374,6 +231,149 @@ export const PACKS: PackDefinition[] = [
       { id: 'startup_cto', label: 'Startup CTO' },
       { id: 'enterprise_architect', label: 'Enterprise' },
       { id: 'coding_agent', label: 'Coding agent' },
+    ],
+  },
+{
+    id: 'sre',
+    label: 'SRE',
+    shortLabel: 'SRE',
+    kbReady: false,
+    tagline: 'Reliability, budgets, and calm incident response.',
+    heroImage:
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=80',
+    howItWorksCaption:
+      'Reliability, Capacity, and Response deliberate like an SRE review — SLOs, load, and incidents.',
+    howItWorksIntro:
+      'Pose a reliability dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for SLOs, capacity, and calm incident response.',
+    howItWorksSteps: [
+      'Bring an SRE question: error budgets, toil, paging noise, or a postmortem decision.',
+      'Reliability, Capacity, and Response each argue risk vs cost vs recovery.',
+      'The Facilitator synthesizes the next operational move and what to measure.',
+    ],
+    seatsLabel: 'Reliability / Capacity / Response',
+    nav: [
+      { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
+      { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
+      { id: 'reliability', label: 'Reliability', icon: 'bi-shield-check', route: 'section' },
+      {
+        id: 'incidents',
+        label: 'Incidents & postmortems',
+        icon: 'bi-lightning-charge',
+        route: 'section',
+      },
+      {
+        id: 'knowledge',
+        label: 'Knowledge',
+        icon: 'bi-journal-bookmark',
+        route: 'overview',
+        disabledUntilKb: true,
+      },
+      { id: 'seats', label: 'Seats', icon: 'bi-hdd-rack', route: 'section' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
+    ],
+    optionsByNav: {
+      reliability: [
+        { id: 'slo', label: 'SLO class' },
+        { id: 'budget', label: 'Error-budget policy' },
+        { id: 'customer_impact', label: 'Customer impact' },
+      ],
+      incidents: [
+        { id: 'sev', label: 'Severity' },
+        { id: 'detect', label: 'Phase: detect' },
+        { id: 'mitigate', label: 'Phase: mitigate' },
+        { id: 'review', label: 'Phase: review' },
+      ],
+      seats: [
+        { id: 'seat_reliability', label: 'Seat: Reliability' },
+        { id: 'seat_capacity', label: 'Seat: Capacity' },
+        { id: 'seat_response', label: 'Seat: Response' },
+      ],
+      chamber: [
+        { id: 'seat_reliability', label: 'Seat: Reliability' },
+        { id: 'seat_capacity', label: 'Seat: Capacity' },
+        { id: 'seat_response', label: 'Seat: Response' },
+        { id: 'full_council', label: 'Full council' },
+      ],
+    },
+    lenses: [
+      { id: 'oncall', label: 'On-call' },
+      { id: 'sre_lead', label: 'SRE lead' },
+      { id: 'platform', label: 'Platform' },
+      { id: 'exec_risk', label: 'Exec risk' },
+    ],
+  },
+{
+    id: 'fitness',
+    label: 'Fitness',
+    shortLabel: 'Fitness',
+    kbReady: false,
+    tagline: 'Training and recovery guidance — not medical advice.',
+    heroImage:
+      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1600&q=80',
+    howItWorksCaption:
+      'Training, Nutrition, and Recovery balance effort with fuel and rest — not gym-only advice.',
+    howItWorksIntro:
+      'Pose a fitness dilemma. Counselors speak from their seats. The Facilitator brings a clear recommendation — for training, fueling, and recovery (not medical advice).',
+    howItWorksSteps: [
+      'Bring a whole-person question: progression, plateaus, meals, sleep, or burnout.',
+      'Training, Nutrition, and Recovery each weigh sustainability vs intensity.',
+      'The Facilitator synthesizes a plan that respects recovery — see a clinician for medical concerns.',
+    ],
+    seatsLabel: 'Training / Nutrition / Recovery',
+    nav: [
+      { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
+      { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
+      { id: 'training', label: 'Training', icon: 'bi-activity', route: 'section' },
+      {
+        id: 'recovery',
+        label: 'Nutrition & recovery',
+        icon: 'bi-heart-pulse',
+        route: 'section',
+      },
+      {
+        id: 'knowledge',
+        label: 'Knowledge',
+        icon: 'bi-journal-bookmark',
+        route: 'overview',
+        disabledUntilKb: true,
+      },
+      { id: 'seats', label: 'Seats', icon: 'bi-bicycle', route: 'section' },
+      { id: 'disclaimer', label: 'Disclaimer', icon: 'bi-exclamation-triangle', route: 'overview' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
+    ],
+    optionsByNav: {
+      training: [
+        { id: 'strength', label: 'Goal: strength' },
+        { id: 'endurance', label: 'Goal: endurance' },
+        { id: 'mobility', label: 'Goal: mobility' },
+        { id: 'experience', label: 'Experience level' },
+      ],
+      recovery: [
+        { id: 'constraints', label: 'Time / equipment constraints' },
+        { id: 'no_diagnosis', label: 'No medical diagnosis' },
+      ],
+      seats: [
+        { id: 'seat_training', label: 'Seat: Training' },
+        { id: 'seat_nutrition', label: 'Seat: Nutrition' },
+        { id: 'seat_recovery', label: 'Seat: Recovery' },
+      ],
+      chamber: [
+        { id: 'seat_training', label: 'Seat: Training' },
+        { id: 'seat_nutrition', label: 'Seat: Nutrition' },
+        { id: 'seat_recovery', label: 'Seat: Recovery' },
+        { id: 'disclaimer', label: 'Disclaimer on' },
+        { id: 'full_council', label: 'Full council' },
+      ],
+      disclaimer: [{ id: 'disclaimer', label: 'Not medical advice' }],
+    },
+    lenses: [
+      { id: 'beginner', label: 'Beginner' },
+      { id: 'intermediate', label: 'Intermediate' },
+      { id: 'coach', label: 'Coach lens' },
     ],
   },
 ];
