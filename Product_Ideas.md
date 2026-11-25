@@ -79,8 +79,9 @@ Admin UI never talks to Airflow / Step Functions or Knowledge API directly.
 
 - Each `knowledge_source.workflow_id` points at the workflow used on **Download**.
 - Each `wf_exec_log.wf_id` stores that workflow’s primary key at queue time (plus denormalized `engine`).
+- **`knowledge.workflow` holds only configurable entry workflows** (e.g. `kb_ingest_facade`). Internal engine steps (`kb_extract` Airflow DAG, strategies, etc.) are **not** workflow table rows — the facade invokes them by dag_id / strategy id.
 
-**Facade vs extract (locked):** Admin only triggers the source’s registered **facade** workflow (seed: `kb_ingest_facade`). That workflow is **not** an extractor — it orchestrates one download run and **invokes** extract (`kb_extract`). Extract is swappable without changing Admin or `wf_exec_log`.
+**Facade vs extract (locked):** Admin configures/triggers the source’s **facade** workflow only (seed: `kb_ingest_facade`). That row is **not** an extractor — it orchestrates one download run and **invokes** the extract DAG (`kb_extract`) internally. Extract is swappable without changing Admin or `wf_exec_log`.
 
 ```text
 Download → source.workflow_id → create wf_exec_log(wf_id=…)

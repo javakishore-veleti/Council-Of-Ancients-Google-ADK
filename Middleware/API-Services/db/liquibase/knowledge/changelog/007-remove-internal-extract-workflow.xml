@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-012-remove-kb-extract-workflow-row" author="javakishore-veleti">
+    <comment>
+      knowledge.workflow is entry/configurable workflows only. kb_extract is an
+      internal Airflow DAG invoked by kb_ingest_facade — remove registry row.
+    </comment>
+    <sql>
+      DELETE FROM knowledge.workflow WHERE name = 'kb_extract';
+      UPDATE knowledge.workflow
+      SET meta = '{"role":"facade","invokes_dag":"kb_extract"}'::jsonb,
+          description = 'Facade ingest run for a knowledge source download. Gates license/robots, invokes extract DAG, stores under UUID leaf, patches wf_exec_log.',
+          updated_at = NOW()
+      WHERE name = 'kb_ingest_facade';
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>
