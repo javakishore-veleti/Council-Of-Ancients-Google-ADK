@@ -10,8 +10,8 @@ AGENTS_LOG="${SCRIPT_DIR}/.coa-agents-api.log"
 ADMIN_PID="${SCRIPT_DIR}/.coa-admin-api.pid"
 ADMIN_LOG="${SCRIPT_DIR}/.coa-admin-api.log"
 
-if ! docker exec council-postgres pg_isready -U postgres >/dev/null 2>&1; then
-  echo "Postgres not ready. Run: npm run local:containers:all:start" >&2
+if ! docker ps --format '{{.Names}}' 2>/dev/null | grep -qx 'council-postgres'; then
+  echo "Postgres container not running. Run: npm run local:containers:all:start" >&2
   exit 1
 fi
 
