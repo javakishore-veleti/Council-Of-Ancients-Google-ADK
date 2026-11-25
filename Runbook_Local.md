@@ -78,7 +78,6 @@ Containers hold DB/Redis (leave up). Middleware/portals are host processes — r
 npm run local:containers:all:status
 npm run local:middleware:api:all:status
 npm run local:portals:all:status
-curl -sf http://127.0.0.1:8094/healthz
 ```
 
 ---
@@ -209,7 +208,7 @@ Omit `containers:all:stop` if you only want to bounce APIs (DB stays).
 
 | Symptom | Check |
 |---------|--------|
-| Admin / API down | `curl :8094/healthz`; middleware status |
+| Admin / API down | `npm run local:middleware:api:all:status`; open Admin `:4201` |
 | No sources / workflows | Re-run `bash CICD/Local/knowledge-db-apply.sh` |
 | Download 400 `no_store_targets` | Map at least one **store_to** endpoint |
 | `denied_license` | License in `DataOps/kb/pipeline/license_gate.py` |
