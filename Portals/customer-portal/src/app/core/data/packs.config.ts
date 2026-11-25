@@ -28,7 +28,7 @@ export const PACKS: PackDefinition[] = [
         disabledUntilKb: true,
       },
       { id: 'seats', label: 'Seats', icon: 'bi-people', route: 'chamber' },
-      { id: 'settings', label: 'Pack settings', icon: 'bi-sliders', route: 'settings' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
     ],
     optionsByNav: {
       plan: [
@@ -85,7 +85,7 @@ export const PACKS: PackDefinition[] = [
         disabledUntilKb: true,
       },
       { id: 'seats', label: 'Seats', icon: 'bi-person-badge', route: 'chamber' },
-      { id: 'settings', label: 'Pack settings', icon: 'bi-sliders', route: 'settings' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
     ],
     optionsByNav: {
       people: [
@@ -147,7 +147,7 @@ export const PACKS: PackDefinition[] = [
         disabledUntilKb: true,
       },
       { id: 'seats', label: 'Seats', icon: 'bi-hdd-rack', route: 'chamber' },
-      { id: 'settings', label: 'Pack settings', icon: 'bi-sliders', route: 'settings' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
     ],
     optionsByNav: {
       reliability: [
@@ -209,7 +209,7 @@ export const PACKS: PackDefinition[] = [
       },
       { id: 'seats', label: 'Seats', icon: 'bi-bicycle', route: 'chamber' },
       { id: 'disclaimer', label: 'Disclaimer', icon: 'bi-exclamation-triangle', route: 'overview' },
-      { id: 'settings', label: 'Pack settings', icon: 'bi-sliders', route: 'settings' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
     ],
     optionsByNav: {
       training: [
@@ -264,7 +264,7 @@ export const PACKS: PackDefinition[] = [
       { id: 'ai_systems', label: 'AI & agentic systems', icon: 'bi-cpu', route: 'chamber' },
       { id: 'knowledge', label: 'Knowledge', icon: 'bi-journal-bookmark', route: 'overview' },
       { id: 'seats', label: 'Seats', icon: 'bi-diagram-2', route: 'chamber' },
-      { id: 'settings', label: 'Pack settings', icon: 'bi-sliders', route: 'settings' },
+      { id: 'settings', label: 'Settings', icon: 'bi-sliders', route: 'settings' },
     ],
     optionsByNav: {
       patterns: [

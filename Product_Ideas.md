@@ -10,7 +10,7 @@ A single shared KB (entrepreneurship + SRE + fitness + architecture + …) confu
 
 ```text
 Top menu bar     → domain packs (product lines) + Account / Settings
-Left nav         → workflows within the active pack only (+ pack settings)
+Left nav         → workflows within the active pack only (+ Settings)
 Main canvas      → chamber chat project / window bound to that pack’s Facilitator + KB
 ```
 
@@ -40,7 +40,7 @@ Hard rules:
 | Region | Role |
 |--------|------|
 | **Top bar** | Large **Council of Ancients** mark; professor-hat icon opens “what is a council?”; five packs; **Global Settings**; Sign in / Sign out |
-| **Left nav** | Pack-specific list (below); pack-level Settings entry |
+| **Left nav** | Pack-specific list (below); **Settings** = defaults for the active top-menu topic (not the word “pack”) |
 | **Center** | Full-width chat **projects** / **windows** with history + domain chips + composer |
 
 Two-column shell (top + left + canvas). Do **not** make a multi-widget analytics home or a floating AI bubble the primary surface.
@@ -197,7 +197,7 @@ Overview · Chamber · Sessions · Training · Nutrition & recovery · Knowledge
 
 Workflow / domain pillars (not textbook chapters). **Role is never mandatory** — optional curated “start here” hubs later; primary spine is problem layers:
 
-Overview · Chamber · Sessions · Patterns · Architecture styles · Data & modeling · **Cloud & infrastructure** · **Databases & storage** · **Event systems** · **AI & agentic systems** · Knowledge · Seats (Patterns / Architecture / Data) · Pack settings
+Overview · Chamber · Sessions · Patterns · Architecture styles · Data & modeling · **Cloud & infrastructure** · **Databases & storage** · **Event systems** · **AI & agentic systems** · Knowledge · Seats (Patterns / Architecture / Data) · Settings
 
 Cross-link topics later with `pairs_with` / `conflicts_with` metadata (admin ingest). Customer portal only consumes structured entries.
 
