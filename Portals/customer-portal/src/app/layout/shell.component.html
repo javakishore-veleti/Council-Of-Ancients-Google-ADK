@@ -2,31 +2,18 @@
   <header class="topbar">
     <div class="brand">
       <fa-icon [icon]="brandIcon" class="brand-icon" routerLink="/app"></fa-icon>
-      <div class="brand-copy">
-        <button type="button" class="brand-mark" routerLink="/app">Council of Ancients</button>
-        <button
-          type="button"
-          class="professor-hat"
-          (click)="openCouncilMeaning($event)"
-          pTooltip="What is a council?"
-          tooltipPosition="bottom"
-          aria-label="What is a council?"
-        >
-          <fa-icon [icon]="professorHat"></fa-icon>
-        </button>
-      </div>
+      <button type="button" class="brand-mark" routerLink="/app">Council of Ancients</button>
+      <button
+        type="button"
+        class="professor-hat"
+        (click)="openCouncilMeaning($event)"
+        pTooltip="What is a council?"
+        tooltipPosition="bottom"
+        aria-label="What is a council?"
+      >
+        <fa-icon [icon]="professorHat"></fa-icon>
+      </button>
     </div>
-
-    <p-dialog
-      header="What is a council?"
-      [(visible)]="councilMeaningVisible"
-      [modal]="true"
-      [draggable]="false"
-      [style]="{ width: 'min(480px, 92vw)' }"
-      styleClass="council-meaning-dialog"
-    >
-      <p class="council-meaning-text">{{ councilMeaning }}</p>
-    </p-dialog>
 
     <nav class="pack-nav" aria-label="Domain packs">
       @for (pack of packs; track pack.id) {
@@ -35,14 +22,10 @@
           class="pack-tab"
           [class.active]="prefs.activePackId() === pack.id"
           (click)="selectPack(pack.id)"
-          [pTooltip]="pack.tagline"
+          [pTooltip]="pack.kbReady ? pack.tagline : pack.tagline + ' (KB coming soon)'"
           tooltipPosition="bottom"
         >
-          <span class="pack-label-full">{{ pack.label }}</span>
-          <span class="pack-label-short">{{ pack.shortLabel }}</span>
-          @if (!pack.kbReady) {
-            <p-tag severity="warn" value="KB soon" styleClass="soon-tag" />
-          }
+          {{ pack.shortLabel }}
         </button>
       }
     </nav>
@@ -62,13 +45,24 @@
           shape="circle"
           styleClass="acct-avatar"
         />
-        <div class="acct-meta d-none d-lg-block">
+        <div class="acct-meta">
           <div class="acct-name">{{ auth.user()?.displayName }}</div>
           <button type="button" class="signout" (click)="signOut()">Sign out</button>
         </div>
       </div>
     </div>
   </header>
+
+  <p-dialog
+    header="What is a council?"
+    [(visible)]="councilMeaningVisible"
+    [modal]="true"
+    [draggable]="false"
+    [style]="{ width: 'min(480px, 92vw)' }"
+    styleClass="council-meaning-dialog"
+  >
+    <p class="council-meaning-text">{{ councilMeaning }}</p>
+  </p-dialog>
 
   <div class="body-grid">
     <aside class="left-nav coa-glass">

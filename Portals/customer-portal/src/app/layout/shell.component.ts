@@ -3,7 +3,6 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
-import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGraduationCap, faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +20,6 @@ import { PreferencesService } from '../core/services/preferences.service';
     ButtonModule,
     TooltipModule,
     AvatarModule,
-    TagModule,
     DialogModule,
     FontAwesomeModule,
   ],

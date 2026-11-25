@@ -7,37 +7,30 @@
 }
 
 .topbar {
-  display: grid;
-  grid-template-columns: minmax(220px, 280px) 1fr auto;
-  gap: 1rem;
+  display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  padding: 1rem 1.15rem;
+  gap: 1.25rem;
+  padding: 0.85rem 1.25rem;
   border-radius: var(--coa-radius);
-  background: linear-gradient(115deg, #041e28 0%, #062a36 42%, #8a3d18 145%);
-  color: #f7f0e6;
+  background: #062a36;
+  color: #fff8ee;
   box-shadow: var(--coa-shadow);
 }
 
 .brand {
   display: flex;
-  gap: 0.75rem;
+  flex: 0 0 auto;
   align-items: center;
-  color: inherit;
+  gap: 0.65rem;
+  min-width: max-content;
 }
 
 .brand-icon {
-  font-size: 1.85rem;
+  font-size: 1.75rem;
   color: #f0b45a;
   flex-shrink: 0;
   cursor: pointer;
-}
-
-.brand-copy {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
 }
 
 .brand-mark {
@@ -46,33 +39,32 @@
   padding: 0;
   margin: 0;
   font-family: var(--coa-font-display);
-  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  font-size: 1.55rem;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1;
   letter-spacing: -0.02em;
   color: #fff8ee;
   cursor: pointer;
-  text-align: left;
+  white-space: nowrap;
 }
 
 .professor-hat {
-  border: 1px solid rgba(240, 180, 90, 0.55);
-  background: rgba(4, 30, 40, 0.45);
+  border: 0;
+  background: transparent;
   color: #f0b45a;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background 0.15s ease, transform 0.15s ease;
+  font-size: 1.05rem;
+  flex-shrink: 0;
 }
 
 .professor-hat:hover {
-  background: rgba(224, 138, 58, 0.35);
-  transform: translateY(-1px);
+  color: #ffd08a;
 }
 
 .council-meaning-text {
@@ -84,66 +76,48 @@
 
 .pack-nav {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  align-items: center;
   justify-content: center;
+  gap: 0.35rem;
+  min-width: 0;
+  overflow-x: auto;
 }
 
 .pack-tab {
-  border: 2px solid #e8c48a;
-  background: #14363f;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: transparent;
   color: #fff8ee;
-  border-radius: 12px;
-  padding: 0.65rem 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.98rem;
+  padding: 0.55rem 0.85rem;
+  font-family: var(--coa-font-body);
+  font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
   line-height: 1.2;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
-}
-
-.pack-label-short {
-  display: none;
-}
-
-@media (max-width: 1280px) {
-  .pack-label-full {
-    display: none;
-  }
-  .pack-label-short {
-    display: inline;
-  }
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.88;
 }
 
 .pack-tab:hover {
-  background: #1f4f5c;
-  border-color: #f0b45a;
-  color: #fff8ee;
-  transform: translateY(-1px);
+  opacity: 1;
+  color: #ffd08a;
 }
 
 .pack-tab.active {
-  background: #e08a3a;
-  border-color: #f0b45a;
-  color: #041e28;
-  transform: translateY(-1px);
-}
-
-:host ::ng-deep .soon-tag {
-  font-size: 0.7rem !important;
-  padding: 0.1rem 0.4rem !important;
-  background: #041e28 !important;
-  color: #f0b45a !important;
-  border: 1px solid #f0b45a !important;
+  opacity: 1;
+  color: #ffd08a;
+  border-bottom-color: #e08a3a;
 }
 
 .top-actions {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 :host ::ng-deep .top-actions .p-button.p-button-text {
@@ -154,27 +128,35 @@
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  margin-left: 0.35rem;
 }
 
 :host ::ng-deep .acct-avatar {
-  background: var(--coa-amber) !important;
-  color: #062a36 !important;
+  background: #e08a3a !important;
+  color: #041e28 !important;
   font-weight: 700;
 }
 
+.acct-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
 .acct-name {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff8ee;
+  white-space: nowrap;
 }
 
 .signout {
   border: 0;
   background: transparent;
-  color: var(--coa-amber);
+  color: #f0b45a;
   padding: 0;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   cursor: pointer;
+  text-align: left;
 }
 
 .body-grid {
@@ -228,6 +210,7 @@
   padding: 0.65rem 0.75rem;
   text-align: left;
   cursor: pointer;
+  font-size: 0.98rem;
 }
 
 .nav-item i {
@@ -261,6 +244,16 @@
 }
 
 @media (max-width: 1100px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .pack-nav {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .body-grid {
     grid-template-columns: 1fr;
   }
@@ -268,9 +261,5 @@
   .left-nav,
   .canvas {
     min-height: auto;
-  }
-
-  .topbar {
-    grid-template-columns: 1fr;
   }
 }
