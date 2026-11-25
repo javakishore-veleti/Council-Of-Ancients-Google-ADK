@@ -156,7 +156,7 @@
 
 .bubble.user {
   align-self: flex-end;
-  background: linear-gradient(135deg, #127a86, #0a4f5c);
+  background: linear-gradient(135deg, #c45c26, #7a3514);
   color: var(--coa-ivory);
 }
 
@@ -201,6 +201,6 @@
 }
 
 :host ::ng-deep .send-btn.p-button {
-  background: linear-gradient(90deg, var(--coa-teal), var(--coa-copper)) !important;
+  background: linear-gradient(90deg, #a3481c, var(--coa-copper)) !important;
   border: 0 !important;
 }

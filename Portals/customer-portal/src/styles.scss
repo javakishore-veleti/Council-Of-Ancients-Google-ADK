@@ -5,21 +5,21 @@
 @import 'animate.css/animate.css';
 
 :root {
-  /* Rich professional palette — not gray, not black, not washed light */
-  --coa-ink: #062a36;
-  --coa-deep: #0a4f5c;
-  --coa-teal: #127a86;
-  --coa-mist: #d4efe8;
-  --coa-panel: #e8f7f2;
+  /* Night-friendly: warm ivory panels + ink text; copper accents — avoid mint green surfaces */
+  --coa-ink: #1a1410;
+  --coa-deep: #2a1f18;
+  --coa-teal: #8a4b24;
+  --coa-mist: #f0e6d8;
+  --coa-panel: #f7f1e8;
   --coa-copper: #c45c26;
   --coa-amber: #e0a045;
-  --coa-ivory: #f3ebe0;
-  --coa-text: #14363f;
-  --coa-muted: #3d6a73;
-  --coa-success: #1f8a70;
+  --coa-ivory: #fff8ee;
+  --coa-text: #1a1410;
+  --coa-muted: #5c4a3d;
+  --coa-success: #2f6b4f;
   --coa-danger: #b42318;
   --coa-radius: 14px;
-  --coa-shadow: 0 18px 40px rgba(10, 79, 92, 0.18);
+  --coa-shadow: 0 18px 40px rgba(26, 20, 16, 0.28);
   --coa-font-display: 'Syne', system-ui, sans-serif;
   --coa-font-body: 'Source Sans 3', system-ui, sans-serif;
 }
@@ -40,9 +40,9 @@ body {
   font-family: var(--coa-font-body);
   color: var(--coa-text);
   background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(224, 160, 69, 0.28), transparent 55%),
-    radial-gradient(900px 500px at 100% 0%, rgba(18, 122, 134, 0.35), transparent 50%),
-    linear-gradient(160deg, #0a4f5c 0%, #0d6b78 42%, #127a86 100%);
+    radial-gradient(1100px 520px at 8% -8%, rgba(224, 160, 69, 0.32), transparent 55%),
+    radial-gradient(900px 480px at 100% 0%, rgba(196, 92, 38, 0.22), transparent 50%),
+    linear-gradient(165deg, #1a1410 0%, #2c2118 48%, #3d2a1c 100%);
   min-height: 100%;
 }
 
@@ -66,11 +66,12 @@ a:hover {
 }
 
 .coa-glass {
-  background: color-mix(in srgb, var(--coa-panel) 88%, white);
+  background: var(--coa-panel);
   backdrop-filter: blur(10px);
-  border: 1px solid color-mix(in srgb, var(--coa-teal) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--coa-copper) 18%, #d9cbb8);
   box-shadow: var(--coa-shadow);
   border-radius: var(--coa-radius);
+  color: var(--coa-text);
 }
 
 .coa-chip {
@@ -79,17 +80,19 @@ a:hover {
   gap: 0.35rem;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--coa-teal) 35%, transparent);
+  border: 1px solid color-mix(in srgb, var(--coa-copper) 35%, #cbb8a0);
   background: var(--coa-mist);
-  color: var(--coa-deep);
-  font-size: 0.85rem;
+  color: var(--coa-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .coa-chip:hover,
 .coa-chip.active {
-  background: var(--coa-teal);
+  background: var(--coa-copper);
+  border-color: var(--coa-copper);
   color: var(--coa-ivory);
   transform: translateY(-1px);
 }

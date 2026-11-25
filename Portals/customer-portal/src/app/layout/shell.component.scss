@@ -13,7 +13,7 @@
   gap: 1.25rem;
   padding: 0.85rem 1.25rem;
   border-radius: var(--coa-radius);
-  background: #062a36;
+  background: #1a1410;
   color: #fff8ee;
   box-shadow: var(--coa-shadow);
 }
@@ -223,15 +223,15 @@
 }
 
 .nav-item i {
-  color: var(--coa-teal);
-  font-size: 1.05rem;
+  color: var(--coa-copper);
+  font-size: 1.1rem;
 }
 
 .nav-item:hover,
 .nav-item.active {
-  background: linear-gradient(90deg, var(--coa-mist), transparent);
-  color: var(--coa-deep);
-  font-weight: 600;
+  background: color-mix(in srgb, var(--coa-mist) 85%, var(--coa-copper));
+  color: var(--coa-ink);
+  font-weight: 700;
 }
 
 .nav-item.kb-locked,
