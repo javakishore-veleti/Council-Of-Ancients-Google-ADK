@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -34,12 +34,29 @@ export class ChamberComponent {
 
   draft = '';
   readonly busy = signal(false);
+  /** Criteria collapsed by default so chat history has room */
+  readonly criteriaOpen = signal(false);
 
   toneOptions = [
     { label: 'Concise', value: 'concise' },
     { label: 'Balanced', value: 'balanced' },
     { label: 'Thorough', value: 'thorough' },
   ];
+
+  readonly criteriaSummary = computed(() => {
+    const parts: string[] = [];
+    parts.push(this.prefs.deepThink() ? 'Deep think' : 'Balanced mode');
+    parts.push(`Tone: ${String(this.prefs.effectiveSettings()['tone'] ?? 'balanced')}`);
+    const lenses = this.prefs.selectedLenses();
+    if (lenses.length) {
+      parts.push(`Lenses: ${lenses.length}`);
+    }
+    const opts = this.prefs.selectedOptions();
+    if (opts.length) {
+      parts.push(`Options: ${opts.length}`);
+    }
+    return parts.join(' · ');
+  });
 
   get chatTone(): string {
     return String(this.prefs.effectiveSettings()['tone'] ?? 'balanced');
@@ -55,6 +72,10 @@ export class ChamberComponent {
 
   set deepThink(v: boolean) {
     this.prefs.setDeepThink(v);
+  }
+
+  toggleCriteria(): void {
+    this.criteriaOpen.update((v) => !v);
   }
 
   newSession(): void {

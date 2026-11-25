@@ -47,63 +47,78 @@
     }
   </div>
 
-  <div class="toolbar">
-    <div class="override-row">
-      <span class="lbl">Deep think</span>
-      <p-toggleswitch [(ngModel)]="deepThink" />
-    </div>
-    <div class="override-row">
-      <span class="lbl">Tone</span>
-      <p-selectButton
-        [options]="toneOptions"
-        [(ngModel)]="chatTone"
-        optionLabel="label"
-        optionValue="value"
-      />
-    </div>
-  </div>
+  <section class="criteria" [class.open]="criteriaOpen()">
+    <button type="button" class="criteria-toggle" (click)="toggleCriteria()">
+      <span class="criteria-title">
+        <i class="bi" [class.bi-chevron-down]="criteriaOpen()" [class.bi-chevron-right]="!criteriaOpen()"></i>
+        Criteria
+      </span>
+      <span class="criteria-summary">{{ criteriaSummary() }}</span>
+      <span class="criteria-action">{{ criteriaOpen() ? 'Hide' : 'Edit' }}</span>
+    </button>
 
-  @if (prefs.activePack().lenses.length) {
-    <div class="lenses">
-      <span class="lbl">Lenses for {{ prefs.activePack().label }} (optional)</span>
-      <div class="lens-row">
-        @for (lens of prefs.activePack().lenses; track lens.id) {
-          <label class="lens">
-            <p-checkbox
-              [binary]="true"
-              [ngModel]="prefs.selectedLenses().includes(lens.id)"
-              (ngModelChange)="prefs.toggleLens(lens.id)"
+    @if (criteriaOpen()) {
+      <div class="criteria-body">
+        <div class="toolbar">
+          <div class="override-row">
+            <span class="lbl">Deep think</span>
+            <p-toggleswitch [(ngModel)]="deepThink" />
+          </div>
+          <div class="override-row">
+            <span class="lbl">Tone</span>
+            <p-selectButton
+              [options]="toneOptions"
+              [(ngModel)]="chatTone"
+              optionLabel="label"
+              optionValue="value"
             />
-            <span>{{ lens.label }}</span>
-          </label>
-        }
-      </div>
-    </div>
-  }
+          </div>
+        </div>
 
-  <div class="options">
-    <span class="lbl">Domain options · {{ prefs.activeNavId() }}</span>
-    <div class="option-row">
-      @for (opt of prefs.domainOptions(); track opt.id) {
-        <button
-          type="button"
-          class="coa-chip"
-          [class.active]="prefs.selectedOptions().includes(opt.id)"
-          (click)="prefs.toggleOption(opt.id)"
-        >
-          {{ opt.label }}
-        </button>
-      }
-    </div>
-  </div>
+        @if (prefs.activePack().lenses.length) {
+          <div class="lenses">
+            <span class="lbl">Lenses for {{ prefs.activePack().label }} (optional)</span>
+            <div class="lens-row">
+              @for (lens of prefs.activePack().lenses; track lens.id) {
+                <label class="lens">
+                  <p-checkbox
+                    [binary]="true"
+                    [ngModel]="prefs.selectedLenses().includes(lens.id)"
+                    (ngModelChange)="prefs.toggleLens(lens.id)"
+                  />
+                  <span>{{ lens.label }}</span>
+                </label>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="options">
+          <span class="lbl">Domain options · {{ prefs.activeNavId() }}</span>
+          <div class="option-row">
+            @for (opt of prefs.domainOptions(); track opt.id) {
+              <button
+                type="button"
+                class="coa-chip"
+                [class.active]="prefs.selectedOptions().includes(opt.id)"
+                (click)="prefs.toggleOption(opt.id)"
+              >
+                {{ opt.label }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </section>
 
   <div class="thread">
     @if (prefs.activeMessages().length === 0) {
       <div class="welcome">
         <h3>Ask the council</h3>
         <p>
-          Domain chips above shape the request. Effective settings appear in the right rail and are
-          sent as <code>ctx_data</code>.
+          Open <strong>Criteria</strong> above to set tone, lenses, and domain options. Your
+          conversation history stays here.
         </p>
       </div>
     }
