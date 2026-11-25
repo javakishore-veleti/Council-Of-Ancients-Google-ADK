@@ -250,6 +250,15 @@
   background: #fff;
 }
 
+.composer-input,
+:host ::ng-deep .composer-input.p-textarea,
+:host ::ng-deep textarea.composer-input {
+  min-height: 9.5rem;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  resize: vertical;
+}
+
 .composer-actions {
   display: flex;
   justify-content: space-between;
