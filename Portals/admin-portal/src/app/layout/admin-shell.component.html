@@ -1,0 +1,37 @@
+<div class="admin-shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div>
+        <div class="brand-name">Council of Ancients</div>
+        <div class="brand-sub">Admin</div>
+      </div>
+    </div>
+    <div class="top-meta">
+      <span class="env">Local</span>
+      <span class="hint">UI → Admin API → Knowledge API → DAG</span>
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="rail" aria-label="Admin navigation">
+      <p class="rail-label">Operations</p>
+      <nav>
+        @for (item of nav; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            class="rail-link"
+          >
+            <i [class]="'bi ' + item.icon" aria-hidden="true"></i>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <main class="canvas">
+      <router-outlet />
+    </main>
+  </div>
+</div>

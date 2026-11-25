@@ -1,0 +1,97 @@
+.page {
+  max-width: 72rem;
+}
+
+.page-head {
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--coa-copper);
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: clamp(1.55rem, 2vw + 0.6rem, 2rem);
+}
+
+.lede {
+  margin: 0.45rem 0 0;
+  color: var(--coa-muted);
+  max-width: 40rem;
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.15rem;
+}
+
+.stat {
+  background: #ffffff;
+  border: 1px solid var(--coa-line);
+  border-radius: var(--coa-radius);
+  padding: 1rem 1.1rem;
+}
+
+.stat .lbl {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--coa-copper);
+  margin-bottom: 0.35rem;
+}
+
+.stat strong {
+  display: block;
+  font-size: 1.15rem;
+  color: var(--coa-deep);
+  margin-bottom: 0.35rem;
+}
+
+.stat p {
+  margin: 0;
+  color: var(--coa-muted);
+  font-size: 0.92rem;
+}
+
+.cta-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--coa-radius);
+  background: var(--coa-mist);
+  border: 1px solid var(--coa-line);
+}
+
+.cta-card h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.2rem;
+}
+
+.cta-card p {
+  margin: 0;
+  color: var(--coa-muted);
+}
+
+:host ::ng-deep .p-button {
+  background: linear-gradient(90deg, #a3481c, var(--coa-copper)) !important;
+  border: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .stat-row {
+    grid-template-columns: 1fr;
+  }
+}

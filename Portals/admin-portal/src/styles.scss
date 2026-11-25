@@ -1,0 +1,101 @@
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'primeicons/primeicons.css';
+
+:root {
+  /* Professional ops chrome — warm ivory + ink + copper (not gray / black / purple) */
+  --coa-ink: #1a1410;
+  --coa-deep: #2a1f18;
+  --coa-copper: #c45c26;
+  --coa-copper-deep: #a3481c;
+  --coa-amber: #e0a045;
+  --coa-mist: #f0e6d8;
+  --coa-panel: #f7f1e8;
+  --coa-ivory: #fff8ee;
+  --coa-canvas: #faf6f0;
+  --coa-text: #1a1410;
+  --coa-muted: #5c4a3d;
+  --coa-line: #e0d4c4;
+  --coa-success: #2f6b4f;
+  --coa-danger: #b42318;
+  --coa-warn: #9a6b12;
+  --coa-radius: 12px;
+  --coa-font: 'Source Sans 3', system-ui, sans-serif;
+  --coa-rail: 15.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--coa-font);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--coa-text);
+  background: var(--coa-canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.display-font {
+  font-family: var(--coa-font);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--coa-deep);
+  line-height: 1.35;
+}
+
+a {
+  color: var(--coa-copper);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--coa-copper-deep);
+}
+
+.coa-chip {
+  border: 1px solid var(--coa-line);
+  background: var(--coa-ivory);
+  color: var(--coa-deep);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.coa-chip.active {
+  background: var(--coa-copper);
+  border-color: var(--coa-copper);
+  color: var(--coa-ivory);
+}
+
+.coa-chip.queued {
+  color: var(--coa-warn);
+  border-color: color-mix(in srgb, var(--coa-warn) 35%, var(--coa-line));
+}
+
+.coa-chip.running {
+  color: var(--coa-copper-deep);
+  border-color: color-mix(in srgb, var(--coa-copper) 40%, var(--coa-line));
+}
+
+.coa-chip.fetched {
+  color: var(--coa-success);
+  border-color: color-mix(in srgb, var(--coa-success) 35%, var(--coa-line));
+}
+
+.coa-chip.failed {
+  color: var(--coa-danger);
+  border-color: color-mix(in srgb, var(--coa-danger) 35%, var(--coa-line));
+}

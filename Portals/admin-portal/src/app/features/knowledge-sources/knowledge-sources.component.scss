@@ -1,0 +1,115 @@
+.page {
+  max-width: 72rem;
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--coa-copper);
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: clamp(1.55rem, 2vw + 0.6rem, 2rem);
+}
+
+.lede {
+  margin: 0.4rem 0 0;
+  color: var(--coa-muted);
+  max-width: 38rem;
+}
+
+.toolbar {
+  margin-bottom: 0.85rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  max-width: 28rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--coa-line);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.search i {
+  color: var(--coa-muted);
+}
+
+.search input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  color: var(--coa-deep);
+}
+
+.notice {
+  margin: 0 0 0.85rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  background: var(--coa-mist);
+  border: 1px solid var(--coa-line);
+  color: var(--coa-deep);
+  font-size: 0.92rem;
+}
+
+.table-wrap {
+  background: #ffffff;
+  border: 1px solid var(--coa-line);
+  border-radius: var(--coa-radius);
+  overflow: hidden;
+}
+
+.name {
+  font-weight: 700;
+  color: var(--coa-deep);
+}
+
+.cite {
+  font-size: 0.82rem;
+  color: var(--coa-muted);
+  margin-top: 0.15rem;
+}
+
+.actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .admin-table .p-datatable-thead > tr > th {
+  background: var(--coa-panel) !important;
+  color: var(--coa-deep) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--coa-line) !important;
+}
+
+:host ::ng-deep .admin-table .p-datatable-tbody > tr > td {
+  background: #ffffff !important;
+  border-color: var(--coa-line) !important;
+}
+
+:host ::ng-deep .p-button:not(.p-button-outlined) {
+  background: linear-gradient(90deg, #a3481c, var(--coa-copper)) !important;
+  border: 0 !important;
+}
+
+:host ::ng-deep .p-button-outlined {
+  color: var(--coa-copper) !important;
+  border-color: color-mix(in srgb, var(--coa-copper) 45%, var(--coa-line)) !important;
+}

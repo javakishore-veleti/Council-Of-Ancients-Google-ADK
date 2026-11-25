@@ -7,15 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "local:containers:all:start": "bash CICD/Local/docker-all-up.sh",
     "local:containers:all:start:observability": "bash CICD/Local/docker-all-up.sh --observability",
-    "local:containers:all:stop": "bash CICD/Local/docker-all-down.sh",
+    "local:containers:all:stop": "bash CICD/Local/docker-all-down.sh --volumes",
     "local:containers:all:status": "bash CICD/Local/docker-all-status.sh",
     "local:middleware:api:all:start": "bash CICD/Local/middleware-api-all-up.sh",
-    "local:middleware:api:all:stop": "bash CICD/Local/middleware-api-all-down.sh",
+    "local:middleware:api:all:stop": "bash CICD/Local/middleware-api-all-down.sh --volumes",
     "local:middleware:api:all:status": "bash CICD/Local/middleware-api-all-status.sh",
     "local:portals:all:start": "bash CICD/Local/portals-all-up.sh",
     "local:portals:all:stop": "bash CICD/Local/portals-all-down.sh",
     "local:portals:all:status": "bash CICD/Local/portals-all-status.sh",
-    "local:portals:all:build": "npm --prefix Portals/customer-portal run build"
+    "local:portals:all:build": "bash CICD/Local/portals-all-build.sh"
   },
   "author": "",
   "license": "ISC"

@@ -1,0 +1,40 @@
+<section class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Operations</p>
+      <h1 class="display-font">Dashboard</h1>
+      <p class="lede">
+        Admin never talks to Airflow or Knowledge API directly — this UI calls
+        <strong>coa_admin_api</strong>, which fans out asynchronously.
+      </p>
+    </div>
+  </header>
+
+  <div class="stat-row">
+    <article class="stat">
+      <span class="lbl">Knowledge sources</span>
+      <strong>Registry ready</strong>
+      <p>CRUD lives on Knowledge API; Admin proxies it.</p>
+    </article>
+    <article class="stat">
+      <span class="lbl">Ingest path</span>
+      <strong>Async DAG</strong>
+      <p>Download → queued → DAG callbacks started/completed.</p>
+    </article>
+    <article class="stat">
+      <span class="lbl">Next wire-up</span>
+      <strong>coa_admin_api</strong>
+      <p>Scaffold the BFF microservice after this shell lands.</p>
+    </article>
+  </div>
+
+  <div class="cta-card">
+    <div>
+      <h2 class="display-font">Knowledge sources</h2>
+      <p>Select a source and queue a download job through Admin API.</p>
+    </div>
+    <a routerLink="/knowledge/sources">
+      <button pButton type="button" label="Open sources" icon="pi pi-arrow-right" iconPos="right"></button>
+    </a>
+  </div>
+</section>

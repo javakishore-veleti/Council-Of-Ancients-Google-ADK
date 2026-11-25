@@ -1,0 +1,86 @@
+<section class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Knowledge Bank</p>
+      <h1 class="display-font">Sources</h1>
+      <p class="lede">
+        Select a source and queue download. This UI only calls Admin API — never Airflow or Knowledge API.
+      </p>
+    </div>
+    <button
+      pButton
+      type="button"
+      label="Refresh"
+      icon="pi pi-refresh"
+      class="p-button-outlined"
+      (click)="reload()"
+    ></button>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <i class="pi pi-search" aria-hidden="true"></i>
+      <input
+        pInputText
+        type="search"
+        [(ngModel)]="query"
+        placeholder="Search name, category, or key…"
+        aria-label="Search sources"
+      />
+    </div>
+  </div>
+
+  @if (notice()) {
+    <p class="notice">{{ notice() }}</p>
+  }
+
+  <div class="table-wrap">
+    <p-table
+      [value]="filtered()"
+      [loading]="loading()"
+      styleClass="p-datatable-sm admin-table"
+      [rows]="10"
+      [paginator]="filtered().length > 10"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>License</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>
+            <div class="name">{{ row.name }}</div>
+            <div class="cite">{{ row.citation_name }}</div>
+          </td>
+          <td>{{ row.category_name }}</td>
+          <td>{{ row.license || '—' }}</td>
+          <td>
+            <span class="coa-chip" [class]="row.status">{{ row.status }}</span>
+          </td>
+          <td class="actions">
+            <button
+              pButton
+              type="button"
+              label="Download"
+              icon="pi pi-cloud-download"
+              class="p-button-sm"
+              [loading]="busyId() === row.id"
+              [disabled]="busyId() === row.id || row.status === 'running' || row.status === 'queued'"
+              (click)="download(row)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">No sources match.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>

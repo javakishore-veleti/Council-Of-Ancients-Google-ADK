@@ -60,8 +60,18 @@ Angular app lives under `Portals/`. v0: Architecture chamber live; other topics 
 | `coa_agents_api` | Council `POST /v1/council/deliberate` | `:8090` | `agents` |
 | `coa_observability_api` | LLMOps ingest | `:8088` | `observability` |
 | `coa_knowledge_api` | Knowledge Bank: `knowledge_category` + `knowledge_source` CRUD (indexing registry) | `:8093` | `knowledge` |
+| `coa_admin_api` | Admin BFF — only backend the Admin UI calls; proxies Knowledge + triggers ingest async | `:8094` | `admin` |
 
-Existing agents/obs APIs stay; auth, customer, and knowledge are **new** peers under `Middleware/API-Services/`. Preferences do **not** live inside `coa_agents_api`.
+Existing agents/obs APIs stay; auth, customer, knowledge, and admin are **new** peers under `Middleware/API-Services/`. Preferences do **not** live inside `coa_agents_api`.
+
+### Admin ingest path (locked)
+
+```text
+Admin UI → coa_admin_api → coa_knowledge_api (async download) → Airflow DAG
+DAG → knowledge_api callbacks (started / completed / failed)
+```
+
+Admin UI never talks to Airflow or Knowledge API directly.
 
 ### Knowledge Bank tables (locked)
 

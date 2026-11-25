@@ -85,6 +85,7 @@ Foreground agents-only (debug): `./agents-api-up.sh`
 ### Stop
 
 ```bash
-./docker-all-down.sh
-# wipe volumes: ./docker-all-down.sh --volumes
+./docker-all-down.sh --volumes
+# keep data: ./docker-all-down.sh --keep-volumes
+# npm run local:containers:all:stop / local:middleware:api:all:stop always pass --volumes
 ```

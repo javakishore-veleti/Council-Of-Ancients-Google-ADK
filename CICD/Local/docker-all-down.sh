@@ -13,10 +13,12 @@ REMOVE_VOLUMES=0
 
 usage() {
   cat <<'EOF'
-Usage: ./docker-all-down.sh [--volumes] [-h|--help]
+Usage: ./docker-all-down.sh [--volumes] [--keep-volumes] [-h|--help]
 
-  --volumes   Also remove named volumes (Redis/Postgres/observability data).
-  -h, --help  Show this help.
+  --volumes        Remove named volumes (Redis/Postgres/observability data).
+                   This is what npm run local:containers:all:stop uses.
+  --keep-volumes   Stop containers but keep named volumes.
+  -h, --help       Show this help.
 EOF
 }
 
@@ -24,6 +26,9 @@ for arg in "$@"; do
   case "${arg}" in
     --volumes)
       REMOVE_VOLUMES=1
+      ;;
+    --keep-volumes)
+      REMOVE_VOLUMES=0
       ;;
     -h|--help)
       usage

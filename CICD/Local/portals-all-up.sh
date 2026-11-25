@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start all Portals Angular apps (customer now; admin later).
+# Start all Portals Angular apps (customer :4200, admin :4201).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -11,7 +11,7 @@ mkdir -p "${RUN_DIR}"
 # name|relative_path|port|npm_script
 PORTALS=(
   "customer|customer-portal|4200|start"
-  # "admin|admin-portal|4201|start"   # enable when Portals/admin-portal exists
+  "admin|admin-portal|4201|start"
 )
 
 need_npm_install() {
