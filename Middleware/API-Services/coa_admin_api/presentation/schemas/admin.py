@@ -95,6 +95,7 @@ class WfExecLogOut(BaseModel):
     updated_on: datetime
     error_message: str | None = None
     detail: str | None = None
+    exec_config_json: dict = Field(default_factory=dict)
 
     model_config = {"from_attributes": True}
 

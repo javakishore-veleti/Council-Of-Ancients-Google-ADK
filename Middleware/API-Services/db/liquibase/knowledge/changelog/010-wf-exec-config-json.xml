@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-015-wf-exec-config-json" author="javakishore-veleti">
+    <comment>
+      Frozen run config: inputs + from/to app endpoint snapshots for Ops detail.
+    </comment>
+    <sql>
+      ALTER TABLE knowledge.wf_exec_log
+        ADD COLUMN IF NOT EXISTS exec_config_json JSONB NOT NULL DEFAULT '{}'::jsonb;
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

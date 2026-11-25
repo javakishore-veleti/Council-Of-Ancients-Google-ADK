@@ -58,59 +58,100 @@
       </section>
     }
 
-    <section class="block">
-      <h2>From</h2>
-      @if (downloadFrom(); as from) {
-        <div class="ep-card">
-          <a [routerLink]="['/app-endpoints', from.id]" class="ep-name">{{ from.name }}</a>
-          <div class="ep-meta">
-            <span class="adm-status">{{ kindLabel[from.kind] }}</span>
-            <span class="mono">{{ from.provider }}</span>
-            <span class="mono break">{{ from.endpoint_url }}</span>
-          </div>
-        </div>
-      } @else {
-        <p class="muted">—</p>
-      }
-    </section>
-
-    <section class="block">
-      <h2>To ({{ storeTo().length }})</h2>
-      @if (storeTo().length) {
-        <ul class="ep-list">
-          @for (ep of storeTo(); track ep.id) {
-            <li class="ep-card">
-              <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
-              <div class="ep-meta">
-                <span class="adm-status">{{ kindLabel[ep.kind] }}</span>
-                <span class="mono">{{ ep.provider }}</span>
-                <span class="mono break">{{ ep.endpoint_url }}</span>
-                <span class="mono">{{ ep.resource }}</span>
-              </div>
-            </li>
-          }
-        </ul>
-      } @else {
-        <p class="muted">—</p>
-      }
-    </section>
-
-    @if (techStack().length) {
+    @if (inputs().length) {
       <section class="block">
-        <h2>Tech stack ({{ techStack().length }})</h2>
-        <ul class="ep-list">
-          @for (ep of techStack(); track ep.id) {
-            <li class="ep-card">
-              <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
-              <div class="ep-meta">
-                <span class="adm-status">{{ kindLabel[ep.kind] }}</span>
-                <span class="mono">{{ ep.provider }}</span>
-                <span class="mono break">{{ ep.endpoint_url }}</span>
-              </div>
-            </li>
+        <h2>Inputs</h2>
+        <dl class="kv inputs-kv">
+          @for (item of inputs(); track item.key) {
+            <div>
+              <dt>{{ item.key }}</dt>
+              <dd class="mono break">{{ item.value || '—' }}</dd>
+            </div>
           }
-        </ul>
+        </dl>
       </section>
     }
+
+    <p-accordion [multiple]="true" [value]="['from', 'to']">
+      <p-accordion-panel value="from">
+        <p-accordion-header>From — {{ fromCount() }}</p-accordion-header>
+        <p-accordion-content>
+          @if (fromEndpoints().length) {
+            <p-table
+              [value]="fromEndpoints()"
+              [paginator]="fromEndpoints().length > pageSize"
+              [rows]="pageSize"
+              [rowsPerPageOptions]="pageSizeOptions"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first}–{last} of {totalRecords}"
+              styleClass="p-datatable-sm ep-table"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Name</th>
+                  <th>Kind</th>
+                  <th>Provider</th>
+                  <th>URL</th>
+                  <th>Resource</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-ep>
+                <tr>
+                  <td>
+                    <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
+                  </td>
+                  <td>{{ labelFor(ep.kind) }}</td>
+                  <td class="mono">{{ ep.provider }}</td>
+                  <td class="mono break">{{ ep.endpoint_url }}</td>
+                  <td class="mono">{{ ep.resource || '—' }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          } @else {
+            <p class="muted">No from endpoints.</p>
+          }
+        </p-accordion-content>
+      </p-accordion-panel>
+
+      <p-accordion-panel value="to">
+        <p-accordion-header>To — {{ toCount() }}</p-accordion-header>
+        <p-accordion-content>
+          @if (toEndpoints().length) {
+            <p-table
+              [value]="toEndpoints()"
+              [paginator]="toEndpoints().length > pageSize"
+              [rows]="pageSize"
+              [rowsPerPageOptions]="pageSizeOptions"
+              [showCurrentPageReport]="true"
+              currentPageReportTemplate="{first}–{last} of {totalRecords}"
+              styleClass="p-datatable-sm ep-table"
+            >
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Name</th>
+                  <th>Kind</th>
+                  <th>Provider</th>
+                  <th>URL</th>
+                  <th>Resource</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-ep>
+                <tr>
+                  <td>
+                    <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
+                  </td>
+                  <td>{{ labelFor(ep.kind) }}</td>
+                  <td class="mono">{{ ep.provider }}</td>
+                  <td class="mono break">{{ ep.endpoint_url }}</td>
+                  <td class="mono">{{ ep.resource || '—' }}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          } @else {
+            <p class="muted">No to endpoints.</p>
+          }
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
   }
 </section>

@@ -117,22 +117,6 @@
   color: var(--adm-muted);
 }
 
-.ep-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-  gap: 0.65rem;
-}
-
-.ep-card {
-  border: 1px solid var(--adm-line);
-  border-radius: var(--adm-radius);
-  background: var(--adm-panel);
-  padding: 0.7rem 0.85rem;
-}
-
 .ep-name {
   font-weight: 600;
   color: var(--adm-ink);
@@ -142,13 +126,16 @@
   color: var(--adm-accent-deep);
 }
 
-.ep-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem 0.75rem;
-  margin-top: 0.4rem;
-  color: var(--adm-muted);
-  font-size: 0.82rem;
+.inputs-kv {
+  margin-bottom: 0;
+}
+
+:host ::ng-deep .ep-table {
+  font-size: 0.85rem;
+}
+
+:host ::ng-deep .ep-table .p-datatable-tbody > tr > td {
+  vertical-align: top;
 }
 
 @media (max-width: 800px) {

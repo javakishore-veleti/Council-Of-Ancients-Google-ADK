@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import json
 from typing import Any
 from uuid import UUID
+
+from psycopg.types.json import Jsonb
 
 from coa_admin_api.domain.errors import NotFoundError
 from coa_admin_api.domain.models import WfExecLog
@@ -10,7 +13,7 @@ from coa_admin_api.infrastructure.dao.db import connection
 _SELECT = """
     SELECT id, source_id, wf_id, engine, external_run_id, status,
            download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
-           started_at, finished_at, error_message, detail,
+           started_at, finished_at, error_message, detail, exec_config_json,
            created_at AS created_on, updated_at AS updated_on
     FROM knowledge.wf_exec_log
 """
@@ -18,7 +21,7 @@ _SELECT = """
 _RETURNING = """
     id, source_id, wf_id, engine, external_run_id, status,
     download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
-    started_at, finished_at, error_message, detail,
+    started_at, finished_at, error_message, detail, exec_config_json,
     created_at AS created_on, updated_at AS updated_on
 """
 
@@ -27,6 +30,20 @@ def _uuids(v: Any) -> list[UUID]:
     if not v:
         return []
     return [x if isinstance(x, UUID) else UUID(str(x)) for x in v]
+
+
+def _config(v: Any) -> dict[str, Any]:
+    if v is None:
+        return {}
+    if isinstance(v, dict):
+        return v
+    if isinstance(v, str):
+        try:
+            parsed = json.loads(v)
+            return parsed if isinstance(parsed, dict) else {}
+        except json.JSONDecodeError:
+            return {}
+    return {}
 
 
 def _row(r: dict[str, Any]) -> WfExecLog:
@@ -46,6 +63,7 @@ def _row(r: dict[str, Any]) -> WfExecLog:
         updated_on=r["updated_on"],
         error_message=r.get("error_message"),
         detail=r.get("detail"),
+        exec_config_json=_config(r.get("exec_config_json")),
     )
 
 
@@ -74,6 +92,7 @@ class WfExecDao:
         download_from_endpoint_id: UUID | None,
         store_to_endpoint_ids: list[UUID],
         tech_stack_endpoint_ids: list[UUID],
+        exec_config_json: dict[str, Any] | None = None,
         detail: str | None = None,
     ) -> WfExecLog:
         with connection() as conn:
@@ -82,8 +101,8 @@ class WfExecDao:
                 INSERT INTO knowledge.wf_exec_log (
                   source_id, wf_id, engine, status,
                   download_from_endpoint_id, store_to_endpoint_ids, tech_stack_endpoint_ids,
-                  detail
-                ) VALUES (%s, %s, %s, 'queued', %s, %s, %s, %s)
+                  exec_config_json, detail
+                ) VALUES (%s, %s, %s, 'queued', %s, %s, %s, %s, %s)
                 RETURNING {_RETURNING}
                 """,
                 (
@@ -93,6 +112,7 @@ class WfExecDao:
                     download_from_endpoint_id,
                     store_to_endpoint_ids,
                     tech_stack_endpoint_ids,
+                    Jsonb(exec_config_json or {}),
                     detail
                     or "Created by Admin UI Download; waiting for facade workflow pickup.",
                 ),

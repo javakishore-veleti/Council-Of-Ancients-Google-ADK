@@ -101,6 +101,29 @@ export type WfExecStatus =
   | 'failed'
   | 'cancelled';
 
+export interface WfExecConfigInput {
+  key: string;
+  value: string;
+}
+
+export interface WfExecConfigEndpoint {
+  id: string;
+  name: string;
+  kind: AppEndpointKind;
+  provider: string;
+  endpoint_url: string;
+  resource?: string;
+  region?: string | null;
+  status?: AppEndpointStatus;
+  notes?: string | null;
+}
+
+export interface WfExecConfigJson {
+  inputs?: WfExecConfigInput[];
+  from_endpoints?: WfExecConfigEndpoint[];
+  to_endpoints?: WfExecConfigEndpoint[];
+}
+
 export interface WfExecLog {
   id: string;
   source_id: string;
@@ -117,6 +140,7 @@ export interface WfExecLog {
   updated_on: string;
   error_message?: string;
   detail?: string;
+  exec_config_json?: WfExecConfigJson;
 }
 
 export interface DownloadJobResponse {

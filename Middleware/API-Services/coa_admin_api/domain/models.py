@@ -76,3 +76,4 @@ class WfExecLog:
     wf_id: UUID | None = None
     error_message: str | None = None
     detail: str | None = None
+    exec_config_json: dict[str, Any] = field(default_factory=dict)

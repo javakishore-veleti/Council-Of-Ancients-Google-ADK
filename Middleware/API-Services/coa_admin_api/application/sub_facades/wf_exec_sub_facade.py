@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Any
 from uuid import UUID
 
 from coa_admin_api.domain.models import WfExecLog
@@ -25,6 +26,7 @@ class WfExecSubFacade:
         download_from_endpoint_id: UUID | None,
         store_to_endpoint_ids: list[UUID],
         tech_stack_endpoint_ids: list[UUID],
+        exec_config_json: dict[str, Any] | None = None,
     ) -> WfExecLog:
         return self._dao.create_queued(
             source_id=source_id,
@@ -33,6 +35,7 @@ class WfExecSubFacade:
             download_from_endpoint_id=download_from_endpoint_id,
             store_to_endpoint_ids=store_to_endpoint_ids,
             tech_stack_endpoint_ids=tech_stack_endpoint_ids,
+            exec_config_json=exec_config_json,
         )
 
     def patch(self, exec_id: UUID, **kwargs) -> WfExecLog:

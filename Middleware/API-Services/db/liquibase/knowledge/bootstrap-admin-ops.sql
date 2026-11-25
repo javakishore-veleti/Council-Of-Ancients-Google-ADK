@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS knowledge.wf_exec_log (
   finished_at TIMESTAMPTZ,
   error_message TEXT,
   detail TEXT,
+  exec_config_json JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   CONSTRAINT ck_wf_engine CHECK (engine IN ('airflow', 'step_functions', 'local')),

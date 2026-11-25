@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Any
 from uuid import UUID
 
 from coa_admin_api.application.sub_facades.endpoint_sub_facade import EndpointSubFacade
@@ -8,9 +9,23 @@ from coa_admin_api.application.sub_facades.wf_exec_sub_facade import WfExecSubFa
 from coa_admin_api.application.sub_facades.workflow_sub_facade import WorkflowSubFacade
 from coa_admin_api.application.tasks.base import BaseAdminTask
 from coa_admin_api.domain.errors import ValidationError
-from coa_admin_api.domain.models import AdminKnowledgeSource, WfExecLog
+from coa_admin_api.domain.models import AdminKnowledgeSource, AppEndpoint, WfExecLog
 
 DEFAULT_FACADE_WORKFLOW = "kb_ingest_facade"
+
+
+def _endpoint_snapshot(ep: AppEndpoint) -> dict[str, Any]:
+    return {
+        "id": str(ep.id),
+        "name": ep.name,
+        "kind": ep.kind,
+        "provider": ep.provider,
+        "endpoint_url": ep.endpoint_url,
+        "resource": ep.resource,
+        "region": ep.region,
+        "status": ep.status,
+        "notes": ep.notes,
+    }
 
 
 class SourceOpsTask(BaseAdminTask):
@@ -60,6 +75,25 @@ class SourceOpsTask(BaseAdminTask):
         if not store_to:
             raise ValidationError("no_active_store_targets")
 
+        from_eps = []
+        if download_from and download_from in by_id:
+            from_eps.append(_endpoint_snapshot(by_id[download_from]))
+        to_eps = [_endpoint_snapshot(by_id[eid]) for eid in store_to if eid in by_id]
+
+        exec_config_json: dict[str, Any] = {
+            "inputs": [
+                {"key": "source_id", "value": str(source_id)},
+                {"key": "source_name", "value": src.name},
+                {"key": "url", "value": src.url or ""},
+                {"key": "license", "value": src.license or ""},
+                {"key": "workflow_id", "value": str(workflow.id)},
+                {"key": "workflow_name", "value": workflow.name},
+                {"key": "engine", "value": workflow.engine},
+            ],
+            "from_endpoints": from_eps,
+            "to_endpoints": to_eps,
+        }
+
         log = self._wf.create_queued(
             source_id=source_id,
             wf_id=workflow.id,
@@ -67,6 +101,7 @@ class SourceOpsTask(BaseAdminTask):
             download_from_endpoint_id=download_from,
             store_to_endpoint_ids=store_to,
             tech_stack_endpoint_ids=[],
+            exec_config_json=exec_config_json,
         )
         self._sources.set_status(source_id, "queued")
         return log, self._sources.get(source_id)
