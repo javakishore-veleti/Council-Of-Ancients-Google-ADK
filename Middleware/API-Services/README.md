@@ -4,6 +4,13 @@ FastAPI / ADK runtime services that expose Council agents to portals and other c
 
 | Service | Path | Role |
 |---------|------|------|
+| **coa_agents_api** | [`coa_agents_api/`](coa_agents_api/) | Council deliberate API (`POST /v1/council/deliberate`, operationId `deliberate`) |
 | **coa_observability_api** | [`coa_observability_api/`](coa_observability_api/) | Async observability ingest (`POST /v1/obs/feed`, operationId `ingest_obs_feed`) |
 
-See [`coa_observability_api/README.md`](coa_observability_api/README.md) for run instructions, task toggles (`OBS_TASK_EMIT_*`), and sample curl.
+## Local run
+
+```bash
+npm run local:containers:all:start:observability   # obs tools + coa_observability_api :8088
+npm run local:apis:agents:start                    # coa_agents_api :8090
+# or both: npm run local:apis:all:start
+```

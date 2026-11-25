@@ -78,10 +78,11 @@ What the Facilitator’s lens means here:
 |------|------|
 | `Middleware/Agents/` | ADK agents (Facilitator + counselors) |
 | `Middleware/API-Services/` | FastAPI / ADK runtime APIs |
+| `Middleware/API-Services/coa_agents_api/` | Council deliberate API (`POST /v1/council/deliberate`) |
+| `Middleware/API-Services/coa_observability_api/` | Observability ingest API + plugin fan-out |
 | `Portals/` | Angular portals |
 | `CICD/Local/` | Local Docker infra (Redis, Jaeger, OTEL; optional Postgres + observability) |
 | `Middleware/Observability/` | Thin LLMOps helpers → ObservabilityFacade |
-| `Middleware/API-Services/coa_observability_api/` | Observability ingest API + plugin fan-out |
 | `CICD/GCP/` | Scripts + templates used by the GCP GitHub Actions |
 | `.github/workflows/` | Manual GCP setup / destroy workflows |
 | [`HandsOn_GCP_Agents.md`](HandsOn_GCP_Agents.md) | Step-by-step coding lab (type the snippets yourself) |
@@ -142,7 +143,13 @@ npm run local:containers:all:start -- --postgres
 # AIOps / LLMOps / DataOps: Prometheus + Grafana + Phoenix + Loki
 npm run local:containers:all:start:observability
 # → Prometheus, Grafana, Phoenix, Loki, + coa_observability_api (:8088)
-# or: ./CICD/Local/docker-all-up.sh --observability
+
+# Agents API (Facilitator + counselors; needs GCP/.env)
+npm run local:apis:agents:start
+# → coa_agents_api :8090  (POST /v1/council/deliberate)
+
+# Obs stack + agents API
+npm run local:apis:all:start
 
 npm run local:containers:all:status
 npm run local:containers:all:stop

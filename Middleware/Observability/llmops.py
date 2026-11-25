@@ -165,23 +165,58 @@ def record_llm_call(metrics: LLMCallMetrics) -> float:
         "cost_usd": cost,
     }
 
+    # Prefer HTTP ingest into coa_observability_api container so plugins/metrics
+    # live in one place. Fall back to in-process facade when URL unset/unreachable.
+    obs_api = (os.getenv("COA_OBS_API_URL") or "http://localhost:8088").rstrip("/")
+    posted = False
     try:
-        facade = _get_facade()
-        from coa_observability_api.domain.models import ObsFeedEvent
+        import json
+        import urllib.error
+        import urllib.request
 
-        event = ObsFeedEvent(
-            ingest_id=str(uuid.uuid4()),
-            session_id=session_id,
-            ctx_data={"obs_data": obs_data},
-            obs_data=obs_data,
+        body = json.dumps(
+            {
+                "session_id": session_id,
+                "ctx_data": {
+                    "service": os.getenv("OTEL_SERVICE_NAME", "coa_agents_api"),
+                    "agent": metrics.agent,
+                    "wave": wave,
+                    "obs_data": obs_data,
+                },
+            }
+        ).encode("utf-8")
+        req = urllib.request.Request(
+            f"{obs_api}/v1/obs/feed",
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
         )
-        facade.emit_sync(event)
+        with urllib.request.urlopen(req, timeout=2.0) as resp:
+            posted = 200 <= getattr(resp, "status", 0) < 300
     except Exception:
-        logger.exception(
-            "record_llm_call facade soft-fail agent=%s model=%s",
-            metrics.agent,
-            metrics.model,
+        logger.debug(
+            "record_llm_call HTTP ingest soft-fail; trying in-process facade",
+            exc_info=True,
         )
+
+    if not posted:
+        try:
+            facade = _get_facade()
+            from coa_observability_api.domain.models import ObsFeedEvent
+
+            event = ObsFeedEvent(
+                ingest_id=str(uuid.uuid4()),
+                session_id=session_id,
+                ctx_data={"obs_data": obs_data},
+                obs_data=obs_data,
+            )
+            facade.emit_sync(event)
+        except Exception:
+            logger.exception(
+                "record_llm_call facade soft-fail agent=%s model=%s",
+                metrics.agent,
+                metrics.model,
+            )
 
     logger.info(
         "llm_call agent=%s model=%s status=%s wave=%s prompt_tokens=%s "
