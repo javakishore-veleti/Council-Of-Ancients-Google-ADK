@@ -1,89 +1,282 @@
-# Product Ideas — Council of Ancients
+# Product Ideas — Pluggable KB Packs & Customer Portal
 
-Captured product and research directions for deepening counselor authenticity and knowledge. These are backlog ideas, not committed roadmap dates.
+Captured product and research directions. These are backlog ideas, not committed delivery dates.
 
-## Problem framing
+## Core verdict
 
-A multi-agent “council” demo can sound like Plato, Descartes, or Machiavelli from a **system prompt alone**. That is enough for chamber UX and structured disagreement. It is **not** enough if the product claim is that each counselor *reasons from* that thinker’s corpus.
+**Pluggable per-domain knowledge banks (KBs)** plus **domain-scoped portal chrome** — not one monolithic KB across all topics.
 
-Two different jobs get conflated:
-
-| Job | What it takes |
-|-----|----------------|
-| **Gather knowledge** | Source, license, curate, and chunk primary + trusted secondary texts per counselor |
-| **Build retrieval** | Index, retrieve, and (later) let the agent *decide* what to retrieve — plain RAG vs **agentic RAG** |
-
-Gathering the knowledge bank is one workstream. Wiring RAG / agentic RAG / MCP tools on top is another.
-
-## Persona design questions (product requirements)
-
-These questions should drive the knowledge + agent design:
-
-1. **How is “ancient knowledge” assembled?** Public-domain primary texts, curated excerpts, encyclopedic secondary notes, licensed e-books — and what is explicitly *out* of scope?
-2. **How is each persona built?** Prompt lens only, or prompt + grounded passages from that thinker’s works and method?
-3. **Are counselors book-grounded?** If yes, name the canon per seat (e.g. *Republic* / dialogues; *Meditations*; *The Prince* / *Discourses*) and keep retrieval **scoped per counselor** so voices do not cross-contaminate.
-4. **What does “act like Plato” require?** Not only tone: themes, argument patterns, and enough history of the corpus that openings and rebuttals can cite or paraphrase with discipline.
-5. **When is a short lens enough?** Casual greetings and meta “who is on the council?” can stay Facilitator-only with light prompts. Hard dilemmas should prefer grounded counsel once the bank exists.
-
-## Knowledge bank (idea)
-
-Proposed layout (implementation TBD):
+A single shared KB (entrepreneurship + SRE + fitness + architecture + …) confuses users and pollutes retrieval. Each **domain pack** is a plug: its own corpora, seats, prompts, and (later) RAG tools. The portal makes the active pack obvious so users always know which “brain” they are talking to.
 
 ```text
-Middleware/Knowledge/
-  plato/          # primary + curated secondary, chunked by work/theme
-  descartes/
-  machiavelli/
+Top menu bar     → domain packs (product lines)
+Left nav         → workflows within the active pack only
+Main canvas      → chamber chat bound to that pack’s Facilitator + KB
 ```
 
-Chunking should prefer **section + theme** (justice, methodical doubt, virtù, …) over opaque token windows. Metadata ideas: `counselor`, `work`, `theme`, `era`, `license`.
+Hard rules:
 
-Prefer **public-domain / clearly licensed** sources first (e.g. Project Gutenberg, Internet Classics-style archives); treat modern commentary as secondary and cite carefully.
+- No cross-pack retrieval.
+- Empty packs show **coming soon / KB not loaded** — never silently answer from another pack.
+- KB blobs never live in this **public** git repo (laptop or private S3 only).
 
-## RAG vs agentic RAG (idea)
+---
 
-| Mode | Behavior | Fit |
-|------|----------|-----|
-| **Plain RAG** | Embed user dilemma → top-k chunks → stuff into counselor context | Strong v1 once a bank exists |
-| **Agentic RAG** | Counselor (or Facilitator) **chooses** retrieval: which work, which theme, multi-hop queries via tools | Differentiator for “thinks like X,” not only “sounds like X” |
+## Portal top menu (build full chrome now)
 
-Agentic RAG pairs naturally with **MCP / ADK tools**, e.g. `search_plato`, `get_passage`, scoped per corpus so Machiavelli never pulls Republic chunks by accident.
+Visible from the start so product focus is not lost as packs land:
 
-Target flow once built:
+1. **Entrepreneurship**
+2. **Leadership**
+3. **SRE**
+4. **Fitness**
+5. **Software Architecture & Design**
+
+KB depth fills in behind each item over time. Nav discovery is complete early; content is progressive.
+
+### Progressive content rollout
+
+| Stage | Top menu | KB behind it |
+|-------|----------|--------------|
+| **v0** | All five menus visible | Only **Software Architecture & Design** loaded (laptop) |
+| **v1+** | Same menus | Enable Entrepreneurship, Leadership, SRE, Fitness as each KB lands |
+
+---
+
+## What to build first
+
+1. **Storage: laptop local first** (`KB_LOCAL_ROOT`), not S3.  
+2. **First KB: Software Architecture & Design** — dense technical corpora; faster useful chamber than a full SBA crawl.  
+3. Other packs next, same ingest pipeline.  
+4. Portal shell with all five top menus + left-nav configs; wire chamber only where `kbReady`.
+
+### Software Architecture & Design — source caution
+
+Named classics (GoF, many J2EE / architecture pattern books) are **copyrighted**. Do **not** ingest full book PDFs without a license.
+
+| Family | In KB as full text? | Approach |
+|--------|---------------------|----------|
+| Gang of Four *Design Patterns* | No | Cite / link; prompts may name patterns |
+| Commercial architecture / J2EE pattern books | No | Reading list only |
+| Microservices pattern books | Prefer not | Prefer open vendor docs |
+| Codd / relational theory books | Partial | Prefer open DB docs + OA |
+| **v0 open spines** | **Yes** | Microsoft Learn, Azure Architecture Center, AWS Architecture Center / Well-Architected (per ToS), PostgreSQL/MySQL/MariaDB docs, Jakarta EE docs (check license), OA architecture papers, relevant NIST/IT guidance |
+
+Subcats after download (examples): `architecture_styles`, `microservices`, `integration`, `data_modeling`, `enterprise_java`, `cloud_architectures`, `gof_style_patterns` (open explanations only).
+
+---
+
+## Starter left nav (per top menu)
+
+Shared spine (learn once):
+
+- Overview  
+- Chamber  
+- Sessions  
+- Knowledge (disabled until KB ready)  
+- Seats  
+- Guides (optional)
+
+### Entrepreneurship
+Overview · Chamber · Sessions · Plan & launch · Fund & grow · Knowledge · Seats (Vision / Capital / Execution)
+
+### Leadership
+Overview · Chamber · Sessions · People & culture · Decisions · Knowledge · Seats (People / Culture / Judgment)
+
+### SRE
+Overview · Chamber · Sessions · Reliability · Incidents & postmortems · Knowledge · Seats (Reliability / Capacity / Response)
+
+### Fitness
+Overview · Chamber · Sessions · Training · Nutrition & recovery · Knowledge · Seats (Training / Nutrition / Recovery) · **Disclaimer** (not medical advice)
+
+### Software Architecture & Design *(first KB)*
+Overview · Chamber · Sessions · Patterns · Architecture styles · Data & modeling · Knowledge · Seats (Patterns / Architecture / Data)
+
+---
+
+## Chamber chat & context engineering
+
+Session chat: history panel + composer. Context for each turn:
 
 ```text
-Portal → coa_agents_api → Facilitator
-                            ├─ Plato + RAG/MCP (plato bank)
-                            ├─ Descartes + RAG/MCP (descartes bank)
-                            └─ Machiavelli + RAG/MCP (machiavelli bank)
+1. Pack system + Facilitator instructions
+2. Selected seats’ instructions
+3. Retrieved KB chunks (this pack + subcategory filters only)
+4. Session summary + last N turns
+5. User-selected domain options
+6. Current user message (+ optional attach)
 ```
 
-## Honest product positioning
+### Conversation kinds (by pack)
 
-Until the knowledge bank + retrieval path ships:
+| Pack | Example intents |
+|------|-----------------|
+| Software Architecture & Design | Pattern fit; design review; monolith vs microservices; data modeling |
+| Entrepreneurship | Idea validation; funding path; launch checklist; GTM vs build |
+| Leadership | People decision; culture vs delivery; conflict coaching |
+| SRE | SLO / error budget; incident review; capacity risk |
+| Fitness | Training split; recovery vs intensity (**disclaimer always on**) |
 
-- **Now:** Standing roles with strong **lens prompts** (ethics / doubt / power), Facilitator triage, parallel openings → rebuttals → synthesis.
-- **Next:** Per-ancient knowledge bank, then plain RAG, then agentic retrieval tools/MCP.
-- **Do not over-claim:** Avoid marketing language that implies full canonical mastery until retrieval is real and evaluated.
+Shared modes: Quick ask · Full council · Single seat · Compare seats.
 
-## Related product opportunities
+### Chat options — domain-specific (not generic engineering toolbar)
 
-Ideas that often come up when discussing this architecture (same pattern, different domains):
+Universal chrome only: **Send** · **New session** · **Cite sources** (if KB ready) · **Export**.  
+All other chips come from **active top menu + left nav**. Switching pack/nav swaps the option set; options must not leak across packs.
 
-- **Other councils** — C-suite lenses, scientific method seats, legal/ethics boards — same Facilitator + parallel specialists + synthesis shape.
-- **Eval harness** — “Would this answer be recognizable as that lens?” and “Did retrieval cite the right work/theme?”
-- **Citation UX in the portal** — Show which passage grounded an opening or rebuttal (builds trust vs pure roleplay).
-- **Fail-soft grounding** — If retrieval misses, counselor should hedge as “lens without passage” rather than invent citations.
+#### Software Architecture & Design
+| Left nav | Options |
+|----------|---------|
+| Patterns | Family (creational / structural / behavioral); fit constraint; compare 2 patterns |
+| Architecture styles | Style (monolith / modular monolith / microservices / event-driven / serverless); trade-off (latency / team topology / consistency) |
+| Data & modeling | Normalization vs access paths; consistency model; schema evolution |
+| Chamber / Overview | Full council vs single seat (Patterns / Architecture / Data) |
+| Knowledge | Subcategory browse filter only |
+
+#### Entrepreneurship
+| Left nav | Options |
+|----------|---------|
+| Plan & launch | Stage (idea / validate / launch); setup focus; risk lens |
+| Fund & grow | Capital path (bootstrapped / debt / equity); use-of-funds; milestone |
+| Chamber | Seats: Vision / Capital / Execution |
+
+#### Leadership
+| Left nav | Options |
+|----------|---------|
+| People & culture | Stakeholder (IC / manager / skip / exec); conflict type |
+| Decisions | Time horizon; reversible vs one-way door |
+| Chamber | Seats: People / Culture / Judgment |
+
+#### SRE
+| Left nav | Options |
+|----------|---------|
+| Reliability | SLO class; error-budget policy; customer impact |
+| Incidents & postmortems | Severity; phase (detect / mitigate / review) |
+| Chamber | Seats: Reliability / Capacity / Response |
+
+#### Fitness
+| Left nav | Options |
+|----------|---------|
+| Training | Goal (strength / endurance / mobility); experience level |
+| Nutrition & recovery | Time / equipment constraints — **no medical diagnosis** |
+| Chamber | Seats + mandatory disclaimer |
+
+History panel: rename/archive session, pin/copy/export, show sources, regenerate with different seat focus (later).
+
+---
+
+## Geographic scope
+
+**US-oriented authoritative sources first** for Entrepreneurship / Leadership / federal materials. Architecture pack may use major US-hosted open vendor docs (Microsoft Learn, AWS, etc.) under their ToS. Non-US gov portals later as locale packs.
+
+---
+
+## Authoritative sources only (no self-authored KB lore)
+
+The KB must be grounded in **authentic, citable sources**. Operator-written dilemma cards / playbooks are **not** KB corpus (UI scenarios can exist later without pretending to be the bank).
+
+### Entrepreneurship (US) — where to look
+
+| Source type | Where | Notes |
+|-------------|-------|--------|
+| Federal small-business guides | [SBA.gov](https://www.sba.gov) | Primary spine |
+| Federal innovation / R&D | NIST MEP, USPTO, NSF SBIR/STTR public pages | |
+| Commerce / labor stats | Census, BEA, BLS | Structured facts |
+| US open textbooks / OCW | OpenStax, Open Textbook Library, MIT OCW (open/CC only) | |
+| OA research | PMC, DOAJ, arXiv, SSRN when allowed | |
+| VC blogs | YC / a16z / First Round | **Not primary KB** unless license allows |
+
+**Priority:** SBA → NIST/USPTO/SBIR → Census/BLS/BEA → OpenStax/OCW → OA.
+
+#### How SBA provides content (not by year)
+
+SBA is a **living site by business lifecycle**, not yearly editions (2024/2025/2027 kits):
+
+1. Plan your business  
+2. Launch your business  
+3. Manage your business  
+4. Grow your business  
+
+Sitemap `post-sitemap*.xml` files are CMS URL batches, **not** year curricula. Ingest the Business Guide trees; store `fetched_at` / etag; subcategorize after download.
+
+### Leadership (US) — where to look
+
+| Source type | Where | Notes |
+|-------------|-------|--------|
+| Federal civilian leadership | OPM competencies / HR University public materials | |
+| Federal labor / management | DOL public guides | Not legal advice |
+| Public-release military doctrine | Army/DoD pubs stamped public release | Verify distribution |
+| Open textbooks / OCW / OA | OpenStax OB, MIT OCW open parts, PMC/DOAJ | |
+| HBS / HBR full text | Out of KB | Links only |
+
+**Priority:** OPM → DOL → public-release DoD/Army → OpenStax/OCW → OA.
+
+### Excluded from KB corpus
+
+- Self-authored playbooks / dilemma cards as “sources”  
+- Commercial bestsellers; HBR/WSJ/NYT full text  
+- Pirate “free PDF” sites  
+- Scraped Medium/Substack/VC blogs without explicit license  
+
+---
+
+## Ingest pipeline (local laptop → private S3)
+
+```text
+sources registry (url, license, domain, status)
+  → fetch (robots.txt, rate limit, ETag)
+  → license_gate (US gov PD, CC-*, explicit open; deny unknown/ARR)
+  → blob store (local FS or S3 — same keys)
+  → normalize (HTML/PDF → text)
+  → subcategorize (rules / classifier)
+  → chunk → embed → pack-scoped index (later)
+```
+
+### Storage (locked)
+
+KB content lives in **exactly one** of:
+
+1. **Laptop** — `KB_LOCAL_ROOT` (prefer **outside** the git clone)  
+2. **Private AWS S3** — `KB_BLOB_BACKEND=s3`, `KB_S3_BUCKET`
+
+```text
+kb/
+  raw/{domain}/{source_id}/original.*
+  raw/{domain}/{source_id}/meta.json
+  text/{domain}/{source_id}/content.md
+  derived/{domain}/{source_id}/subcats.json
+```
+
+### Public repo rule (locked)
+
+This repository is **public**. Never commit downloaded KB files. Commit only ingest code, allowlists, license-gate logic, and docs. Gitignore any accidental `data/kb/`.
+
+### Scale expectations
+
+- SBA/OPM-class feeds alone → **hundreds** of pages, not 10k URLs each.  
+- **Thousands–10k+** needs broad OA harvest under license gates.  
+- Early target: **thousands of chunks** per pack after section split.  
+- Program for scale; seed from authoritative allowlists; grow honestly.
+
+### Subcategorize after download
+
+Fetch into the domain first; label subcats offline (URL/title rules + optional classifier); re-tag without re-download; retrieve with `domain + subcategory` only.
+
+---
 
 ## Suggested build order
 
-1. Curate v0 corpora (public-domain) per counselor with licenses recorded.
-2. Chunk + embed + plain RAG tool per counselor.
-3. Wire tools into ADK counselors; keep Facilitator orchestration unchanged.
-4. Promote to agentic RAG (multi-query / theme routing) behind MCP or ADK tools.
-5. Portal citations + offline eval set of dilemmas.
+1. Document (this file) — done as living product IA.  
+2. Portal shell: five top menus + left-nav configs + coming-soon states.  
+3. Ingest v0: local blob store + license gate + Architecture allowlist.  
+4. Chamber options for Architecture left-nav sections.  
+5. Wire RAG retrieval pack-scoped.  
+6. Entrepreneurship (SBA) → Leadership → SRE → Fitness packs.  
+7. Optional S3 backend with same keys.
+
+---
 
 ## Notes
 
-- Observability (`coa_observability_api`) should eventually label retrieval hits (tokens, latency, corpus id) the same way LLM calls are labeled — so RAG cost and quality are measurable.
-- This file intentionally records **ideas and open questions**, not a promise of delivery order beyond the suggested build sequence above.
+- Observability (`coa_observability_api`) should later label retrieval hits (corpus id, subcategory, latency) like LLM calls.  
+- This file records **ideas and locked product decisions**, not a promise of implementation order beyond the suggested sequence above.
