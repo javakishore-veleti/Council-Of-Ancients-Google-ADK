@@ -5,64 +5,37 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
+  <!-- Raw SQL keeps FKs on knowledge.workflow (Liquibase addColumn FK can resolve public.*). -->
+
   <changeSet id="knowledge-008-workflow" author="javakishore-veleti">
-    <createTable schemaName="knowledge" tableName="workflow">
-      <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
-        <constraints primaryKey="true" nullable="false"/>
-      </column>
-      <column name="name" type="TEXT">
-        <constraints nullable="false" unique="true"/>
-      </column>
-      <column name="description" type="TEXT"/>
-      <column name="engine" type="TEXT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="external_ref" type="TEXT"/>
-      <column name="status" type="TEXT" defaultValue="active">
-        <constraints nullable="false"/>
-      </column>
-      <column name="meta" type="JSONB" defaultValueComputed="'{}'::jsonb">
-        <constraints nullable="false"/>
-      </column>
-      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
-        <constraints nullable="false"/>
-      </column>
-      <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
     <sql>
-      ALTER TABLE knowledge.workflow
-        ADD CONSTRAINT ck_workflow_status
-        CHECK (status IN ('active', 'draft', 'disabled'));
-      -- engine is open-ended (airflow, step_functions, emr, spring_batch, local, …)
+      CREATE TABLE knowledge.workflow (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name TEXT NOT NULL UNIQUE,
+        description TEXT,
+        engine TEXT NOT NULL,
+        external_ref TEXT,
+        status TEXT NOT NULL DEFAULT 'active',
+        meta JSONB NOT NULL DEFAULT '{}'::jsonb,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        CONSTRAINT ck_workflow_status CHECK (status IN ('active', 'draft', 'disabled'))
+      );
       CREATE INDEX ix_workflow_engine ON knowledge.workflow (engine);
     </sql>
   </changeSet>
 
   <changeSet id="knowledge-009-source-workflow-id" author="javakishore-veleti">
-    <addColumn schemaName="knowledge" tableName="knowledge_source">
-      <column name="workflow_id" type="UUID">
-        <constraints
-          foreignKeyName="fk_source_workflow"
-          referencedTableSchemaName="knowledge"
-          referencedTableName="workflow"
-          referencedColumnNames="id"/>
-      </column>
-    </addColumn>
+    <sql>
+      ALTER TABLE knowledge.knowledge_source
+        ADD COLUMN workflow_id UUID REFERENCES knowledge.workflow(id);
+    </sql>
   </changeSet>
 
   <changeSet id="knowledge-010-wf-exec-log-wf-id" author="javakishore-veleti">
-    <addColumn schemaName="knowledge" tableName="wf_exec_log">
-      <column name="wf_id" type="UUID">
-        <constraints
-          foreignKeyName="fk_wf_exec_workflow"
-          referencedTableSchemaName="knowledge"
-          referencedTableName="workflow"
-          referencedColumnNames="id"/>
-      </column>
-    </addColumn>
     <sql>
+      ALTER TABLE knowledge.wf_exec_log
+        ADD COLUMN wf_id UUID REFERENCES knowledge.workflow(id);
       ALTER TABLE knowledge.wf_exec_log DROP CONSTRAINT IF EXISTS ck_wf_engine;
       CREATE INDEX ix_wf_exec_log_wf_id ON knowledge.wf_exec_log (wf_id);
     </sql>

@@ -60,25 +60,9 @@ run_liquibase() {
     "${cmd}"
 }
 
-# If schema was applied earlier via bootstrap SQL (no Liquibase history), mark
-# current changelogs as ran so update only applies new changesets.
-schema_exists="$(psql "${DB_URL}" -tAc "SELECT to_regclass('knowledge.knowledge_source')" | tr -d '[:space:]')"
-lb_rows="$(psql "${DB_URL}" -tAc "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'databasechangelog'" | tr -d '[:space:]')"
-lb_count=0
-if [[ "${lb_rows}" == "1" ]]; then
-  lb_count="$(psql "${DB_URL}" -tAc "SELECT COUNT(*) FROM databasechangelog" | tr -d '[:space:]')"
-fi
-
-if [[ "${schema_exists}" == "knowledge.knowledge_source" && "${lb_count}" == "0" ]]; then
-  echo "Existing knowledge schema without Liquibase history — changelogSync…"
-  run_liquibase changelogSync
-fi
-
 echo "Liquibase update (knowledge changelog master)…"
-if ! run_liquibase update; then
-  echo "Liquibase update failed; attempting changelogSync + update (idempotent recovery)…" >&2
-  run_liquibase changelogSync
-  run_liquibase update
-fi
+run_liquibase update
 
 echo "Knowledge schema ready via Liquibase."
+psql "${DB_URL}" -c \
+  "SELECT id, filename, orderexecuted FROM databasechangelog ORDER BY orderexecuted;"
