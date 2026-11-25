@@ -1,15 +1,13 @@
 :host {
   display: block;
-  height: 100%;
-  min-height: 0;
+  min-height: calc(100vh - 10.5rem);
 }
 
 .chamber {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  height: 100%;
-  min-height: calc(100vh - 10rem);
+  min-height: calc(100vh - 10.5rem);
 }
 
 .chamber-head {

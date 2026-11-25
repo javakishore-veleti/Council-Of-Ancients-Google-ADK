@@ -1,9 +1,17 @@
+:host {
+  display: block;
+}
+
+.overview {
+  max-width: 56rem;
+}
+
 .hero-band {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.15fr 0.85fr;
   gap: 1rem;
-  align-items: stretch;
-  margin-bottom: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
 }
 
 .eyebrow {
@@ -33,12 +41,13 @@
 }
 
 .visual {
-  min-height: 220px;
-  border-radius: 16px;
+  min-height: 160px;
+  max-height: 200px;
+  border-radius: 14px;
   background-size: cover;
   background-position: center;
   box-shadow: var(--coa-shadow);
-  border: 3px solid color-mix(in srgb, var(--coa-amber) 55%, transparent);
+  border: 2px solid color-mix(in srgb, var(--coa-amber) 55%, transparent);
 }
 
 :host ::ng-deep .stat-card {

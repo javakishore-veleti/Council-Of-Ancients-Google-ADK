@@ -1,5 +1,12 @@
+:host {
+  display: block;
+  align-self: start;
+}
+
 .settings {
   max-width: 42rem;
+  margin: 0;
+  padding: 0;
 }
 
 .settings h2 {
