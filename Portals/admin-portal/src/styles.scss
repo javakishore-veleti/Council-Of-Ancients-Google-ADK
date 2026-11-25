@@ -2,25 +2,27 @@
 @import 'primeicons/primeicons.css';
 
 :root {
-  /* Professional ops chrome — warm ivory + ink + copper (not gray / black / purple) */
-  --coa-ink: #1a1410;
-  --coa-deep: #2a1f18;
-  --coa-copper: #c45c26;
-  --coa-copper-deep: #a3481c;
-  --coa-amber: #e0a045;
-  --coa-mist: #f0e6d8;
-  --coa-panel: #f7f1e8;
-  --coa-ivory: #fff8ee;
-  --coa-canvas: #faf6f0;
-  --coa-text: #1a1410;
-  --coa-muted: #5c4a3d;
-  --coa-line: #e0d4c4;
-  --coa-success: #2f6b4f;
-  --coa-danger: #b42318;
-  --coa-warn: #9a6b12;
-  --coa-radius: 12px;
-  --coa-font: 'Source Sans 3', system-ui, sans-serif;
-  --coa-rail: 15.5rem;
+  /* Ops console — cool ink + teal status. Not the customer chamber copper/ivory. */
+  --adm-ink: #0b1c2c;
+  --adm-deep: #13293d;
+  --adm-rail: #0f2436;
+  --adm-surface: #ffffff;
+  --adm-canvas: #e8eef3;
+  --adm-panel: #f3f7fa;
+  --adm-line: #c5d2de;
+  --adm-text: #13293d;
+  --adm-muted: #5a7084;
+  --adm-accent: #0d9488;
+  --adm-accent-deep: #0f766e;
+  --adm-accent-soft: #ccfbf1;
+  --adm-info: #2563eb;
+  --adm-success: #15803d;
+  --adm-warn: #b45309;
+  --adm-danger: #b91c1c;
+  --adm-radius: 6px;
+  --adm-font: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --adm-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --adm-rail-w: 14.5rem;
 }
 
 *,
@@ -36,66 +38,85 @@ body {
 }
 
 body {
-  font-family: var(--coa-font);
-  font-size: 1rem;
-  line-height: 1.5;
-  color: var(--coa-text);
-  background: var(--coa-canvas);
+  font-family: var(--adm-font);
+  font-size: 0.925rem;
+  line-height: 1.45;
+  color: var(--adm-text);
+  background: var(--adm-canvas);
   -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
-h3,
-.display-font {
-  font-family: var(--coa-font);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: var(--coa-deep);
-  line-height: 1.35;
+h3 {
+  font-family: var(--adm-font);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--adm-ink);
+  line-height: 1.25;
 }
 
 a {
-  color: var(--coa-copper);
+  color: var(--adm-accent-deep);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--coa-copper-deep);
+  color: var(--adm-accent);
 }
 
-.coa-chip {
-  border: 1px solid var(--coa-line);
-  background: var(--coa-ivory);
-  color: var(--coa-deep);
-  border-radius: 999px;
-  padding: 0.25rem 0.7rem;
-  font-size: 0.82rem;
-  font-weight: 600;
+.adm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--adm-line);
+  background: var(--adm-panel);
+  color: var(--adm-deep);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  font-family: var(--adm-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-.coa-chip.active {
-  background: var(--coa-copper);
-  border-color: var(--coa-copper);
-  color: var(--coa-ivory);
+.adm-status.active,
+.adm-status.fetched {
+  background: color-mix(in srgb, var(--adm-success) 12%, white);
+  border-color: color-mix(in srgb, var(--adm-success) 35%, var(--adm-line));
+  color: var(--adm-success);
 }
 
-.coa-chip.queued {
-  color: var(--coa-warn);
-  border-color: color-mix(in srgb, var(--coa-warn) 35%, var(--coa-line));
+.adm-status.draft,
+.adm-status.paused,
+.adm-status.archived {
+  background: color-mix(in srgb, var(--adm-muted) 12%, white);
+  border-color: color-mix(in srgb, var(--adm-muted) 30%, var(--adm-line));
+  color: var(--adm-muted);
 }
 
-.coa-chip.running {
-  color: var(--coa-copper-deep);
-  border-color: color-mix(in srgb, var(--coa-copper) 40%, var(--coa-line));
+.adm-status.disabled,
+.adm-status.denied {
+  background: color-mix(in srgb, var(--adm-danger) 10%, white);
+  border-color: color-mix(in srgb, var(--adm-danger) 30%, var(--adm-line));
+  color: var(--adm-danger);
 }
 
-.coa-chip.fetched {
-  color: var(--coa-success);
-  border-color: color-mix(in srgb, var(--coa-success) 35%, var(--coa-line));
+.adm-status.queued {
+  background: color-mix(in srgb, var(--adm-warn) 12%, white);
+  border-color: color-mix(in srgb, var(--adm-warn) 35%, var(--adm-line));
+  color: var(--adm-warn);
 }
 
-.coa-chip.failed {
-  color: var(--coa-danger);
-  border-color: color-mix(in srgb, var(--coa-danger) 35%, var(--coa-line));
+.adm-status.running {
+  background: color-mix(in srgb, var(--adm-accent) 14%, white);
+  border-color: color-mix(in srgb, var(--adm-accent) 40%, var(--adm-line));
+  color: var(--adm-accent-deep);
+}
+
+.adm-status.failed {
+  background: color-mix(in srgb, var(--adm-danger) 12%, white);
+  border-color: color-mix(in srgb, var(--adm-danger) 35%, var(--adm-line));
+  color: var(--adm-danger);
 }

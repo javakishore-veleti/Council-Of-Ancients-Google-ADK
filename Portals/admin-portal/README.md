@@ -2,9 +2,9 @@
 
 Angular 19 ops console for Knowledge Bank ingest. Port **`:4201`**.
 
-**Design:** warm ivory + ink + copper (same family as customer portal). Not gray, black, purple, or Creative-Tim-style dark dashboards.
+**Design:** ops console — cool ink rail, teal accents, IBM Plex. Deliberately *not* the customer chamber (copper/ivory), and not stock Berry/Breeze/MDB purple-gray templates.
 
-**Stack:** Angular 19 · PrimeNG · Bootstrap Icons · Source Sans 3
+**Stack:** Angular 19 · PrimeNG · Bootstrap Icons · IBM Plex Sans / Mono
 
 ## Architecture (locked)
 
@@ -34,4 +34,9 @@ Admin: http://127.0.0.1:4201 · Customer: http://127.0.0.1:4200
 | Route | Purpose |
 |-------|---------|
 | `/dashboard` | Ops overview |
-| `/knowledge/sources` | List sources · Download queues async job via Admin API |
+| `/knowledge/sources` | List sources (name, category, subcategory, ingest status, created on) |
+| `/knowledge/sources/:uuid` | Source detail — download from/store-to + tech-stack App Endpoints |
+| `/app-endpoints` | Configure dependency targets (Postgres, Chroma, pgvector, AWS/Azure/GCP, …) |
+| `/app-endpoints/:uuid` | Endpoint detail |
+
+Primary key is a **UUID string** (`id`) — used in URLs, FKs, and store-path leaves.

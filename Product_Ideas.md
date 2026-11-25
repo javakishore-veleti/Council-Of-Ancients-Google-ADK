@@ -73,6 +73,28 @@ DAG → knowledge_api callbacks (started / completed / failed)
 
 Admin UI never talks to Airflow or Knowledge API directly.
 
+### App Endpoints (locked)
+
+Configurable dependency targets — **not** vector-DB-only. Examples: local Postgres, local Chroma, local Postgres+pgvector, AWS / Azure / GCP services, HTTP origins, object stores, search, queues, or any other 3rd party.
+
+- Created/managed under **App Endpoints** in Admin.
+- A **knowledge source** maps:
+  - **download from** — one origin endpoint
+  - **store to** — one or more endpoints (same content fans out)
+  - **tech stack** — endpoints used after ingest (indexes / DBs / clouds)
+- Listing has no Download; Download lives on the **source detail** page.
+
+**Local download base (default store-to):**
+
+```text
+$HOME/runtime_data/apps/datasets/COA/KnowledgeBase/
+  {category_code}/{subcategory_code}/{source_uuid}/   # no spaces; UUID leaf
+```
+
+Example: `…/KnowledgeBase/architecture/patterns/d85e1c09-8157-5565-82d3-f9f3cf209509/`.
+
+**Identity:** primary key is a UUID stored as a string (`id`) — URLs, FKs, store-path leaves.
+
 ### Knowledge Bank tables (locked)
 
 - **`knowledge_category`** — top-nav topics are roots (`parent_id` NULL); left-nav sections are children of a topic. Same table, parent/child. Stable `code` matches portal ids (`software_architecture`, `styles`, …).

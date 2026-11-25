@@ -1,0 +1,160 @@
+<section class="page">
+  <a routerLink="/knowledge/sources" class="back">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i> Sources
+  </a>
+
+  @if (loading()) {
+    <p class="muted">Loading source…</p>
+  } @else if (notFound() || !source()) {
+    <p class="muted">Source not found.</p>
+  } @else {
+    <header class="page-head">
+      <div>
+        <p class="kicker">{{ source()!.category_name }} · {{ source()!.subcategory_name }}</p>
+        <h1>{{ source()!.name }}</h1>
+        <p class="lede">{{ source()!.citation_name }}</p>
+      </div>
+      <span class="adm-status" [class]="source()!.ingest_status">{{ source()!.ingest_status }}</span>
+    </header>
+
+    @if (notice()) {
+      <p class="notice"><code>job</code> {{ notice() }}</p>
+    }
+
+    <p-accordion [multiple]="true" [value]="['overview', 'download', 'tech']">
+      <p-accordion-panel value="overview">
+        <p-accordion-header>Overview</p-accordion-header>
+        <p-accordion-content>
+          <dl class="kv">
+            <div><dt>Id</dt><dd class="mono break">{{ source()!.id }}</dd></div>
+            <div><dt>Category</dt><dd>{{ source()!.category_name }}</dd></div>
+            <div><dt>Subcategory</dt><dd>{{ source()!.subcategory_name }}</dd></div>
+            <div><dt>Created on</dt><dd class="mono">{{ source()!.created_on | date: 'medium' }}</dd></div>
+            <div><dt>URL</dt><dd class="mono break">{{ source()!.url || '—' }}</dd></div>
+            <div><dt>License</dt><dd>{{ source()!.license || '—' }}</dd></div>
+            <div>
+              <dt>Store path</dt>
+              <dd class="mono break">
+                …/KnowledgeBase/{{ source()!.category_code }}/{{ source()!.subcategory_code }}/{{ source()!.id }}/
+              </dd>
+            </div>
+          </dl>
+          @if (source()!.description) {
+            <p class="desc">{{ source()!.description }}</p>
+          }
+        </p-accordion-content>
+      </p-accordion-panel>
+
+      <p-accordion-panel value="citation">
+        <p-accordion-header>Citation</p-accordion-header>
+        <p-accordion-content>
+          <dl class="kv">
+            <div><dt>Citation name</dt><dd>{{ source()!.citation_name }}</dd></div>
+            <div>
+              <dt>Citation desc</dt>
+              <dd>{{ source()!.citation_desc || '—' }}</dd>
+            </div>
+          </dl>
+        </p-accordion-content>
+      </p-accordion-panel>
+
+      <p-accordion-panel value="download">
+        <p-accordion-header>Download — from / store to</p-accordion-header>
+        <p-accordion-content>
+          <p class="panel-lede">
+            One origin fetch; the same content fans out to every mapped store-to endpoint
+            (local FS, S3, Azure Blob, GCS, …).
+          </p>
+
+          <div class="download-grid">
+            <div>
+              <h3 class="subhead">Downloaded from</h3>
+              @if (downloadFrom(); as from) {
+                <div class="ep-card">
+                  <a [routerLink]="['/app-endpoints', from.id]" class="ep-name">{{ from.name }}</a>
+                  <div class="ep-meta">
+                    <span class="adm-status">{{ labelFor(from.kind) }}</span>
+                    <span class="mono">{{ from.provider }}</span>
+                    <span class="mono break">{{ from.endpoint_url }}</span>
+                  </div>
+                </div>
+              } @else {
+                <p class="muted">No download-from endpoint mapped.</p>
+              }
+            </div>
+            <div>
+              <h3 class="subhead">Stored as ({{ storeTo().length }})</h3>
+              @if (storeTo().length) {
+                <ul class="ep-list">
+                  @for (ep of storeTo(); track ep.id) {
+                    <li class="ep-card">
+                      <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
+                      <div class="ep-meta">
+                        <span class="adm-status">{{ labelFor(ep.kind) }}</span>
+                        <span class="mono">{{ ep.provider }}</span>
+                        <span class="mono break">{{ ep.endpoint_url }}</span>
+                        <span class="mono">{{ ep.resource }}</span>
+                      </div>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <p class="muted">No store-to endpoints — download is disabled until at least one is mapped.</p>
+              }
+            </div>
+          </div>
+
+          <div class="download-actions">
+            <button
+              pButton
+              type="button"
+              label="Queue download"
+              icon="pi pi-cloud-download"
+              [loading]="busy()"
+              [disabled]="
+                busy() ||
+                !storeTo().length ||
+                source()!.ingest_status === 'running' ||
+                source()!.ingest_status === 'queued'
+              "
+              (click)="download()"
+            ></button>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+
+      <p-accordion-panel value="tech">
+        <p-accordion-header>Dependent tech stack (App Endpoints)</p-accordion-header>
+        <p-accordion-content>
+          <p class="panel-lede">
+            Mapped App Endpoints used after ingest — Postgres, pgvector, Chroma, Qdrant, AWS,
+            Azure, GCP, Pinecone, or any other configured target.
+          </p>
+          @if (techStack().length) {
+            <ul class="ep-list">
+              @for (ep of techStack(); track ep.id) {
+                <li class="ep-card">
+                  <a [routerLink]="['/app-endpoints', ep.id]" class="ep-name">{{ ep.name }}</a>
+                  <div class="ep-meta">
+                    <span class="adm-status">{{ labelFor(ep.kind) }}</span>
+                    <span class="mono">{{ ep.provider }}</span>
+                    <span class="mono break">{{ ep.endpoint_url }}</span>
+                    <span class="mono">{{ ep.resource }}</span>
+                    @if (ep.region) {
+                      <span class="mono">{{ ep.region }}</span>
+                    }
+                  </div>
+                  @if (ep.notes) {
+                    <p class="ep-notes">{{ ep.notes }}</p>
+                  }
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="muted">No tech-stack endpoints mapped yet.</p>
+          }
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+  }
+</section>

@@ -1,37 +1,37 @@
 <section class="page">
   <header class="page-head">
     <div>
-      <p class="eyebrow">Operations</p>
-      <h1 class="display-font">Dashboard</h1>
+      <p class="kicker">Operations console</p>
+      <h1>Dashboard</h1>
       <p class="lede">
-        Admin never talks to Airflow or Knowledge API directly — this UI calls
-        <strong>coa_admin_api</strong>, which fans out asynchronously.
+        Ingest control surface. This UI talks only to <code>coa_admin_api</code> —
+        never Airflow or Knowledge API directly.
       </p>
     </div>
   </header>
 
-  <div class="stat-row">
-    <article class="stat">
-      <span class="lbl">Knowledge sources</span>
-      <strong>Registry ready</strong>
-      <p>CRUD lives on Knowledge API; Admin proxies it.</p>
+  <div class="metric-row">
+    <article class="metric">
+      <span class="key">sources</span>
+      <strong>Registry</strong>
+      <p>CRUD proxied via Admin API</p>
     </article>
-    <article class="stat">
-      <span class="lbl">Ingest path</span>
+    <article class="metric">
+      <span class="key">pipeline</span>
       <strong>Async DAG</strong>
-      <p>Download → queued → DAG callbacks started/completed.</p>
+      <p>download → queue → callbacks</p>
     </article>
-    <article class="stat">
-      <span class="lbl">Next wire-up</span>
+    <article class="metric">
+      <span class="key">bff</span>
       <strong>coa_admin_api</strong>
-      <p>Scaffold the BFF microservice after this shell lands.</p>
+      <p>port <code>:8094</code> (next wire-up)</p>
     </article>
   </div>
 
-  <div class="cta-card">
-    <div>
-      <h2 class="display-font">Knowledge sources</h2>
-      <p>Select a source and queue a download job through Admin API.</p>
+  <div class="workbench">
+    <div class="workbench-copy">
+      <h2>Knowledge sources</h2>
+      <p>Pick a source and queue a download job through the Admin BFF.</p>
     </div>
     <a routerLink="/knowledge/sources">
       <button pButton type="button" label="Open sources" icon="pi pi-arrow-right" iconPos="right"></button>

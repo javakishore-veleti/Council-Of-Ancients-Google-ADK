@@ -12,5 +12,6 @@ export class AdminShellComponent {
   readonly nav = [
     { path: '/dashboard', label: 'Dashboard', icon: 'bi-speedometer2' },
     { path: '/knowledge/sources', label: 'Knowledge sources', icon: 'bi-journal-bookmark' },
+    { path: '/app-endpoints', label: 'App Endpoints', icon: 'bi-hdd-network' },
   ];
 }

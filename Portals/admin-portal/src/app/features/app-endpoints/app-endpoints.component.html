@@ -1,0 +1,159 @@
+<section class="page">
+  <header class="page-head">
+    <div>
+      <p class="kicker">Infrastructure</p>
+      <h1>App Endpoints</h1>
+      <p class="lede">
+        Any dependency target — local Postgres, Chroma, pgvector, Qdrant, AWS, Azure, GCP, HTTP
+        origins, object stores, or other 3rd parties. Map these onto knowledge sources.
+      </p>
+    </div>
+    <button
+      pButton
+      type="button"
+      label="Refresh"
+      icon="pi pi-refresh"
+      class="p-button-outlined"
+      (click)="reload()"
+    ></button>
+  </header>
+
+  <section class="criteria" [class.open]="criteriaOpen()">
+    <button type="button" class="criteria-toggle" (click)="toggleCriteria()">
+      <span class="criteria-title">
+        <i
+          class="bi"
+          [class.bi-chevron-down]="criteriaOpen()"
+          [class.bi-chevron-right]="!criteriaOpen()"
+          aria-hidden="true"
+        ></i>
+        Criteria
+      </span>
+      <span class="criteria-summary">{{ criteriaSummary() }}</span>
+      <span class="criteria-action">{{ criteriaOpen() ? 'Hide' : 'Show' }}</span>
+    </button>
+    @if (criteriaOpen()) {
+      <div class="criteria-body">
+        <label class="field">
+          <span>Name</span>
+          <input
+            pInputText
+            type="search"
+            [ngModel]="criteriaName()"
+            (ngModelChange)="criteriaName.set($event)"
+            placeholder="Contains…"
+          />
+        </label>
+        <label class="field">
+          <span>Kind</span>
+          <p-select
+            [options]="kindOptions()"
+            [ngModel]="criteriaKind()"
+            (ngModelChange)="criteriaKind.set($event)"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="criteria-select"
+          />
+        </label>
+        <label class="field">
+          <span>Status</span>
+          <p-select
+            [options]="statusOptions"
+            [ngModel]="criteriaStatus()"
+            (ngModelChange)="criteriaStatus.set($event)"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="criteria-select"
+          />
+        </label>
+        <div class="criteria-actions">
+          <button
+            pButton
+            type="button"
+            label="Clear"
+            class="p-button-text p-button-sm"
+            (click)="clearCriteria()"
+          ></button>
+        </div>
+      </div>
+    }
+  </section>
+
+  <div class="table-meta">
+    <span>{{ filtered().length }} endpoint{{ filtered().length === 1 ? '' : 's' }}</span>
+  </div>
+
+  <div class="table-wrap">
+    <p-table
+      [value]="filtered()"
+      [loading]="loading()"
+      [paginator]="true"
+      [rows]="pageSize"
+      [rowsPerPageOptions]="pageSizeOptions"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="{first}–{last} of {totalRecords}"
+      styleClass="p-datatable-sm admin-table"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Name</th>
+          <th>Kind</th>
+          <th>Provider</th>
+          <th>Status</th>
+          <th>Created on</th>
+        </tr>
+        <tr class="col-filters">
+          <th>
+            <input
+              pInputText
+              type="search"
+              class="col-input"
+              [ngModel]="colName()"
+              (ngModelChange)="colName.set($event)"
+              placeholder="Search…"
+            />
+          </th>
+          <th>
+            <input
+              pInputText
+              type="search"
+              class="col-input"
+              [ngModel]="colKind()"
+              (ngModelChange)="colKind.set($event)"
+              placeholder="Search…"
+            />
+          </th>
+          <th>
+            <input
+              pInputText
+              type="search"
+              class="col-input"
+              [ngModel]="colProvider()"
+              (ngModelChange)="colProvider.set($event)"
+              placeholder="Search…"
+            />
+          </th>
+          <th></th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr class="row-link" [routerLink]="['/app-endpoints', row.id]">
+          <td>
+            <div class="name">{{ row.name }}</div>
+            <div class="cite mono">{{ row.endpoint_url }}</div>
+          </td>
+          <td>{{ labelFor(row.kind) }}</td>
+          <td class="mono">{{ row.provider }}</td>
+          <td><span class="adm-status" [class]="row.status">{{ row.status }}</span></td>
+          <td class="mono">{{ row.created_on | date: 'mediumDate' }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">No endpoints match.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>

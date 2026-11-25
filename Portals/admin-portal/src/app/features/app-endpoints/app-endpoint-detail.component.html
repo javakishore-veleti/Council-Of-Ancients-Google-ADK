@@ -1,0 +1,31 @@
+<section class="page">
+  <a routerLink="/app-endpoints" class="back">
+    <i class="bi bi-arrow-left" aria-hidden="true"></i> App Endpoints
+  </a>
+
+  @if (loading()) {
+    <p class="muted">Loading endpoint…</p>
+  } @else if (notFound() || !endpoint()) {
+    <p class="muted">Endpoint not found.</p>
+  } @else {
+    <header class="page-head">
+      <div>
+        <p class="kicker">{{ kindLabel[endpoint()!.kind] }} · {{ endpoint()!.provider }}</p>
+        <h1>{{ endpoint()!.name }}</h1>
+      </div>
+      <span class="adm-status" [class]="endpoint()!.status">{{ endpoint()!.status }}</span>
+    </header>
+
+    <dl class="kv">
+      <div><dt>Kind</dt><dd>{{ kindLabel[endpoint()!.kind] }}</dd></div>
+      <div><dt>Provider</dt><dd>{{ endpoint()!.provider }}</dd></div>
+      <div><dt>Endpoint URL</dt><dd class="mono break">{{ endpoint()!.endpoint_url }}</dd></div>
+      <div><dt>Resource</dt><dd class="mono">{{ endpoint()!.resource }}</dd></div>
+      <div><dt>Region</dt><dd class="mono">{{ endpoint()!.region || '—' }}</dd></div>
+      <div><dt>Created on</dt><dd class="mono">{{ endpoint()!.created_on | date: 'medium' }}</dd></div>
+    </dl>
+    @if (endpoint()!.notes) {
+      <p class="notes">{{ endpoint()!.notes }}</p>
+    }
+  }
+</section>

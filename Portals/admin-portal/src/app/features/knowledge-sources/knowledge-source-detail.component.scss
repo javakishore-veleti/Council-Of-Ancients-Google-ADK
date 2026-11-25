@@ -1,0 +1,228 @@
+.page {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--adm-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--adm-accent-deep);
+  margin-bottom: 0.85rem;
+}
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.kicker {
+  margin: 0 0 0.3rem;
+  font-family: var(--adm-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--adm-accent-deep);
+}
+
+.page-head h1 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.lede {
+  margin: 0.35rem 0 0;
+  color: var(--adm-muted);
+}
+
+.muted {
+  color: var(--adm-muted);
+}
+
+.notice {
+  margin: 0 0 0.85rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--adm-radius);
+  background: var(--adm-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--adm-accent) 30%, var(--adm-line));
+  font-size: 0.86rem;
+}
+
+.notice code {
+  font-family: var(--adm-mono);
+  font-size: 0.78em;
+  margin-right: 0.35rem;
+}
+
+.panel-lede {
+  margin: 0 0 0.85rem;
+  color: var(--adm-muted);
+  font-size: 0.9rem;
+  max-width: 48rem;
+}
+
+.subhead {
+  margin: 1rem 0 0.45rem;
+  font-size: 0.78rem;
+  font-family: var(--adm-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--adm-deep);
+}
+
+.kv {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 2rem;
+  width: 100%;
+}
+
+.kv > div {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.55rem 0.7rem;
+  background: var(--adm-panel);
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+}
+
+.kv dt {
+  margin: 0;
+  font-family: var(--adm-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--adm-muted);
+}
+
+.kv dd {
+  margin: 0;
+  color: var(--adm-ink);
+}
+
+.desc {
+  margin: 0.85rem 0 0;
+  color: var(--adm-muted);
+}
+
+.mono {
+  font-family: var(--adm-mono);
+  font-size: 0.82rem;
+}
+
+.break {
+  word-break: break-all;
+}
+
+.ep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.ep-card {
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+  background: var(--adm-panel);
+  padding: 0.7rem 0.85rem;
+  min-width: 0;
+}
+
+.ep-name {
+  font-weight: 600;
+  color: var(--adm-ink);
+}
+
+.ep-name:hover {
+  color: var(--adm-accent-deep);
+}
+
+.ep-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+  margin-top: 0.4rem;
+  color: var(--adm-muted);
+  font-size: 0.82rem;
+}
+
+.ep-notes {
+  margin: 0.45rem 0 0;
+  font-size: 0.82rem;
+  color: var(--adm-muted);
+}
+
+.download-actions {
+  margin-top: 1rem;
+}
+
+.download-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1.25rem;
+  width: 100%;
+  align-items: start;
+}
+
+:host ::ng-deep .p-accordion {
+  width: 100% !important;
+  display: block !important;
+}
+
+:host ::ng-deep .p-accordionpanel {
+  width: 100% !important;
+  border: 1px solid var(--adm-line) !important;
+  border-radius: var(--adm-radius) !important;
+  margin-bottom: 0.55rem !important;
+  overflow: hidden;
+  background: var(--adm-surface) !important;
+}
+
+:host ::ng-deep .p-accordionheader {
+  width: 100% !important;
+  background: var(--adm-panel) !important;
+  color: var(--adm-ink) !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 0.9rem !important;
+}
+
+:host ::ng-deep .p-accordioncontent,
+:host ::ng-deep .p-accordioncontent-content {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .p-accordioncontent-content {
+  padding: 0.95rem 1.1rem 1.15rem !important;
+}
+
+:host ::ng-deep .p-button {
+  background: var(--adm-accent) !important;
+  border: 0 !important;
+  border-radius: 5px !important;
+}
+
+@media (max-width: 960px) {
+  .kv,
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+}
