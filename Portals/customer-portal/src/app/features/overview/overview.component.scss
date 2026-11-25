@@ -1,27 +1,54 @@
 :host {
   display: block;
+  position: relative;
+  min-height: calc(100vh - 3.75rem);
 }
 
 .overview {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100vh - 3.75rem);
+  margin: -1rem -1.35rem -1.25rem;
+  padding: 1rem 1.35rem 1.5rem;
+}
+
+.overview-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--overview-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+}
+
+.overview-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.88) 0%, rgba(255, 252, 247, 0.78) 42%, rgba(255, 248, 238, 0.92) 100%),
+    linear-gradient(105deg, rgba(255, 250, 243, 0.55) 0%, rgba(255, 250, 243, 0.2) 55%, rgba(255, 250, 243, 0.45) 100%);
+}
+
+.overview-content {
+  position: relative;
+  z-index: 2;
   max-width: 64rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  padding-bottom: 1.25rem;
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: minmax(18rem, 1.35fr) minmax(11rem, 0.65fr);
-  gap: 1.1rem;
-  align-items: stretch;
-}
-
-.hero-copy {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  max-width: 40rem;
+  padding: 1rem 1.15rem 1.1rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #e8ddd0;
+  box-shadow: 0 10px 28px rgba(42, 31, 24, 0.08);
 }
 
 .eyebrow {
@@ -46,7 +73,6 @@
 
 .lede {
   color: var(--coa-muted);
-  max-width: 40rem;
   margin: 0.45rem 0 0.85rem;
   font-size: 0.98rem;
   line-height: 1.45;
@@ -68,20 +94,18 @@
 :host ::ng-deep .secondary.p-button {
   color: var(--coa-copper) !important;
   border-color: color-mix(in srgb, var(--coa-copper) 45%, #cbb8a0) !important;
-  background: transparent !important;
-}
-
-.visual {
-  min-height: 150px;
-  max-height: 170px;
-  border-radius: 14px;
-  background-size: cover;
-  background-position: center;
-  border: 2px solid color-mix(in srgb, var(--coa-amber) 50%, transparent);
+  background: #ffffff !important;
 }
 
 .block-head {
   margin-bottom: 0.65rem;
+}
+
+.block-head.panel {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #e8ddd0;
 }
 
 .block-head h2 {
@@ -93,38 +117,19 @@
 .block-head p {
   margin: 0;
   color: var(--coa-muted);
-  max-width: 42rem;
+  max-width: 46rem;
+}
+
+.block-head .caption {
+  margin-top: 0.45rem;
+  color: var(--coa-deep);
+  font-weight: 600;
 }
 
 .how-council {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-}
-
-.council-figure {
-  margin: 0;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid #e0d4c4;
-  background: #fffaf3;
-}
-
-.council-figure img {
-  display: block;
-  width: 100%;
-  height: 13.5rem;
-  object-fit: cover;
-  object-position: center;
-}
-
-.council-figure figcaption {
-  margin: 0;
-  padding: 0.7rem 1rem;
-  font-size: 0.92rem;
-  line-height: 1.45;
-  color: var(--coa-muted);
-  border-top: 1px solid #e8ddd0;
 }
 
 .flow-grid {
@@ -136,9 +141,10 @@
 .flow-card {
   position: relative;
   padding: 1.15rem 1.1rem 1.2rem;
-  background: linear-gradient(165deg, #fffaf3 0%, #ffffff 55%);
-  border: 1px solid #e8ddd0;
+  background: #ffffff;
+  border: 1px solid #e0d4c4;
   border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(42, 31, 24, 0.06);
 }
 
 .step-num {
@@ -172,8 +178,6 @@
   letter-spacing: 0;
   line-height: 1.4;
   color: var(--coa-deep);
-  overflow: visible;
-  padding-bottom: 0;
 }
 
 .flow-card p {
@@ -188,7 +192,6 @@
 .session-copy h2 {
   text-wrap: balance;
   line-height: 1.35;
-  overflow: visible;
 }
 
 .seat-grid {
@@ -199,18 +202,19 @@
 
 .seat-card {
   text-align: left;
-  border: 1px solid #e8ddd0;
+  border: 1px solid #e0d4c4;
   background: #ffffff;
   border-radius: 14px;
   padding: 1.1rem 1.15rem 1.2rem;
   cursor: pointer;
+  box-shadow: 0 8px 20px rgba(42, 31, 24, 0.06);
   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .seat-card:hover {
   border-color: color-mix(in srgb, var(--coa-copper) 45%, #e8ddd0);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(122, 53, 20, 0.1);
+  box-shadow: 0 12px 26px rgba(122, 53, 20, 0.12);
 }
 
 .seat-card.full-council {
@@ -269,8 +273,6 @@
   letter-spacing: 0;
   line-height: 1.4;
   color: var(--coa-deep);
-  overflow: visible;
-  padding-bottom: 0;
 }
 
 .full-council h3 {
@@ -299,7 +301,7 @@
   align-items: center;
   gap: 0.65rem;
   text-align: left;
-  border: 1px solid #e8ddd0;
+  border: 1px solid #e0d4c4;
   background: #ffffff;
   border-radius: 12px;
   padding: 0.85rem 0.95rem;
@@ -307,6 +309,7 @@
   color: var(--coa-ink);
   font-size: 0.95rem;
   font-weight: 600;
+  box-shadow: 0 6px 16px rgba(42, 31, 24, 0.05);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
@@ -329,8 +332,9 @@
   gap: 1rem;
   padding: 1.15rem 1.25rem;
   border-radius: 14px;
-  background: var(--coa-mist);
+  background: rgba(255, 255, 255, 0.96);
   border: 1px solid #e0d4c4;
+  box-shadow: 0 8px 20px rgba(42, 31, 24, 0.06);
 }
 
 .session-copy h2 {
@@ -345,8 +349,9 @@
 }
 
 @media (max-width: 900px) {
-  .hero {
-    grid-template-columns: 1fr;
+  .overview {
+    margin: -0.85rem -1rem -1rem;
+    padding: 0.85rem 1rem 1.25rem;
   }
 
   .hero h1 {
@@ -358,14 +363,5 @@
   .flow-grid,
   .seat-grid {
     grid-template-columns: 1fr;
-  }
-
-  .visual {
-    min-height: 130px;
-    max-height: 150px;
-  }
-
-  .council-figure img {
-    height: 11rem;
   }
 }

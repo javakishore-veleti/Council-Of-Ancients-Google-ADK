@@ -1,6 +1,12 @@
-<section class="overview">
-  <header class="hero">
-    <div class="hero-copy">
+<section
+  class="overview"
+  [style.--overview-bg]="'url(' + prefs.activePack().howItWorksImage + ')'"
+>
+  <div class="overview-bg" aria-hidden="true"></div>
+  <div class="overview-veil" aria-hidden="true"></div>
+
+  <div class="overview-content">
+    <header class="hero">
       <p class="eyebrow">Council of Ancients</p>
       <h1 class="display-font">{{ displayTitle() }}</h1>
       <p class="lede">{{ prefs.activePack().tagline }}</p>
@@ -22,103 +28,88 @@
           (click)="openSessions()"
         ></button>
       </div>
-    </div>
-    <div
-      class="visual"
-      [style.backgroundImage]="'url(' + prefs.activePack().heroImage + ')'"
-      role="img"
-      [attr.aria-label]="prefs.activePack().label"
-    ></div>
-  </header>
+    </header>
 
-  <section class="block how-council">
-    <div class="block-head">
-      <h2 class="display-font">How this council works</h2>
-      <p>{{ prefs.activePack().howItWorksIntro }}</p>
-    </div>
+    <section class="block how-council">
+      <div class="block-head panel">
+        <h2 class="display-font">How this council works</h2>
+        <p>{{ prefs.activePack().howItWorksIntro }}</p>
+        <p class="caption">{{ prefs.activePack().howItWorksCaption }}</p>
+      </div>
 
-    <figure class="council-figure">
-      <img
-        [src]="prefs.activePack().howItWorksImage"
-        width="1400"
-        height="787"
-        [alt]="'How the ' + prefs.activePack().shortLabel + ' council deliberates'"
-      />
-      <figcaption>{{ prefs.activePack().howItWorksCaption }}</figcaption>
-    </figure>
+      <div class="flow-grid">
+        @for (step of flowSteps(); track step.n) {
+          <article class="flow-card">
+            <span class="step-num">{{ step.n }}</span>
+            <i [class]="step.icon"></i>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.body }}</p>
+          </article>
+        }
+      </div>
+    </section>
 
-    <div class="flow-grid">
-      @for (step of flowSteps(); track step.n) {
-        <article class="flow-card">
-          <span class="step-num">{{ step.n }}</span>
-          <i [class]="step.icon"></i>
-          <h3>{{ step.title }}</h3>
-          <p>{{ step.body }}</p>
-        </article>
-      }
-    </div>
-  </section>
-
-  <section class="block">
-    <div class="block-head">
-      <h2 class="display-font">Seats at the table</h2>
-      <p>Each counselor brings a distinct lens for {{ prefs.activePack().shortLabel }}.</p>
-    </div>
-    <div class="seat-grid">
-      @for (seat of seats(); track seat.id) {
-        <button type="button" class="seat-card" (click)="openSeat(seat.id)">
+    <section class="block">
+      <div class="block-head panel">
+        <h2 class="display-font">Seats at the table</h2>
+        <p>Each counselor brings a distinct lens for {{ prefs.activePack().shortLabel }}.</p>
+      </div>
+      <div class="seat-grid">
+        @for (seat of seats(); track seat.id) {
+          <button type="button" class="seat-card" (click)="openSeat(seat.id)">
+            <div class="seat-top">
+              <span class="seat-mark">{{ seat.initial }}</span>
+              <span class="seat-cta">Ask this seat</span>
+            </div>
+            <h3>{{ seat.name }}</h3>
+            <p>{{ seat.focus }}</p>
+          </button>
+        }
+        <button type="button" class="seat-card full-council" (click)="openChamber()">
           <div class="seat-top">
-            <span class="seat-mark">{{ seat.initial }}</span>
-            <span class="seat-cta">Ask this seat</span>
+            <span class="seat-mark full">∞</span>
+            <span class="seat-cta">Deliberate</span>
           </div>
-          <h3>{{ seat.name }}</h3>
-          <p>{{ seat.focus }}</p>
+          <h3>Full council</h3>
+          <p>Hear every seat, then a Facilitator synthesis with trade-offs and a recommendation.</p>
         </button>
-      }
-      <button type="button" class="seat-card full-council" (click)="openChamber()">
-        <div class="seat-top">
-          <span class="seat-mark full">∞</span>
-          <span class="seat-cta">Deliberate</span>
-        </div>
-        <h3>Full council</h3>
-        <p>Hear every seat, then a Facilitator synthesis with trade-offs and a recommendation.</p>
-      </button>
-    </div>
-  </section>
+      </div>
+    </section>
 
-  <section class="block">
-    <div class="block-head">
-      <h2 class="display-font">Explore this topic</h2>
-      <p>Jump into a focus area — the chamber opens with that lens ready.</p>
-    </div>
-    <div class="path-grid">
-      @for (path of pathways(); track path.id) {
-        <button type="button" class="path-card" (click)="openPath(path.id, path.route)">
-          <i [class]="path.icon"></i>
-          <span>{{ path.label }}</span>
-        </button>
-      }
-    </div>
-  </section>
+    <section class="block">
+      <div class="block-head panel">
+        <h2 class="display-font">Explore this topic</h2>
+        <p>Jump into a focus area — the chamber opens with that lens ready.</p>
+      </div>
+      <div class="path-grid">
+        @for (path of pathways(); track path.id) {
+          <button type="button" class="path-card" (click)="openPath(path.id, path.route)">
+            <i [class]="path.icon"></i>
+            <span>{{ path.label }}</span>
+          </button>
+        }
+      </div>
+    </section>
 
-  <section class="block session-band">
-    <div class="session-copy">
-      <h2 class="display-font">Your chamber sessions</h2>
-      @if (prefs.projectList().length === 0) {
-        <p>No sessions yet. Start one when you have a design question or dilemma ready.</p>
-      } @else if (prefs.projectList().length === 1) {
-        <p>You have 1 open session in this topic.</p>
-      } @else {
-        <p>You have {{ prefs.projectList().length }} open sessions in this topic.</p>
-      }
-    </div>
-    <button
-      pButton
-      type="button"
-      [label]="prefs.projectList().length ? 'Continue in chamber' : 'Start first session'"
-      icon="pi pi-comments"
-      class="enter"
-      (click)="openChamber()"
-    ></button>
-  </section>
+    <section class="block session-band">
+      <div class="session-copy">
+        <h2 class="display-font">Your chamber sessions</h2>
+        @if (prefs.projectList().length === 0) {
+          <p>No sessions yet. Start one when you have a design question or dilemma ready.</p>
+        } @else if (prefs.projectList().length === 1) {
+          <p>You have 1 open session in this topic.</p>
+        } @else {
+          <p>You have {{ prefs.projectList().length }} open sessions in this topic.</p>
+        }
+      </div>
+      <button
+        pButton
+        type="button"
+        [label]="prefs.projectList().length ? 'Continue in chamber' : 'Start first session'"
+        icon="pi pi-comments"
+        class="enter"
+        (click)="openChamber()"
+      ></button>
+    </section>
+  </div>
 </section>
