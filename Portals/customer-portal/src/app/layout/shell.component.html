@@ -58,9 +58,16 @@
     [(visible)]="councilMeaningVisible"
     [modal]="true"
     [draggable]="false"
-    [style]="{ width: 'min(480px, 92vw)' }"
+    [style]="{ width: 'min(640px, 94vw)' }"
     styleClass="council-meaning-dialog"
   >
+    <img
+      class="council-diagram"
+      src="council-diagram.jpg"
+      width="960"
+      height="540"
+      alt="Diagram of a council: a facilitator and counselors gathered around a table for deliberation"
+    />
     <p class="council-meaning-text">{{ councilMeaning }}</p>
   </p-dialog>
 

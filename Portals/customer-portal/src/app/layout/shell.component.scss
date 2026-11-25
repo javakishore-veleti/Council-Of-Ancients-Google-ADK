@@ -67,6 +67,15 @@
   color: #ffd08a;
 }
 
+.council-diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid color-mix(in srgb, var(--coa-teal) 25%, transparent);
+}
+
 .council-meaning-text {
   margin: 0;
   font-size: 1.05rem;
