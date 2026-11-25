@@ -68,14 +68,11 @@
       <div class="session-copy">
         <h2 class="display-font">Your chamber sessions</h2>
         @if (prefs.projectList().length === 0) {
-          <p>No sessions yet. Pick a focus area above, or start one from the chamber.</p>
+          <p>No sessions yet — pick a focus area above to begin.</p>
         } @else if (prefs.projectList().length === 1) {
-          <p>You have 1 session in a focus area (Overview is only a landing page).</p>
+          <p>1 session in this topic’s focus areas.</p>
         } @else {
-          <p>
-            You have {{ prefs.projectList().length }} sessions in focus areas
-            (Overview is only a landing page).
-          </p>
+          <p>{{ prefs.projectList().length }} sessions in this topic’s focus areas.</p>
         }
       </div>
       <button

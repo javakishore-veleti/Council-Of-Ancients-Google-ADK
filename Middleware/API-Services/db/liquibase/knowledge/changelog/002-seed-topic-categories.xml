@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-010-seed-topics" author="javakishore-veleti">
+    <comment>Top-nav topics (roots). Codes match portal topic ids.</comment>
+    <sql>
+      INSERT INTO knowledge.knowledge_category (code, name, description, parent_id, sort_order) VALUES
+        ('entrepreneurship', 'Entrepreneurship', 'Plan, fund, and launch with disciplined judgment.', NULL, 10),
+        ('leadership', 'Leadership', 'People, culture, and one-way-door decisions.', NULL, 20),
+        ('software_architecture', 'Architecture', 'Patterns, styles, data, cloud, events, and AI systems.', NULL, 30),
+        ('sre', 'SRE', 'Reliability, budgets, and calm incident response.', NULL, 40),
+        ('fitness', 'Fitness', 'Training and recovery guidance — not medical advice.', NULL, 50)
+      ON CONFLICT (code) DO NOTHING;
+    </sql>
+  </changeSet>
+
+  <changeSet id="knowledge-011-seed-architecture-sections" author="javakishore-veleti">
+    <comment>Architecture left-nav sections as children of software_architecture.</comment>
+    <sql>
+      INSERT INTO knowledge.knowledge_category (code, name, description, parent_id, sort_order)
+      SELECT v.code, v.name, v.description, p.id, v.sort_order
+      FROM knowledge.knowledge_category p
+      CROSS JOIN (VALUES
+        ('patterns', 'Patterns', 'Classic design pattern families.', 10),
+        ('styles', 'Architecture styles', 'Monolith, modular, microservices, event-driven, serverless.', 20),
+        ('data', 'Data &amp; modeling', 'Models, consistency, and schema evolution.', 30),
+        ('cloud', 'Cloud &amp; infrastructure', 'Platform and infrastructure choices.', 40),
+        ('databases', 'Databases &amp; storage', 'Storage engines and topologies.', 50),
+        ('events', 'Event systems', 'Queues, streams, and pub/sub.', 60),
+        ('ai_systems', 'AI &amp; agentic systems', 'Orchestration, RAG, evals, guardrails.', 70)
+      ) AS v(code, name, description, sort_order)
+      WHERE p.code = 'software_architecture'
+      ON CONFLICT (code) DO NOTHING;
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

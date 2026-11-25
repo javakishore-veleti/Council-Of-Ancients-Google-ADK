@@ -72,8 +72,7 @@
   <div class="body-grid">
     <aside class="left-nav">
       <div class="pack-title">
-        <h2>{{ prefs.activePack().label }}</h2>
-        <p>{{ prefs.activePack().tagline }}</p>
+        <h2>{{ prefs.activePack().shortLabel || prefs.activePack().label }}</h2>
       </div>
       <ul>
         @for (item of prefs.activePack().nav; track item.id) {

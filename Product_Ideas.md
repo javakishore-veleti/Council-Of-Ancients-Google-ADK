@@ -59,8 +59,14 @@ Angular app lives under `Portals/`. v0: Architecture chamber live; other topics 
 | `coa_customer_api` | Customer create/update, global + topic prefs, chat projects, chat overrides, history index | `:8092` | `customer` |
 | `coa_agents_api` | Council `POST /v1/council/deliberate` | `:8090` | `agents` |
 | `coa_observability_api` | LLMOps ingest | `:8088` | `observability` |
+| `coa_knowledge_api` | Knowledge Bank: `knowledge_category` + `knowledge_source` CRUD (indexing registry) | `:8093` | `knowledge` |
 
-Existing agents/obs APIs stay; auth and customer are **new** peers under `Middleware/API-Services/`. Preferences do **not** live inside `coa_agents_api`.
+Existing agents/obs APIs stay; auth, customer, and knowledge are **new** peers under `Middleware/API-Services/`. Preferences do **not** live inside `coa_agents_api`.
+
+### Knowledge Bank tables (locked)
+
+- **`knowledge_category`** — top-nav topics are roots (`parent_id` NULL); left-nav sections are children of a topic. Same table, parent/child. Stable `code` matches portal ids (`software_architecture`, `styles`, …).
+- **`knowledge_source`** — allowlisted corpus row. **`name`** is the unique business / lookup key; **`citation_name`** and **`citation_desc`** are what indexing and the chamber use when citing a hit. FK → `knowledge_category`.
 
 ### Settings layers (later wins)
 
@@ -111,12 +117,12 @@ domain/           models, errors, toggles
 API route → Facade → DAO → postgres.<service_schema>
 ```
 
-(Observability already uses API → Facade → tasks → sub-facades → plugins; auth/customer use Facade → DAO for CRUD.)
+(Observability: API → Facade → tasks → sub-facades → plugins. Knowledge Bank: API → Facade → tasks → sub-facades → DAO. Auth/customer follow the same Facade → tasks → DAO shape for CRUD.)
 
 ### Database
 
 - Local container already in `CICD/Local` (`--postgres`): DB **`council`**, user/password **`postgres` / `postgres`**, port **`5432`**.  
-- **One shared DB**, **one dedicated schema per API** (`auth`, `customer`, `agents`, `observability`). No shared tables across services; cross-service refs are opaque IDs.
+- **One shared DB**, **one dedicated schema per API** (`auth`, `customer`, `agents`, `observability`, `knowledge`). No shared tables across services; cross-service refs are opaque IDs.
 
 ### Liquibase (outside Python packages)
 

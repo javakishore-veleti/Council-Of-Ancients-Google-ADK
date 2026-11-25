@@ -38,7 +38,7 @@
 .overview-content {
   position: relative;
   z-index: 2;
-  max-width: 72rem;
+  max-width: none;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -46,8 +46,9 @@
 }
 
 .hero {
-  max-width: 56rem;
-  padding: 1rem 1.15rem 1.1rem;
+  max-width: none;
+  width: 100%;
+  padding: 1.15rem 1.35rem 1.2rem;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid #e8ddd0;
@@ -77,8 +78,9 @@
 .lede {
   color: var(--coa-muted);
   margin: 0.45rem 0 0.85rem;
-  font-size: 0.98rem;
-  line-height: 1.45;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  max-width: none;
   text-wrap: pretty;
 }
 
@@ -120,7 +122,9 @@
 .block-head p {
   margin: 0;
   color: var(--coa-muted);
-  max-width: 46rem;
+  max-width: none;
+  line-height: 1.5;
+  text-wrap: pretty;
 }
 
 .block-head .caption {
@@ -199,7 +203,7 @@
 
 .path-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: 0.65rem;
 }
 
@@ -218,6 +222,12 @@
   font-weight: 600;
   box-shadow: 0 6px 16px rgba(42, 31, 24, 0.05);
   transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.path-card span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .path-card:hover {
@@ -250,9 +260,23 @@
   color: var(--coa-deep);
 }
 
+.session-copy {
+  min-width: 0;
+  flex: 1 1 16rem;
+}
+
 .session-copy p {
   margin: 0;
   color: var(--coa-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+  .session-copy p {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 900px) {

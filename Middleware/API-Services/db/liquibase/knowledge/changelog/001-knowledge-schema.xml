@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-001-schema" author="javakishore-veleti">
+    <sql>
+      CREATE SCHEMA IF NOT EXISTS knowledge;
+      CREATE EXTENSION IF NOT EXISTS pgcrypto;
+    </sql>
+  </changeSet>
+
+  <changeSet id="knowledge-002-category" author="javakishore-veleti">
+    <comment>
+      Top-nav topics are roots (parent_id NULL). Left-nav sections are children of a topic.
+      Same table, parent/child. code is the stable slug used by the portal (e.g. software_architecture, styles).
+    </comment>
+    <createTable schemaName="knowledge" tableName="knowledge_category">
+      <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="code" type="TEXT">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="name" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="TEXT"/>
+      <column name="parent_id" type="UUID">
+        <constraints nullable="true"
+          foreignKeyName="fk_knowledge_category_parent"
+          referencedTableSchemaName="knowledge"
+          referencedTableName="knowledge_category"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="sort_order" type="INT" defaultValueNumeric="0">
+        <constraints nullable="false"/>
+      </column>
+      <column name="is_active" type="BOOLEAN" defaultValueBoolean="true">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createIndex schemaName="knowledge" tableName="knowledge_category" indexName="ix_knowledge_category_parent">
+      <column name="parent_id"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="knowledge-003-source" author="javakishore-veleti">
+    <comment>
+      Allowlisted corpus entry. name is the primary display key; citation_name / citation_desc
+      are what the chamber uses when indexing and citing retrieval hits.
+    </comment>
+    <createTable schemaName="knowledge" tableName="knowledge_source">
+      <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="category_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_knowledge_source_category"
+          referencedTableSchemaName="knowledge"
+          referencedTableName="knowledge_category"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="name" type="TEXT">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="description" type="TEXT"/>
+      <column name="citation_name" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="citation_desc" type="TEXT"/>
+      <column name="source_key" type="TEXT">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="url" type="TEXT"/>
+      <column name="license" type="TEXT"/>
+      <column name="status" type="TEXT" defaultValue="active">
+        <constraints nullable="false"/>
+      </column>
+      <column name="meta" type="JSONB" defaultValueComputed="'{}'::jsonb">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <createIndex schemaName="knowledge" tableName="knowledge_source" indexName="ix_knowledge_source_category">
+      <column name="category_id"/>
+    </createIndex>
+    <createIndex schemaName="knowledge" tableName="knowledge_source" indexName="ix_knowledge_source_name">
+      <column name="name"/>
+    </createIndex>
+    <sql>
+      ALTER TABLE knowledge.knowledge_source
+        ADD CONSTRAINT ck_knowledge_source_status
+        CHECK (status IN ('active', 'paused', 'denied', 'archived'));
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>
