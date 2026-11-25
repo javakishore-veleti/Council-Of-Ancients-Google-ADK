@@ -27,7 +27,6 @@ export const PACKS: PackDefinition[] = [
     seatsLabel: 'Vision / Capital / Execution',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'chamber', label: 'Chamber', icon: 'bi-chat-square-quote', route: 'chamber' },
       { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
       { id: 'plan', label: 'Plan & launch', icon: 'bi-rocket-takeoff', route: 'section' },
       { id: 'fund', label: 'Fund & grow', icon: 'bi-graph-up-arrow', route: 'section' },
@@ -95,7 +94,6 @@ export const PACKS: PackDefinition[] = [
     seatsLabel: 'People / Culture / Judgment',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'chamber', label: 'Chamber', icon: 'bi-chat-square-quote', route: 'chamber' },
       { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
       { id: 'people', label: 'People & culture', icon: 'bi-people', route: 'section' },
       { id: 'decisions', label: 'Decisions', icon: 'bi-signpost-2', route: 'section' },
@@ -163,7 +161,6 @@ export const PACKS: PackDefinition[] = [
     seatsLabel: 'Reliability / Capacity / Response',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'chamber', label: 'Chamber', icon: 'bi-chat-square-quote', route: 'chamber' },
       { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
       { id: 'reliability', label: 'Reliability', icon: 'bi-shield-check', route: 'section' },
       {
@@ -235,7 +232,6 @@ export const PACKS: PackDefinition[] = [
     seatsLabel: 'Training / Nutrition / Recovery',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'chamber', label: 'Chamber', icon: 'bi-chat-square-quote', route: 'chamber' },
       { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
       { id: 'training', label: 'Training', icon: 'bi-activity', route: 'section' },
       {
@@ -308,7 +304,6 @@ export const PACKS: PackDefinition[] = [
     seatsLabel: 'Patterns / Architecture / Data',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
-      { id: 'chamber', label: 'Chamber', icon: 'bi-chat-square-quote', route: 'chamber' },
       { id: 'sessions', label: 'Sessions', icon: 'bi-clock-history', route: 'sessions' },
       { id: 'patterns', label: 'Patterns', icon: 'bi-puzzle', route: 'section' },
       { id: 'styles', label: 'Architecture styles', icon: 'bi-diagram-3', route: 'section' },

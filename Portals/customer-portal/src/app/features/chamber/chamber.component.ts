@@ -45,10 +45,11 @@ export class ChamberComponent {
 
   readonly sectionLabel = computed(() => {
     const navId = this.prefs.activeNavId();
-    if (!navId || navId === 'chamber' || navId === 'overview' || navId === 'sessions') {
-      return '';
+    if (!navId || navId === 'overview' || navId === 'sessions' || navId === 'settings') {
+      return 'Full topic';
     }
-    return this.prefs.activePack().nav.find((n) => n.id === navId)?.label ?? navId;
+    const fromNav = this.prefs.activePack().nav.find((n) => n.id === navId)?.label;
+    return fromNav ?? navId;
   });
 
   readonly criteriaSummary = computed(() => {

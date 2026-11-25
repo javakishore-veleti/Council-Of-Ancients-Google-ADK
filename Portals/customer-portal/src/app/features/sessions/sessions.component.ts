@@ -18,7 +18,7 @@ export class SessionsComponent {
 
   open(id: string): void {
     this.prefs.selectProject(id);
-    this.prefs.setNav('chamber');
+    // Do not steal left-nav highlight — chamber is the canvas for the active section.
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 

@@ -40,12 +40,12 @@ export class OverviewComponent {
   });
 
   readonly pathways = computed(() => {
-    const skip = new Set(['overview', 'chamber', 'sessions', 'settings', 'knowledge', 'seats', 'disclaimer']);
+    const skip = new Set(['overview', 'sessions', 'settings', 'knowledge', 'seats', 'disclaimer']);
     return this.prefs.activePack().nav.filter((n) => !skip.has(n.id) && !n.disabledUntilKb);
   });
 
   openChamber(): void {
-    this.prefs.setNav('chamber');
+    // Keep Overview (or current section) highlighted — chamber is a canvas, not a nav destination.
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 
