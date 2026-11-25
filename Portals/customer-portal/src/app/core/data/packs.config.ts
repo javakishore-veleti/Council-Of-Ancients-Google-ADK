@@ -220,9 +220,9 @@ export const PACKS: PackDefinition[] = [
     kbReady: false,
     tagline: 'Training and recovery guidance — not medical advice.',
     heroImage:
-      'https://images.unsplash.com/photo-1476480862126-209badba8baf?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1200&q=80',
     howItWorksImage:
-      'https://images.unsplash.com/photo-1476480862126-209badba8baf?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1600&q=80',
     howItWorksCaption:
       'Training, Nutrition, and Recovery balance effort with fuel and rest — not gym-only advice.',
     howItWorksIntro:
