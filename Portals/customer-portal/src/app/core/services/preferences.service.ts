@@ -180,6 +180,22 @@ export class PreferencesService {
     this.activeProjectId.set(id);
   }
 
+  activeProject(): ChatProject | undefined {
+    const id = this.activeProjectId();
+    return this.projects().find((p: ChatProject) => p.id === id);
+  }
+
+  renameProject(id: string, title: string): void {
+    const next = title.trim();
+    if (!next) {
+      return;
+    }
+    this.projects.update((ps: ChatProject[]) =>
+      ps.map((p: ChatProject) => (p.id === id ? { ...p, title: next, updatedAt: new Date() } : p)),
+    );
+    this.persistProjects();
+  }
+
   appendMessage(msg: Omit<ChatMessage, 'id' | 'at'> & { id?: string; at?: Date }): void {
     const id = this.activeProjectId();
     const entry: ChatMessage = {

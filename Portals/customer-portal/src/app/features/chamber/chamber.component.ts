@@ -35,9 +35,15 @@ export class ChamberComponent implements OnInit {
   private readonly council = inject(CouncilApiService);
 
   draft = '';
+  renameDraft = '';
   readonly busy = signal(false);
+  readonly renaming = signal(false);
   /** Criteria collapsed by default so chat history has room */
   readonly criteriaOpen = signal(false);
+
+  readonly activeChatTitle = computed(
+    () => this.prefs.activeProject()?.title ?? 'New chat',
+  );
 
   toneOptions = [
     { label: 'Concise', value: 'concise' },
@@ -91,6 +97,34 @@ export class ChamberComponent implements OnInit {
 
   ngOnInit(): void {
     this.prefs.openSectionChamber();
+  }
+
+  sectionHubLink(): string[] {
+    const navId = this.prefs.activeNavId();
+    if (!navId || navId === 'overview' || navId === 'sessions' || navId === 'settings') {
+      return ['/app', this.prefs.activePackId(), 'overview'];
+    }
+    return ['/app', this.prefs.activePackId(), 'section'];
+  }
+
+  startRename(): void {
+    this.renameDraft = this.activeChatTitle();
+    this.renaming.set(true);
+  }
+
+  saveRename(): void {
+    if (!this.renaming()) {
+      return;
+    }
+    const id = this.prefs.activeProjectId();
+    if (id) {
+      this.prefs.renameProject(id, this.renameDraft);
+    }
+    this.renaming.set(false);
+  }
+
+  cancelRename(): void {
+    this.renaming.set(false);
   }
 
   newSession(): void {

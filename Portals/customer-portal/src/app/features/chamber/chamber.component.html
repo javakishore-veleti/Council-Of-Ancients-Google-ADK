@@ -1,13 +1,29 @@
 <div class="chamber">
+  <nav class="crumbs" aria-label="Chamber location">
+    <a [routerLink]="sectionHubLink()">{{ sectionLabel() }}</a>
+    <span class="sep" aria-hidden="true">→</span>
+    <span class="here">Chamber</span>
+    <span class="sep" aria-hidden="true">→</span>
+    @if (renaming()) {
+      <input
+        class="rename-input"
+        [(ngModel)]="renameDraft"
+        (keydown.enter)="saveRename()"
+        (keydown.escape)="cancelRename()"
+        (blur)="saveRename()"
+        [attr.aria-label]="'Rename chat'"
+      />
+    } @else {
+      <button type="button" class="crumb-chat" (click)="startRename()" [title]="'Rename chat'">
+        {{ activeChatTitle() }}
+      </button>
+    }
+  </nav>
+
   <div class="chamber-head">
     <div>
       <h2 class="display-font">Chamber</h2>
-      <p class="sub">
-        {{ prefs.activePack().label }}
-        @if (sectionLabel()) {
-          <span> · {{ sectionLabel() }}</span>
-        }
-      </p>
+      <p class="sub">{{ prefs.activePack().label }}</p>
     </div>
     <div class="head-actions">
       <button
