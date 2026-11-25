@@ -7,5 +7,7 @@
 
   <include file="changelog/001-knowledge-schema.xml" relativeToChangelogFile="true"/>
   <include file="changelog/002-seed-topic-categories.xml" relativeToChangelogFile="true"/>
+  <include file="changelog/003-admin-ops-schema.xml" relativeToChangelogFile="true"/>
+  <include file="changelog/004-seed-admin-ops.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

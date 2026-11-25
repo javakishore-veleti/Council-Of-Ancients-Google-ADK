@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
-# Start middleware APIs: observability Docker stack + coa_agents_api (host).
+# Start middleware APIs: observability Docker + coa_agents_api + coa_admin_api (host).
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-PID_FILE="${SCRIPT_DIR}/.coa-agents-api.pid"
-LOG_FILE="${SCRIPT_DIR}/.coa-agents-api.log"
+AGENTS_PID="${SCRIPT_DIR}/.coa-agents-api.pid"
+AGENTS_LOG="${SCRIPT_DIR}/.coa-agents-api.log"
+ADMIN_PID="${SCRIPT_DIR}/.coa-admin-api.pid"
+ADMIN_LOG="${SCRIPT_DIR}/.coa-admin-api.log"
 
 bash "${SCRIPT_DIR}/docker-all-up.sh" --observability
 
 export PYTHONPATH="${REPO_ROOT}/Middleware/API-Services:${REPO_ROOT}/Middleware:${REPO_ROOT}:${PYTHONPATH:-}"
 export COA_OBS_API_URL="${COA_OBS_API_URL:-http://localhost:8088}"
+export COA_ADMIN_DATABASE_URL="${COA_ADMIN_DATABASE_URL:-postgresql://postgres:postgres@localhost:5432/council}"
+export COA_KNOWLEDGE_DATABASE_URL="${COA_KNOWLEDGE_DATABASE_URL:-postgresql://postgres:postgres@localhost:5432/council}"
 
 if [[ -f "${REPO_ROOT}/.env" ]]; then
   while IFS= read -r line || [[ -n "${line}" ]]; do
@@ -28,30 +32,45 @@ if [[ -f "${REPO_ROOT}/.env" ]]; then
   done < "${REPO_ROOT}/.env"
 fi
 
-PORT="${COA_AGENTS_API_PORT:-8090}"
+start_uvicorn() {
+  local name="$1"
+  local module="$2"
+  local port="$3"
+  local pid_file="$4"
+  local log_file="$5"
 
-if [[ -f "${PID_FILE}" ]]; then
-  old_pid="$(cat "${PID_FILE}" 2>/dev/null || true)"
-  if [[ -n "${old_pid}" ]] && kill -0 "${old_pid}" 2>/dev/null; then
-    echo "coa_agents_api already running (pid ${old_pid}) on :${PORT}"
-    exit 0
+  if [[ -f "${pid_file}" ]]; then
+    old_pid="$(cat "${pid_file}" 2>/dev/null || true)"
+    if [[ -n "${old_pid}" ]] && kill -0 "${old_pid}" 2>/dev/null; then
+      echo "${name} already running (pid ${old_pid}) on :${port}"
+      return 0
+    fi
+    rm -f "${pid_file}"
   fi
-  rm -f "${PID_FILE}"
-fi
 
-cd "${REPO_ROOT}"
-echo "Starting coa_agents_api on http://0.0.0.0:${PORT} (background; log: ${LOG_FILE})..."
-nohup uv run uvicorn coa_agents_api.presentation.app:app \
-  --host 0.0.0.0 --port "${PORT}" \
-  > "${LOG_FILE}" 2>&1 &
-echo $! > "${PID_FILE}"
-sleep 2
-if kill -0 "$(cat "${PID_FILE}")" 2>/dev/null; then
-  echo "coa_agents_api started (pid $(cat "${PID_FILE}"))"
-  echo "  Agents:  http://localhost:${PORT}/docs  POST /v1/council/deliberate"
-  echo "  Obs API: http://localhost:8088/docs     POST /v1/obs/feed"
-else
-  echo "coa_agents_api failed to start; see ${LOG_FILE}" >&2
-  rm -f "${PID_FILE}"
-  exit 1
-fi
+  cd "${REPO_ROOT}"
+  echo "Starting ${name} on http://0.0.0.0:${port} (log: ${log_file})..."
+  nohup uv run uvicorn "${module}" \
+    --host 0.0.0.0 --port "${port}" \
+    > "${log_file}" 2>&1 &
+  echo $! > "${pid_file}"
+  sleep 2
+  if kill -0 "$(cat "${pid_file}")" 2>/dev/null; then
+    echo "${name} started (pid $(cat "${pid_file}"))"
+  else
+    echo "${name} failed to start; see ${log_file}" >&2
+    rm -f "${pid_file}"
+    return 1
+  fi
+}
+
+start_uvicorn "coa_agents_api" "coa_agents_api.presentation.app:app" \
+  "${COA_AGENTS_API_PORT:-8090}" "${AGENTS_PID}" "${AGENTS_LOG}"
+
+start_uvicorn "coa_admin_api" "coa_admin_api.presentation.app:app" \
+  "${COA_ADMIN_API_PORT:-8094}" "${ADMIN_PID}" "${ADMIN_LOG}"
+
+echo
+echo "  Agents: http://localhost:${COA_AGENTS_API_PORT:-8090}/docs"
+echo "  Admin:  http://localhost:${COA_ADMIN_API_PORT:-8094}/docs"
+echo "  Obs:    http://localhost:8088/docs"

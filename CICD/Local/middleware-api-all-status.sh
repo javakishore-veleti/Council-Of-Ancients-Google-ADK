@@ -1,33 +1,38 @@
 #!/usr/bin/env bash
-# Status for middleware APIs: Docker obs stack + coa_agents_api.
+# Status for middleware APIs: Docker obs stack + coa_agents_api + coa_admin_api.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PID_FILE="${SCRIPT_DIR}/.coa-agents-api.pid"
-PORT="${COA_AGENTS_API_PORT:-8090}"
 
 bash "${SCRIPT_DIR}/docker-all-status.sh"
 
-echo
-echo "=== coa_agents_api (host) ==="
-if [[ -f "${PID_FILE}" ]]; then
-  pid="$(cat "${PID_FILE}" 2>/dev/null || true)"
-  if [[ -n "${pid}" ]] && kill -0 "${pid}" 2>/dev/null; then
-    echo "  process: running (pid ${pid})"
+status_one() {
+  local name="$1"
+  local pid_file="$2"
+  local port="$3"
+  echo
+  echo "=== ${name} (host) ==="
+  if [[ -f "${pid_file}" ]]; then
+    pid="$(cat "${pid_file}" 2>/dev/null || true)"
+    if [[ -n "${pid}" ]] && kill -0 "${pid}" 2>/dev/null; then
+      echo "  process: running (pid ${pid})"
+    else
+      echo "  process: stale pid file (${pid_file})"
+    fi
   else
-    echo "  process: stale pid file (${PID_FILE})"
+    echo "  process: no pid file"
   fi
-else
-  echo "  process: no pid file (not started via middleware-api-all-up.sh)"
-fi
+  if command -v curl >/dev/null 2>&1; then
+    if curl -sf -m 2 "http://127.0.0.1:${port}/healthz" >/dev/null 2>&1; then
+      echo "  healthz: ok  http://127.0.0.1:${port}/healthz"
+    else
+      echo "  healthz: not reachable at http://127.0.0.1:${port}/healthz"
+    fi
+  fi
+}
 
-if command -v curl >/dev/null 2>&1; then
-  if curl -sf -m 2 "http://127.0.0.1:${PORT}/healthz" >/dev/null 2>&1; then
-    echo "  healthz: ok  http://127.0.0.1:${PORT}/healthz"
-  else
-    echo "  healthz: not reachable at http://127.0.0.1:${PORT}/healthz"
-  fi
-fi
+status_one "coa_agents_api" "${SCRIPT_DIR}/.coa-agents-api.pid" "${COA_AGENTS_API_PORT:-8090}"
+status_one "coa_admin_api" "${SCRIPT_DIR}/.coa-admin-api.pid" "${COA_ADMIN_API_PORT:-8094}"
 
 echo
 echo "Tips:"

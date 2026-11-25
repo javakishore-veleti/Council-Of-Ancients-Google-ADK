@@ -16,7 +16,7 @@ Admin UI (:4201)
               → callbacks to knowledge_api (started / completed / failed)
 ```
 
-Until `coa_admin_api` is up, Knowledge Sources uses local fixtures and simulates queueing.
+Requires `coa_admin_api` on `:8094` (Postgres-backed). Apply knowledge bootstrap + `bootstrap-admin-ops.sql`, then `npm run local:middleware:api:all:start`.
 
 ## Run (from repo root — preferred)
 

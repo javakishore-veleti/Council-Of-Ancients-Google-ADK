@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { forkJoin } from 'rxjs';
 import {
   APP_ENDPOINT_KIND_LABELS,
   AdminApiService,
@@ -195,8 +196,11 @@ export class KnowledgeSourceDetailComponent implements OnInit {
     }
     this.loading.set(true);
     this.notFound.set(false);
-    this.api.getKnowledgeSource(id).subscribe({
-      next: (src) => {
+    forkJoin({
+      endpoints: this.api.listAppEndpoints(),
+      src: this.api.getKnowledgeSource(id),
+    }).subscribe({
+      next: ({ src }) => {
         this.source.set(src);
         this.downloadFrom.set(
           src.download_from_endpoint_id

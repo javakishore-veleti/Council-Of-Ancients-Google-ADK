@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-004-widen-source-status" author="javakishore-veleti">
+    <sql>
+      ALTER TABLE knowledge.knowledge_source
+        DROP CONSTRAINT IF EXISTS ck_knowledge_source_status;
+      ALTER TABLE knowledge.knowledge_source
+        ADD CONSTRAINT ck_knowledge_source_status
+        CHECK (status IN (
+          'active', 'paused', 'denied', 'archived',
+          'queued', 'running', 'fetched', 'failed'
+        ));
+    </sql>
+  </changeSet>
+
+  <changeSet id="knowledge-005-app-endpoint" author="javakishore-veleti">
+    <createTable schemaName="knowledge" tableName="app_endpoint">
+      <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="kind" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="provider" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="endpoint_url" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="resource" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="region" type="TEXT"/>
+      <column name="status" type="TEXT" defaultValue="active">
+        <constraints nullable="false"/>
+      </column>
+      <column name="notes" type="TEXT"/>
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <sql>
+      ALTER TABLE knowledge.app_endpoint
+        ADD CONSTRAINT ck_app_endpoint_kind
+        CHECK (kind IN (
+          'relational_db', 'vector_db', 'object_store', 'cloud_provider',
+          'http_origin', 'search', 'graph', 'queue', 'other'
+        ));
+      ALTER TABLE knowledge.app_endpoint
+        ADD CONSTRAINT ck_app_endpoint_status
+        CHECK (status IN ('active', 'draft', 'disabled'));
+    </sql>
+  </changeSet>
+
+  <changeSet id="knowledge-006-source-endpoint" author="javakishore-veleti">
+    <createTable schemaName="knowledge" tableName="knowledge_source_endpoint">
+      <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="source_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_kse_source"
+          referencedTableSchemaName="knowledge"
+          referencedTableName="knowledge_source"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="endpoint_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_kse_endpoint"
+          referencedTableSchemaName="knowledge"
+          referencedTableName="app_endpoint"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="role" type="TEXT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addUniqueConstraint
+      schemaName="knowledge"
+      tableName="knowledge_source_endpoint"
+      columnNames="source_id, endpoint_id, role"
+      constraintName="uq_kse_source_endpoint_role"/>
+    <sql>
+      ALTER TABLE knowledge.knowledge_source_endpoint
+        ADD CONSTRAINT ck_kse_role
+        CHECK (role IN ('download_from', 'store_to', 'tech_stack'));
+      CREATE UNIQUE INDEX uq_kse_one_download_from
+        ON knowledge.knowledge_source_endpoint (source_id)
+        WHERE role = 'download_from';
+    </sql>
+  </changeSet>
+
+  <changeSet id="knowledge-007-wf-exec-log" author="javakishore-veleti">
+    <createTable schemaName="knowledge" tableName="wf_exec_log">
+      <column name="id" type="UUID" defaultValueComputed="gen_random_uuid()">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="source_id" type="UUID">
+        <constraints nullable="false"
+          foreignKeyName="fk_wf_source"
+          referencedTableSchemaName="knowledge"
+          referencedTableName="knowledge_source"
+          referencedColumnNames="id"/>
+      </column>
+      <column name="engine" type="TEXT" defaultValue="airflow">
+        <constraints nullable="false"/>
+      </column>
+      <column name="external_run_id" type="TEXT"/>
+      <column name="status" type="TEXT" defaultValue="queued">
+        <constraints nullable="false"/>
+      </column>
+      <column name="download_from_endpoint_id" type="UUID"/>
+      <column name="store_to_endpoint_ids" type="UUID[]" defaultValueComputed="'{}'::uuid[]">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tech_stack_endpoint_ids" type="UUID[]" defaultValueComputed="'{}'::uuid[]">
+        <constraints nullable="false"/>
+      </column>
+      <column name="started_at" type="TIMESTAMPTZ"/>
+      <column name="finished_at" type="TIMESTAMPTZ"/>
+      <column name="error_message" type="TEXT"/>
+      <column name="detail" type="TEXT"/>
+      <column name="created_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+      <column name="updated_at" type="TIMESTAMPTZ" defaultValueComputed="NOW()">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <sql>
+      ALTER TABLE knowledge.wf_exec_log
+        ADD CONSTRAINT ck_wf_engine
+        CHECK (engine IN ('airflow', 'step_functions', 'local'));
+      ALTER TABLE knowledge.wf_exec_log
+        ADD CONSTRAINT ck_wf_status
+        CHECK (status IN ('queued', 'started', 'running', 'completed', 'failed', 'cancelled'));
+      CREATE INDEX ix_wf_exec_log_source_created
+        ON knowledge.wf_exec_log (source_id, created_at DESC);
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

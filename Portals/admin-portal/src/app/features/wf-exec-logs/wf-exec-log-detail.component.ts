@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import {
   APP_ENDPOINT_KIND_LABELS,
   AdminApiService,
@@ -39,8 +40,11 @@ export class WfExecLogDetailComponent implements OnInit {
       this.loading.set(false);
       return;
     }
-    this.api.getWfExecLog(id).subscribe({
-      next: (row) => {
+    forkJoin({
+      endpoints: this.api.listAppEndpoints(),
+      row: this.api.getWfExecLog(id),
+    }).subscribe({
+      next: ({ row }) => {
         this.log.set(row);
         this.downloadFrom.set(
           row.download_from_endpoint_id
