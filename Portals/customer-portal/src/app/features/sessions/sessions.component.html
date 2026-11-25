@@ -1,20 +1,50 @@
 <div class="sessions">
   <div class="head">
-    <h2 class="display-font">Sessions</h2>
+    <div>
+      <h2 class="display-font">Sessions</h2>
+      <p class="sub">Showing: {{ filterLabel() }}</p>
+    </div>
     <button
       pButton
       type="button"
-      label="New chat in current section"
+      label="New chat"
       icon="pi pi-plus"
       (click)="create()"
     ></button>
   </div>
 
-  <p class="hint">
-    Every chat belongs to a left-nav section (for example Architecture styles). Open one below, or start a new chat while that section is selected.
-  </p>
+  <div class="filters">
+    <button
+      type="button"
+      class="coa-chip"
+      [class.active]="filterSectionId() === prefs.lastContentSectionId() && filterSectionId() !== ''"
+      (click)="setFilter(prefs.lastContentSectionId())"
+    >
+      {{ prefs.sectionLabel(prefs.lastContentSectionId()) }}
+    </button>
+    @for (sec of prefs.contentSections(); track sec.id) {
+      @if (sec.id !== prefs.lastContentSectionId()) {
+        <button
+          type="button"
+          class="coa-chip"
+          [class.active]="filterSectionId() === sec.id"
+          (click)="setFilter(sec.id)"
+        >
+          {{ sec.label }}
+        </button>
+      }
+    }
+    <button
+      type="button"
+      class="coa-chip"
+      [class.active]="filterSectionId() === ''"
+      (click)="setFilter('')"
+    >
+      All sections
+    </button>
+  </div>
 
-  <p-table [value]="prefs.projectList()" styleClass="p-datatable-sm session-table">
+  <p-table [value]="filteredProjects()" styleClass="p-datatable-sm session-table">
     <ng-template pTemplate="header">
       <tr>
         <th>Section</th>
@@ -41,7 +71,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="4">No sessions in this topic yet.</td>
+        <td colspan="4">No chats in {{ filterLabel() }} yet.</td>
       </tr>
     </ng-template>
   </p-table>

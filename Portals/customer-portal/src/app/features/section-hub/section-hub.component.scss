@@ -94,6 +94,72 @@
   gap: 0.5rem;
 }
 
+.chats-block {
+  padding: 1.1rem 1.2rem;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #e8ddd0;
+}
+
+.chats-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.chats-head h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.2rem;
+  color: var(--coa-deep);
+}
+
+.chat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.chat-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  border: 1px solid #e8ddd0;
+  background: #fffaf3;
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.chat-row:hover {
+  border-color: color-mix(in srgb, var(--coa-copper) 40%, #e8ddd0);
+}
+
+.chat-title {
+  font-weight: 600;
+  color: var(--coa-deep);
+}
+
+.chat-time {
+  font-size: 0.82rem;
+  color: var(--coa-muted);
+  flex-shrink: 0;
+}
+
+.chat-list .empty {
+  color: var(--coa-muted);
+  font-size: 0.92rem;
+  padding: 0.35rem 0;
+}
+
 .next-step {
   display: flex;
   flex-wrap: wrap;

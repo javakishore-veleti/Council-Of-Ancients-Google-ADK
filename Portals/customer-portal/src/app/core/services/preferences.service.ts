@@ -17,6 +17,8 @@ const MESSAGES_KEY = 'coa_chat_messages';
 export class PreferencesService {
   readonly activePackId = signal<PackId>('software_architecture');
   readonly activeNavId = signal<string>('overview');
+  /** Last topic section for session filtering (survives visiting Sessions / Settings). */
+  readonly lastContentSectionId = signal<string>('overview');
   readonly activeProjectId = signal<string>('');
   readonly selectedOptions = signal<string[]>([]);
   readonly selectedLenses = signal<string[]>([]);
@@ -53,12 +55,23 @@ export class PreferencesService {
   );
 
   /** Sessions for the active left-nav section only. */
-  readonly sectionProjectList = computed(() => {
-    const sectionId = this.activeNavId();
+  readonly sectionProjectList = computed(() =>
+    this.projectsForSection(this.activeNavId()),
+  );
+
+  projectsForSection(sectionId: string): ChatProject[] {
+    const id = !sectionId || sectionId === 'chamber' || sectionId === 'sessions'
+      ? this.lastContentSectionId()
+      : sectionId;
     return this.projectList().filter(
-      (p: ChatProject) => (p.sectionId || 'overview') === sectionId,
+      (p: ChatProject) => (p.sectionId || 'overview') === id,
     );
-  });
+  }
+
+  contentSections() {
+    const skip = new Set(['overview', 'sessions', 'settings', 'knowledge', 'disclaimer']);
+    return this.activePack().nav.filter((n) => !skip.has(n.id));
+  }
 
   readonly activeMessages = computed(
     () => this.messages()[this.activeProjectId()] ?? [],
@@ -80,6 +93,7 @@ export class PreferencesService {
   setPack(id: PackId): void {
     this.activePackId.set(id);
     this.activeNavId.set('overview');
+    this.lastContentSectionId.set('overview');
     this.selectedOptions.set([]);
     this.selectedLenses.set([]);
     this.deepThink.set(false);
@@ -89,7 +103,11 @@ export class PreferencesService {
 
   setNav(id: string): void {
     // Chamber is a canvas, not a left-nav section id.
-    this.activeNavId.set(id === 'chamber' ? 'overview' : id);
+    const next = id === 'chamber' ? 'overview' : id;
+    this.activeNavId.set(next);
+    if (!['sessions', 'settings', 'knowledge'].includes(next)) {
+      this.lastContentSectionId.set(next);
+    }
     this.selectedOptions.set([]);
   }
 

@@ -73,6 +73,16 @@ export class SectionHubComponent {
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 
+  newChat(): void {
+    this.prefs.createProject();
+    void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
+  }
+
+  openChat(id: string): void {
+    this.prefs.selectProject(id);
+    void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
+  }
+
   toggleOption(id: string): void {
     this.prefs.toggleOption(id);
   }

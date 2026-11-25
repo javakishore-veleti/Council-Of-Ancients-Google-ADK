@@ -39,6 +39,35 @@
     </div>
   }
 
+  <div class="chats-block">
+    <div class="chats-head">
+      <div>
+        <h2 class="display-font">Chats in {{ section().label }}</h2>
+        <p class="hint">Only this section — not Patterns, Cloud, or other left-nav areas.</p>
+      </div>
+      <button
+        pButton
+        type="button"
+        label="New chat"
+        icon="pi pi-plus"
+        class="p-button-outlined"
+        (click)="newChat()"
+      ></button>
+    </div>
+    <ul class="chat-list">
+      @for (p of prefs.sectionProjectList(); track p.id) {
+        <li>
+          <button type="button" class="chat-row" (click)="openChat(p.id)">
+            <span class="chat-title">{{ p.title }}</span>
+            <span class="chat-time">{{ p.updatedAt | date: 'short' }}</span>
+          </button>
+        </li>
+      } @empty {
+        <li class="empty">No chats here yet. Enter the chamber or start a new chat.</li>
+      }
+    </ul>
+  </div>
+
   <div class="next-step">
     <div>
       <h2 class="display-font">Ready to deliberate?</h2>
