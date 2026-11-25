@@ -44,17 +44,10 @@ export class CouncilApiService {
       );
   }
 
-  private offlineReply(message: string, ctx: EffectiveContext): string {
-    const pack = ctx.pack_id.replace(/_/g, ' ');
-    const opts = Object.keys(ctx.domain_options).join(', ') || 'none';
+  private offlineReply(message: string, _ctx: EffectiveContext): string {
     return (
-      `Council API is unreachable, so this is a local preview.\n\n` +
-      `Pack: ${pack}\n` +
-      `Left nav: ${ctx.left_nav}\n` +
-      `Options: ${opts}\n` +
-      `Tone: ${String(ctx.settings['tone'] ?? 'balanced')}\n\n` +
-      `Your question: “${message}”\n\n` +
-      `Start coa_agents_api (\`npm run local:middleware:api:all:start\`) to hear the live Facilitator and counselors.`
+      `The council is briefly unavailable. Please try again in a moment.\n\n` +
+      `Your question was saved: “${message}”`
     );
   }
 }

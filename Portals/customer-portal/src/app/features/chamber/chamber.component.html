@@ -3,10 +3,7 @@
     <div>
       <h2 class="display-font">Chamber</h2>
       <p class="sub">
-        {{ prefs.activePack().label }} · {{ prefs.activeNavId() }}
-        @if (!prefs.activePack().kbReady) {
-          <span class="soon"> · KB coming soon</span>
-        }
+        {{ prefs.activePack().label }}
       </p>
     </div>
     <div class="head-actions">
@@ -25,10 +22,9 @@
     <div class="empty-pack">
       <i class="bi bi-hourglass-split"></i>
       <div>
-        <strong>This pack is not loaded yet.</strong>
+        <strong>Knowledge for this topic is still being prepared.</strong>
         <p>
-          Chrome is live so you can explore navigation. Answers will not pull from Architecture.
-          Switch to <em>Architecture</em> for a live chamber.
+          You can explore the chamber now. Cited answers from the topic library will appear here when they are ready.
         </p>
       </div>
     </div>

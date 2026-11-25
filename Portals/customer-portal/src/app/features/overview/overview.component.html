@@ -1,6 +1,6 @@
 <section class="overview">
   <div class="hero-band animate__animated animate__fadeIn">
-    <div>
+    <div class="hero-copy">
       <p class="eyebrow">Topic</p>
       <h1 class="display-font">{{ prefs.activePack().label }}</h1>
       <p class="lede">{{ prefs.activePack().tagline }}</p>
@@ -26,23 +26,31 @@
         <ng-template pTemplate="title">Knowledge</ng-template>
         <p>
           @if (prefs.activePack().kbReady) {
-            Ready for local ingest &amp; citation.
+            Curated sources are available for cited answers in this topic.
           } @else {
-            Coming soon — full chrome is live; KB loads later per Product Ideas.
+            Knowledge for this topic is being prepared. Chamber chat is available now.
           }
         </p>
       </p-card>
     </div>
     <div class="col-md-4">
       <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Seats</ng-template>
+        <ng-template pTemplate="title">Council seats</ng-template>
         <p>{{ prefs.activePack().seatsLabel }}</p>
       </p-card>
     </div>
     <div class="col-md-4">
       <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Sessions</ng-template>
-        <p>{{ prefs.projectList().length }} chat project(s) in this pack.</p>
+        <ng-template pTemplate="title">Your sessions</ng-template>
+        <p>
+          @if (prefs.projectList().length === 0) {
+            No chamber sessions yet — start one when you are ready.
+          } @else if (prefs.projectList().length === 1) {
+            1 chamber session in this topic.
+          } @else {
+            {{ prefs.projectList().length }} chamber sessions in this topic.
+          }
+        </p>
       </p-card>
     </div>
   </div>

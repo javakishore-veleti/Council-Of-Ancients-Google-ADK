@@ -8,10 +8,14 @@
 
 .hero-band {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: minmax(0, 1.2fr) minmax(10rem, 0.8fr);
   gap: 1rem;
   align-items: center;
   margin-bottom: 0.75rem;
+}
+
+.hero-copy {
+  min-width: 0;
 }
 
 .eyebrow {
@@ -26,7 +30,11 @@
 .hero-band h1 {
   margin: 0;
   color: var(--coa-deep);
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .lede {

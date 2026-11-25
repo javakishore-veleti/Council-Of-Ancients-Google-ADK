@@ -200,6 +200,9 @@
   margin: 0;
   font-size: 1.15rem;
   color: var(--coa-deep);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pack-title p {

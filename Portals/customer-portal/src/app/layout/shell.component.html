@@ -22,7 +22,7 @@
           class="pack-tab"
           [class.active]="prefs.activePackId() === pack.id"
           (click)="selectPack(pack.id)"
-          [pTooltip]="pack.kbReady ? pack.tagline : pack.tagline + ' (KB coming soon)'"
+          [pTooltip]="pack.tagline"
           tooltipPosition="bottom"
         >
           {{ pack.shortLabel }}
