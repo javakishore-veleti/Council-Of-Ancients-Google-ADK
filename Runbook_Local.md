@@ -2,7 +2,7 @@
 
 Goal: run the local stack, use the **Admin UI** to queue **Download** on an allowlisted knowledge source, run the ingest facade, and land Markdown under your local Knowledge Base.
 
-**First source to run:** the seeded **DigitalOcean GoF** hub (§4). After that, every other source uses the same Admin → Download → facade path (§5+).
+**First source to run:** the seeded **DigitalOcean GoF** hub (§5). After that, every other source uses the same Admin → Download → facade path (§6+).
 
 ---
 
@@ -10,14 +10,14 @@ Goal: run the local stack, use the **Admin UI** to queue **Download** on an allo
 
 1. [What this does (one picture)](#1-what-this-does-one-picture)
 2. [Prerequisites](#2-prerequisites)
-3. [Start the local stack](#3-start-the-local-stack)
-4. [First source — DigitalOcean GoF](#4-first-source--digitalocean-gof)
-5. [Same path for every other source](#5-same-path-for-every-other-source)
-6. [Queue Download](#6-queue-download)
-7. [Run the ingest facade](#7-run-the-ingest-facade)
-8. [Confirm files on disk](#8-confirm-files-on-disk)
-9. [Optional — Airflow](#9-optional--airflow)
-10. [Stop everything](#10-stop-everything)
+3. [Stop the local stack](#3-stop-the-local-stack)
+4. [Start the local stack](#4-start-the-local-stack)
+5. [First source — DigitalOcean GoF](#5-first-source--digitalocean-gof)
+6. [Same path for every other source](#6-same-path-for-every-other-source)
+7. [Queue Download](#7-queue-download)
+8. [Run the ingest facade](#8-run-the-ingest-facade)
+9. [Confirm files on disk](#9-confirm-files-on-disk)
+10. [Optional — Airflow](#10-optional--airflow)
 11. [Quick troubleshooting](#11-quick-troubleshooting)
 
 ---
@@ -58,7 +58,17 @@ You grow the KB by adding more **sources** (same facade). You do not invent a ne
 
 ---
 
-## 3. Start the local stack
+## 3. Stop the local stack
+
+```bash
+npm run local:portals:all:stop
+npm run local:middleware:api:all:stop
+npm run local:containers:all:stop
+```
+
+---
+
+## 4. Start the local stack
 
 ```bash
 uv sync
@@ -66,8 +76,6 @@ npm run local:containers:all:start
 npm run local:middleware:api:all:start
 npm run local:portals:all:start
 ```
-
-Containers hold DB/Redis (leave up). Middleware/portals are host processes — restart anytime without stopping containers.
 
 | URL | What |
 |-----|------|
@@ -82,7 +90,7 @@ npm run local:portals:all:status
 
 ---
 
-## 4. First source — DigitalOcean GoF
+## 5. First source — DigitalOcean GoF
 
 This is the **first real ingest**, not a toy demo. Liquibase seeds this row; you drive it from the **Admin UI**.
 
@@ -105,34 +113,32 @@ This is the **first real ingest**, not a toy demo. Liquibase seeds this row; you
 | **Downloaded from** | **DigitalOcean community (origin)** |
 | **Stored as** | Must include **COA KnowledgeBase (local datasets)** (required for local ingest). Seed may also list AWS S3 / Azure Blob — those are optional for this run. |
 
-4. Continue at [§6 Queue Download](#6-queue-download) (use the **Download** button on that page).
+4. Continue at [§7 Queue Download](#7-queue-download) (use the **Download** button on that page).
 
 ---
 
-## 5. Same path for every other source
+## 6. Same path for every other source
 
 After GoF lands, Wikipedia, NIST, or any source you add later follows the **same Admin UI path**:
 
 1. Source exists in Admin (seed or create) with URL, allowlisted **license**, **workflow** = `kb_ingest_facade`, and **store_to** (and usually **download_from**) endpoint maps.  
 2. **Knowledge sources** → open that source → **Download**.  
-3. Run the facade with the new `wf_exec_log_id` ([§7](#7-run-the-ingest-facade)).  
-4. Files appear under `{category_code}/{subcategory_code}/{source_uuid}/` ([§8](#8-confirm-files-on-disk)).
+3. Run the facade with the new `wf_exec_log_id` ([§8](#8-run-the-ingest-facade)).  
+4. Files appear under `{category_code}/{subcategory_code}/{source_uuid}/` ([§9](#9-confirm-files-on-disk)).
 
 ---
 
-## 6. Queue Download
-
-**Primary: Admin UI**
+## 7. Queue Download
 
 On the source detail page: **Download — from / store to** → **Download**.
 
 Creates a **`wf_exec_log`** (`queued`) with `wf_id` = the source’s entry workflow. It does **not** fetch the page yet.
 
-Copy `wf_exec_log_id` from **Ops history** on that page (needed for §7).
+Copy `wf_exec_log_id` from **Ops history** on that page (needed for §8).
 
 ---
 
-## 7. Run the ingest facade
+## 8. Run the ingest facade
 
 Same command for every source — only the exec id changes.
 
@@ -152,7 +158,7 @@ Refresh source → **Ops history** → **completed**.
 
 ---
 
-## 8. Confirm files on disk
+## 9. Confirm files on disk
 
 ```text
 $HOME/runtime_data/apps/datasets/COA/KnowledgeBase/
@@ -175,7 +181,7 @@ Override root with `KB_LOCAL_ROOT` if needed. **Never commit** KB files (public 
 
 ---
 
-## 9. Optional — Airflow
+## 10. Optional — Airflow
 
 | DAG id | In Workflows table? | Job |
 |--------|---------------------|-----|
@@ -192,18 +198,6 @@ Trigger conf: `{ "wf_exec_log_id": "<uuid>" }`. See [`DataOps/airflow/README.md`
 
 ---
 
-## 10. Stop everything
-
-```bash
-npm run local:portals:all:stop
-npm run local:middleware:api:all:stop
-npm run local:containers:all:stop
-```
-
-Omit `containers:all:stop` if you only want to bounce APIs (DB stays).
-
----
-
 ## 11. Quick troubleshooting
 
 | Symptom | Check |
@@ -212,10 +206,9 @@ Omit `containers:all:stop` if you only want to bounce APIs (DB stays).
 | No sources / workflows | Re-run `bash CICD/Local/knowledge-db-apply.sh` |
 | Download 400 `no_store_targets` | Map at least one **store_to** endpoint |
 | `denied_license` | License in `DataOps/kb/pipeline/license_gate.py` |
-| SSL verify failed on extract | In **that** shell only: `export COA_KB_SSL_INSECURE=1` then re-run §7 (not needed for `npm run`) |
-| Ops history stuck `queued` | Facade not run — §7 |
+| SSL verify failed on extract | In **that** shell only: `export COA_KB_SSL_INSECURE=1` then re-run §8 (not needed for `npm run`) |
+| Ops history stuck `queued` | Facade not run — §8 |
 | Empty / bad `content.md` | Origin / robots / network; read exec error on detail |
-
 ---
 
 ## Related docs
