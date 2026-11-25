@@ -64,5 +64,3 @@ echo "Liquibase update (knowledge changelog master)…"
 run_liquibase update
 
 echo "Knowledge schema ready via Liquibase."
-psql "${DB_URL}" -c \
-  "SELECT id, filename, orderexecuted FROM databasechangelog ORDER BY orderexecuted;"
