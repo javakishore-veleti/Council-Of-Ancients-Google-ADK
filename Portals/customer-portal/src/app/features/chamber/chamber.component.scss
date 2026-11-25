@@ -151,6 +151,13 @@
   color: var(--coa-ivory);
 }
 
+.proj.more {
+  background: transparent;
+  border-style: dashed;
+  color: var(--coa-copper);
+  font-weight: 600;
+}
+
 .criteria {
   flex-shrink: 0;
   border: 1px solid #e6e6e6;

@@ -39,34 +39,74 @@
     </div>
   }
 
-  <div class="chats-block">
-    <div class="chats-head">
-      <div>
-        <h2 class="display-font">Chats in {{ section().label }}</h2>
-        <p class="hint">Only this section — not Patterns, Cloud, or other left-nav areas.</p>
+  @if (prefs.isChatSection(section().id)) {
+    <div class="chats-block">
+      <div class="chats-head">
+        <div>
+          <h2 class="display-font">Chats in {{ section().label }}</h2>
+          <p class="hint">
+            Only this section — not Patterns, Cloud, or other left-nav areas.
+            @if (chatTotal() > 0) {
+              <span class="count"> · {{ chatTotal() }} total</span>
+            }
+          </p>
+        </div>
+        <button
+          pButton
+          type="button"
+          label="New chat"
+          icon="pi pi-plus"
+          class="p-button-outlined"
+          (click)="newChat()"
+        ></button>
       </div>
-      <button
-        pButton
-        type="button"
-        label="New chat"
-        icon="pi pi-plus"
-        class="p-button-outlined"
-        (click)="newChat()"
-      ></button>
-    </div>
-    <ul class="chat-list">
-      @for (p of prefs.sectionProjectList(); track p.id) {
-        <li>
-          <button type="button" class="chat-row" (click)="openChat(p.id)">
-            <span class="chat-title">{{ p.title }}</span>
-            <span class="chat-time">{{ p.updatedAt | date: 'short' }}</span>
-          </button>
-        </li>
-      } @empty {
-        <li class="empty">No chats here yet. Enter the chamber or start a new chat.</li>
+
+      @if (chatTotal() > 5) {
+        <div class="chat-search">
+          <i class="pi pi-search" aria-hidden="true"></i>
+          <input
+            pInputText
+            type="search"
+            [ngModel]="chatQuery()"
+            (ngModelChange)="onChatQuery($event)"
+            [attr.placeholder]="'Search ' + chatTotal() + ' chats…'"
+            [attr.aria-label]="'Search chats in ' + section().label"
+          />
+        </div>
       }
-    </ul>
-  </div>
+
+      <ul class="chat-list">
+        @for (p of visibleChats(); track p.id) {
+          <li>
+            <button type="button" class="chat-row" (click)="openChat(p.id)">
+              <span class="chat-title">{{ p.title }}</span>
+              <span class="chat-time">{{ p.updatedAt | date: 'short' }}</span>
+            </button>
+          </li>
+        } @empty {
+          <li class="empty">
+            @if (chatQuery().trim()) {
+              No chats match “{{ chatQuery().trim() }}”.
+            } @else {
+              No chats here yet. Enter the chamber or start a new chat.
+            }
+          </li>
+        }
+      </ul>
+
+      @if (hiddenCount() > 0) {
+        <button type="button" class="show-more" (click)="browseAllSessions()">
+          @if (chatQuery().trim()) {
+            {{ hiddenCount() }} more matches — open Sessions to filter →
+          } @else {
+            Browse all {{ chatTotal() }} in Sessions →
+          }
+        </button>
+      } @else if (chatQuery().trim() && matchCount() > 0) {
+        <p class="match-note">{{ matchCount() }} match{{ matchCount() === 1 ? '' : 'es' }}</p>
+      }
+    </div>
+  }
 
   <div class="next-step">
     <div>

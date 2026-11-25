@@ -1,8 +1,11 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { PreferencesService } from '../../core/services/preferences.service';
+import { ChatProject } from '../../core/models/pack';
 
 const SECTION_INTRO: Record<string, string> = {
   patterns:
@@ -46,13 +49,17 @@ const SECTION_INTRO: Record<string, string> = {
 @Component({
   selector: 'app-section-hub',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule],
   templateUrl: './section-hub.component.html',
   styleUrl: './section-hub.component.scss',
 })
 export class SectionHubComponent {
   readonly prefs = inject(PreferencesService);
   private readonly router = inject(Router);
+
+  /** Recent chats on the hub; full list + filters live on Sessions. */
+  readonly initialVisible = 8;
+  readonly chatQuery = signal('');
 
   readonly section = computed(() => {
     const pack = this.prefs.activePack();
@@ -67,6 +74,43 @@ export class SectionHubComponent {
   });
 
   readonly options = computed(() => this.prefs.domainOptions());
+
+  readonly matchedChats = computed(() => {
+    const q = this.chatQuery().trim().toLowerCase();
+    const list = this.prefs.sectionProjectList();
+    if (!q) {
+      return list;
+    }
+    return list.filter((p: ChatProject) => p.title.toLowerCase().includes(q));
+  });
+
+  readonly visibleChats = computed(() => {
+    const matched = this.matchedChats();
+    // Searching: show matches here. Otherwise: recent only — full list lives in Sessions.
+    if (this.chatQuery().trim()) {
+      return matched.slice(0, 20);
+    }
+    return matched.slice(0, this.initialVisible);
+  });
+
+  readonly chatTotal = computed(() => this.prefs.sectionProjectList().length);
+  readonly matchCount = computed(() => this.matchedChats().length);
+  readonly hiddenCount = computed(() => {
+    if (this.chatQuery().trim()) {
+      return Math.max(0, this.matchCount() - this.visibleChats().length);
+    }
+    return Math.max(0, this.chatTotal() - this.initialVisible);
+  });
+
+  onChatQuery(value: string): void {
+    this.chatQuery.set(value);
+  }
+
+  /** Full listing with filters + pagination lives on Sessions. */
+  browseAllSessions(): void {
+    this.prefs.setNav('sessions');
+    void this.router.navigate(['/app', this.prefs.activePackId(), 'sessions']);
+  }
 
   openChamber(): void {
     this.prefs.openSectionChamber();

@@ -11,11 +11,46 @@
   font-size: 0.9rem;
 }
 
+.criteria {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e8ddd0;
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-  margin: 0 0 1rem;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #e8ddd0;
+  border-radius: 10px;
+  background: #fffaf3;
+}
+
+.search i {
+  color: var(--coa-muted);
+  font-size: 0.9rem;
+}
+
+.search input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: var(--coa-deep);
+  font-size: 0.95rem;
 }
 
 .head h2 {

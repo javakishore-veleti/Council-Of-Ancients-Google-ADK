@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -11,6 +11,7 @@ import { PreferencesService } from '../../core/services/preferences.service';
 import { CouncilApiService, DeliberateResponse } from '../../core/services/council-api.service';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { CheckboxModule } from 'primeng/checkbox';
+import { ChatProject } from '../../core/models/pack';
 
 @Component({
   selector: 'app-chamber',
@@ -33,6 +34,7 @@ export class ChamberComponent implements OnInit {
   readonly prefs = inject(PreferencesService);
   readonly auth = inject(AuthService);
   private readonly council = inject(CouncilApiService);
+  private readonly router = inject(Router);
 
   draft = '';
   renameDraft = '';
@@ -40,9 +42,28 @@ export class ChamberComponent implements OnInit {
   readonly renaming = signal(false);
   /** Criteria collapsed by default so chat history has room */
   readonly criteriaOpen = signal(false);
+  readonly chipLimit = 6;
 
   readonly activeChatTitle = computed(
     () => this.prefs.activeProject()?.title ?? 'New chat',
+  );
+
+  /** Recent section chats for the chip strip; full list is Sessions. */
+  readonly visibleProjects = computed(() => {
+    const list = this.prefs.sectionProjectList();
+    const activeId = this.prefs.activeProjectId();
+    const head = list.slice(0, this.chipLimit);
+    if (activeId && !head.some((p: ChatProject) => p.id === activeId)) {
+      const active = list.find((p: ChatProject) => p.id === activeId);
+      if (active) {
+        return [active, ...head.slice(0, this.chipLimit - 1)];
+      }
+    }
+    return head;
+  });
+
+  readonly moreChatCount = computed(() =>
+    Math.max(0, this.prefs.sectionProjectList().length - this.visibleProjects().length),
   );
 
   toneOptions = [
@@ -122,6 +143,11 @@ export class ChamberComponent implements OnInit {
 
   newSession(): void {
     this.prefs.createProject();
+  }
+
+  browseSessions(): void {
+    this.prefs.setNav('sessions');
+    void this.router.navigate(['/app', this.prefs.activePackId(), 'sessions']);
   }
 
   send(): void {

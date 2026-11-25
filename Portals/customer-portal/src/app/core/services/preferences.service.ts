@@ -54,23 +54,48 @@ export class PreferencesService {
       ),
   );
 
-  /** Sessions for the active left-nav section only. */
+  /** Nav ids that never own chat sessions (landing / meta pages). */
+  private readonly nonChatNav = new Set([
+    'overview',
+    'chamber',
+    'sessions',
+    'settings',
+    'knowledge',
+    'disclaimer',
+  ]);
+
+  /** Sessions for the active deliberation section only (never Overview). */
   readonly sectionProjectList = computed(() =>
-    this.projectsForSection(this.activeNavId()),
+    this.projectsForSection(this.resolveChatSectionId()),
   );
 
+  /** Overview / Sessions / Settings are not chat homes — map to a real section. */
+  resolveChatSectionId(preferred?: string): string {
+    const contentIds = this.contentSections().map((n) => n.id);
+    if (!contentIds.length) {
+      return 'overview';
+    }
+    for (const id of [preferred, this.activeNavId(), this.lastContentSectionId()]) {
+      if (id && contentIds.includes(id)) {
+        return id;
+      }
+    }
+    return contentIds[0];
+  }
+
+  isChatSection(sectionId: string): boolean {
+    return !!sectionId && !this.nonChatNav.has(sectionId);
+  }
+
   projectsForSection(sectionId: string): ChatProject[] {
-    const id = !sectionId || sectionId === 'chamber' || sectionId === 'sessions'
-      ? this.lastContentSectionId()
-      : sectionId;
+    const id = this.resolveChatSectionId(sectionId);
     return this.projectList().filter(
-      (p: ChatProject) => (p.sectionId || 'overview') === id,
+      (p: ChatProject) => this.resolveChatSectionId(p.sectionId) === id,
     );
   }
 
   contentSections() {
-    const skip = new Set(['overview', 'sessions', 'settings', 'knowledge', 'disclaimer']);
-    return this.activePack().nav.filter((n) => !skip.has(n.id));
+    return this.activePack().nav.filter((n) => this.isChatSection(n.id));
   }
 
   readonly activeMessages = computed(
@@ -85,6 +110,7 @@ export class PreferencesService {
   });
 
   constructor() {
+    this.rehomeOrphanProjects();
     if (!this.activeProjectId()) {
       this.ensureProject();
     }
@@ -93,10 +119,12 @@ export class PreferencesService {
   setPack(id: PackId): void {
     this.activePackId.set(id);
     this.activeNavId.set('overview');
-    this.lastContentSectionId.set('overview');
+    const first = this.contentSections()[0]?.id ?? 'overview';
+    this.lastContentSectionId.set(first);
     this.selectedOptions.set([]);
     this.selectedLenses.set([]);
     this.deepThink.set(false);
+    this.rehomeOrphanProjects();
     this.ensureProject();
     this.patchGlobal({ lastPackId: id });
   }
@@ -105,7 +133,8 @@ export class PreferencesService {
     // Chamber is a canvas, not a left-nav section id.
     const next = id === 'chamber' ? 'overview' : id;
     this.activeNavId.set(next);
-    if (!['sessions', 'settings', 'knowledge'].includes(next)) {
+    // Overview / meta pages never become the chat section.
+    if (this.isChatSection(next)) {
       this.lastContentSectionId.set(next);
     }
     this.selectedOptions.set([]);
@@ -169,8 +198,12 @@ export class PreferencesService {
     return this.createProject(title);
   }
 
-  /** Open chamber for the current section: reuse latest session or start one. */
+  /** Open chamber for a deliberation section: reuse latest session or start one. */
   openSectionChamber(): string {
+    // Entering from Overview still lands chats on a real section.
+    if (!this.isChatSection(this.activeNavId())) {
+      this.setNav(this.resolveChatSectionId());
+    }
     const list = this.sectionProjectList();
     if (list.length) {
       this.activeProjectId.set(list[0].id);
@@ -180,8 +213,7 @@ export class PreferencesService {
   }
 
   createProject(title?: string): string {
-    const rawSection = this.activeNavId();
-    const sectionId = !rawSection || rawSection === 'chamber' ? 'overview' : rawSection;
+    const sectionId = this.resolveChatSectionId();
     const label = this.sectionLabel(sectionId);
     const id = `proj_${crypto.randomUUID().slice(0, 8)}`;
     const project: ChatProject = {
@@ -274,9 +306,32 @@ export class PreferencesService {
     );
     return raw.map((p) => ({
       ...p,
-      sectionId: !p.sectionId || p.sectionId === 'chamber' ? 'overview' : p.sectionId,
+      sectionId: p.sectionId || 'overview',
       updatedAt: new Date(p.updatedAt),
     }));
+  }
+
+  /** Move legacy Overview/chamber-tagged chats onto the first real section. */
+  private rehomeOrphanProjects(): void {
+    const first = this.contentSections()[0]?.id;
+    if (!first) {
+      return;
+    }
+    let changed = false;
+    const next = this.projects().map((p: ChatProject) => {
+      if (p.packId !== this.activePackId()) {
+        return p;
+      }
+      if (this.isChatSection(p.sectionId)) {
+        return p;
+      }
+      changed = true;
+      return { ...p, sectionId: first };
+    });
+    if (changed) {
+      this.projects.set(next);
+      this.persistProjects();
+    }
   }
 
   private persistProjects(): void {

@@ -1,0 +1,80 @@
+{
+  "topic_id": "software_architecture",
+  "wave": "foundations",
+  "description": "Classic design patterns and architecture styles — open educational sources only. No copyrighted book PDFs. Cloud/vendor docs are a later wave.",
+  "subcategory_default": "gof_style_patterns",
+  "sources": [
+    {
+      "source_id": "wiki_software_design_pattern",
+      "url": "https://en.wikipedia.org/wiki/Software_design_pattern",
+      "title": "Software design pattern",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "gof_style_patterns",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_creational_pattern",
+      "url": "https://en.wikipedia.org/wiki/Creational_pattern",
+      "title": "Creational pattern",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "gof_style_patterns",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_structural_pattern",
+      "url": "https://en.wikipedia.org/wiki/Structural_pattern",
+      "title": "Structural pattern",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "gof_style_patterns",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_behavioral_pattern",
+      "url": "https://en.wikipedia.org/wiki/Behavioral_pattern",
+      "title": "Behavioral pattern",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "gof_style_patterns",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_architectural_pattern",
+      "url": "https://en.wikipedia.org/wiki/Architectural_pattern",
+      "title": "Architectural pattern",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "architecture_styles",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_software_architecture",
+      "url": "https://en.wikipedia.org/wiki/Software_architecture",
+      "title": "Software architecture",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "architecture_styles",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_event_driven_architecture",
+      "url": "https://en.wikipedia.org/wiki/Event-driven_architecture",
+      "title": "Event-driven architecture",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "architecture_styles",
+      "status": "active"
+    },
+    {
+      "source_id": "wiki_hexagonal_architecture",
+      "url": "https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)",
+      "title": "Hexagonal architecture (software)",
+      "license": "CC-BY-SA-4.0",
+      "subcategory": "architecture_styles",
+      "status": "active"
+    },
+    {
+      "source_id": "nist_sp800_160_vol1",
+      "url": "https://csrc.nist.gov/pubs/sp/800/160/v1/r1/final",
+      "title": "NIST SP 800-160 Vol. 1 Rev. 1 — Engineering Trustworthy Secure Systems",
+      "license": "US-Government-Work",
+      "subcategory": "architecture_styles",
+      "status": "active"
+    }
+  ]
+}

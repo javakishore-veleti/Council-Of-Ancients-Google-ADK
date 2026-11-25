@@ -3,7 +3,8 @@
 }
 
 .section-hub {
-  max-width: 52rem;
+  max-width: 72rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -48,7 +49,8 @@
   color: var(--coa-muted);
   font-size: 1.02rem;
   line-height: 1.5;
-  max-width: 40rem;
+  max-width: none;
+  text-wrap: pretty;
 }
 
 .topic-line {
@@ -114,6 +116,58 @@
   margin: 0 0 0.3rem;
   font-size: 1.2rem;
   color: var(--coa-deep);
+}
+
+.count {
+  color: var(--coa-copper);
+  font-weight: 600;
+}
+
+.chat-search {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.75rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #e8ddd0;
+  border-radius: 10px;
+  background: #fffaf3;
+}
+
+.chat-search i {
+  color: var(--coa-muted);
+  font-size: 0.9rem;
+}
+
+.chat-search input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: var(--coa-deep);
+  font-size: 0.95rem;
+}
+
+.show-more {
+  margin-top: 0.65rem;
+  border: 0;
+  background: transparent;
+  color: var(--coa-copper);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+
+.show-more:hover {
+  text-decoration: underline;
+}
+
+.match-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  color: var(--coa-muted);
 }
 
 .chat-list {

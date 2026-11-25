@@ -45,7 +45,8 @@ export class OverviewComponent {
   });
 
   openChamber(): void {
-    // Keep Overview (or current section) highlighted — chamber is a canvas, not a nav destination.
+    // Overview never owns chats — land on a real section, then open the chamber.
+    this.prefs.openSectionChamber();
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 

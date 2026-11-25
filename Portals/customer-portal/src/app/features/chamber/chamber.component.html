@@ -50,11 +50,11 @@
   }
 
   <p class="session-hint">
-    Chats in <strong>{{ sectionLabel() }}</strong> only — switch below, or start a new one.
+    Chats in <strong>{{ sectionLabel() }}</strong> only — recent below; all of them live in Sessions.
   </p>
 
   <div class="projects">
-    @for (p of prefs.sectionProjectList(); track p.id) {
+    @for (p of visibleProjects(); track p.id) {
       <button
         type="button"
         class="proj"
@@ -65,6 +65,11 @@
       </button>
     } @empty {
       <span class="no-chats">No chats in this section yet — click New chat.</span>
+    }
+    @if (moreChatCount() > 0) {
+      <button type="button" class="proj more" (click)="browseSessions()">
+        +{{ moreChatCount() }} more
+      </button>
     }
   </div>
 
