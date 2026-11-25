@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "local:containers:all:start": "bash CICD/Local/docker-all-up.sh",
-    "local:containers:all:start:observability": "bash CICD/Local/docker-all-up.sh --observability",
+    "local:containers:all:start": "bash CICD/Local/docker-all-up.sh --postgres --observability",
     "local:containers:all:stop": "bash CICD/Local/docker-all-down.sh --volumes",
     "local:containers:all:status": "bash CICD/Local/docker-all-status.sh",
     "local:middleware:api:all:start": "bash CICD/Local/middleware-api-all-up.sh",

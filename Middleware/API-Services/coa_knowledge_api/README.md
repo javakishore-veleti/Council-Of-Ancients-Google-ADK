@@ -32,7 +32,7 @@ domain/                 models, errors
 
 ## Prerequisites
 
-1. Postgres (`council` DB): `bash CICD/Local/docker-all-up.sh --postgres`
+1. Postgres (`council` DB): `npm run local:containers:all:start`
 2. Apply schema: `psql … -f Middleware/API-Services/db/liquibase/knowledge/bootstrap.sql`
 3. `uv sync` (includes `psycopg`)
 

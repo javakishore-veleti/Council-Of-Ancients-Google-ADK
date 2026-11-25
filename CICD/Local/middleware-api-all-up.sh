@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Start middleware APIs on the host: knowledge Liquibase + coa_agents_api + coa_admin_api.
-# Does NOT start/stop Docker. Containers (Postgres, Redis, obs) must already be up:
-#   npm run local:containers:all:start -- --postgres --observability
+# Does NOT start/stop Docker. Start containers first: npm run local:containers:all:start
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,8 +11,7 @@ ADMIN_PID="${SCRIPT_DIR}/.coa-admin-api.pid"
 ADMIN_LOG="${SCRIPT_DIR}/.coa-admin-api.log"
 
 if ! docker exec council-postgres pg_isready -U postgres >/dev/null 2>&1; then
-  echo "Postgres container not ready. Start containers first:" >&2
-  echo "  npm run local:containers:all:start -- --postgres --observability" >&2
+  echo "Postgres not ready. Run: npm run local:containers:all:start" >&2
   exit 1
 fi
 

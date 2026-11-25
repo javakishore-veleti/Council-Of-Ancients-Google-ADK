@@ -130,32 +130,14 @@ Tracked as GitHub **epics/features** below: RAG over texts or company docs, real
 
 ## Local infrastructure
 
-App persistence defaults to **SQLite**. Docker Postgres is optional. Observability (AIOps / LLMOps / DataOps) is opt-in.
-
 ```bash
-# Redis + Jaeger + OTEL Collector (default)
 npm run local:containers:all:start
-# or: ./CICD/Local/docker-all-up.sh
-
-# Also start Postgres (user/password: postgres/postgres)
-npm run local:containers:all:start -- --postgres
-
-# AIOps / LLMOps / DataOps: Prometheus + Grafana + Phoenix + Loki
-npm run local:containers:all:start:observability
-# → Prometheus, Grafana, Phoenix, Loki, + coa_observability_api (:8088)
-
-# Middleware APIs (obs containers + coa_observability_api + coa_agents_api)
 npm run local:middleware:api:all:start
 npm run local:middleware:api:all:status
 npm run local:middleware:api:all:stop
-# → agents :8090 (POST /v1/council/deliberate) · obs :8088 (POST /v1/obs/feed)
 ```
 
-| Stack | What you get |
-|-------|----------------|
-| Default | Redis, Jaeger traces, OTEL Collector (`:4317`/`:4318`) |
-| `--postgres` | + Postgres |
-| `--observability` | + Prometheus, Grafana (**Council LLMOps Overview**), Phoenix (LLM spans), Loki |
+`local:containers:all:start` = Redis, Jaeger, OTEL, Postgres, Prometheus, Grafana, Phoenix, Loki, `coa_observability_api` `:8088`. Middleware = host APIs `:8090` / `:8094` (bounce without stopping containers).
 
 LLMOps ingest API: [`Middleware/API-Services/coa_observability_api/`](Middleware/API-Services/coa_observability_api/) (`POST /v1/obs/feed`, operationId `ingest_obs_feed`). Fan-out is gated by `OBS_TASK_EMIT_*` (default `false`). Thin helpers in [`Middleware/Observability/llmops.py`](Middleware/Observability/llmops.py) emit into the facade. With metrics enabled, scrape http://localhost:9108/metrics. Details: [`CICD/Local/README.md`](CICD/Local/README.md) and the [API README](Middleware/API-Services/coa_observability_api/README.md).
 

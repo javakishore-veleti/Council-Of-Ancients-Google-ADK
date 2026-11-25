@@ -60,26 +60,19 @@ You grow the KB by adding more **sources** (same facade). You do not invent a ne
 
 ## 3. Start the local stack
 
-Three independent layers. **Containers hold durable state** (Postgres, Redis, obs). **Middleware** is host processes that talk to that storage — restart them freely; leave containers up. **Portals** are local Angular only.
-
 ```bash
 uv sync
-npm run local:containers:all:start -- --postgres --observability
+npm run local:containers:all:start
 npm run local:middleware:api:all:start
 npm run local:portals:all:start
 ```
 
-| Layer | npm script | Persists data? | Notes |
-|-------|------------|----------------|--------|
-| Containers | `local:containers:all:start -- --postgres --observability` | **Yes** (volumes: DB, Redis, …) | Start once per session |
-| Middleware | `local:middleware:api:all:start` | No — uses container DB | Liquibase + APIs `:8090` / `:8094`; bounce anytime |
-| Portals | `local:portals:all:start` | No | Admin `:4201` |
+Containers hold DB/Redis (leave up). Middleware/portals are host processes — restart anytime without stopping containers.
 
 | URL | What |
 |-----|------|
 | http://127.0.0.1:4201 | Admin portal |
 | http://127.0.0.1:8094/docs | Admin API |
-| http://127.0.0.1:4200 | Customer portal (not required here) |
 
 ```bash
 npm run local:containers:all:status
@@ -202,21 +195,13 @@ Trigger conf: `{ "wf_exec_log_id": "<uuid>" }`. See [`DataOps/airflow/README.md`
 
 ## 10. Stop everything
 
-Bounce APIs without losing DB data:
-
 ```bash
 npm run local:portals:all:stop
 npm run local:middleware:api:all:stop
-# containers stay up — Postgres / Redis data kept
-```
-
-End of session (wipes container volumes by default):
-
-```bash
 npm run local:containers:all:stop
 ```
 
-Next full start re-applies Liquibase on empty Postgres.
+Omit `containers:all:stop` if you only want to bounce APIs (DB stays).
 
 ---
 

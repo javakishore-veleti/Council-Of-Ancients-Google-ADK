@@ -30,7 +30,7 @@ HTTP returns **202 Accepted** quickly; fan-out runs on a background thread. Soft
 ### Docker (recommended with local stack)
 
 ```bash
-npm run local:containers:all:start:observability
+npm run local:containers:all:start
 # builds + starts council-coa-observability-api with Prometheus/Grafana/Phoenix/Loki
 ```
 

@@ -26,7 +26,7 @@ That starts Postgres and runs `CICD/Local/knowledge-db-apply.sh`, which executes
 Manual:
 
 ```bash
-bash CICD/Local/docker-all-up.sh --postgres
+npm run local:containers:all:start
 bash CICD/Local/knowledge-db-apply.sh
 ```
 

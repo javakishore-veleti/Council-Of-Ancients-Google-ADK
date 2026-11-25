@@ -108,7 +108,5 @@ fi
 
 echo
 echo "Tips:"
-echo "  Start default stack:     ${SCRIPT_DIR}/docker-all-up.sh"
-echo "  Start with Postgres:     ${SCRIPT_DIR}/docker-all-up.sh --postgres"
-echo "  Start with Observability:${SCRIPT_DIR}/docker-all-up.sh --observability"
-echo "  Stop stack:              ${SCRIPT_DIR}/docker-all-down.sh"
+echo "  Start:  npm run local:containers:all:start"
+echo "  Stop:   npm run local:containers:all:stop"
