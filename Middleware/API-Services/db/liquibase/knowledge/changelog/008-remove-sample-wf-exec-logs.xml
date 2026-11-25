@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="knowledge-013-remove-sample-wf-exec-logs" author="javakishore-veleti">
+    <comment>
+      Ops history must only show real Admin Download runs. Remove early UI demo
+      wf_exec_log seed rows.
+    </comment>
+    <sql>
+      DELETE FROM knowledge.wf_exec_log
+      WHERE id IN (
+        'c1a2b3c4-d5e6-4789-a012-3456789abc01'::uuid,
+        'c1a2b3c4-d5e6-4789-a012-3456789abc02'::uuid,
+        'c1a2b3c4-d5e6-4789-a012-3456789abc03'::uuid
+      );
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

@@ -6,7 +6,9 @@
     https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
   <changeSet id="knowledge-008-seed-admin-ops-data" author="javakishore-veleti">
-    <comment>Fixed-UUID admin ops seeds (endpoints, sources, maps, sample wf_exec_log).</comment>
+    <validCheckSum>9:04d72d33b619b4de2ac4fa7777ee1aa1</validCheckSum>
+    <validCheckSum>9:0ae4e39e86f1e567578e61a7ecea5493</validCheckSum>
+    <comment>Fixed-UUID admin ops seeds (endpoints, sources, maps). Ops history is real downloads only.</comment>
     <sqlFile
       path="sql/004-seed-admin-ops.sql"
       relativeToChangelogFile="true"
