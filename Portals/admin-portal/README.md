@@ -16,7 +16,7 @@ Admin UI (:4201)
           → facade workflow (Airflow today) → extract → PATCH callbacks
 ```
 
-Requires `coa_admin_api` on `:8094`. Prefer `npm run local:middleware:api:all:start` — it brings up Postgres, applies knowledge SQL (including workflows), and starts admin.
+Requires `coa_admin_api` on `:8094`. Start containers first (`npm run local:containers:all:start -- --postgres --observability`), then `npm run local:middleware:api:all:start` (Liquibase + admin). Middleware stop does not tear down Postgres.
 
 ## Run (from repo root — preferred)
 

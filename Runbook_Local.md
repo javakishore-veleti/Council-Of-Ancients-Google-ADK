@@ -60,13 +60,20 @@ You grow the KB by adding more **sources** (same facade). You do not invent a ne
 
 ## 3. Start the local stack
 
+Three independent layers. **Containers hold durable state** (Postgres, Redis, obs). **Middleware** is host processes that talk to that storage — restart them freely; leave containers up. **Portals** are local Angular only.
+
 ```bash
 uv sync
+npm run local:containers:all:start -- --postgres --observability
 npm run local:middleware:api:all:start
 npm run local:portals:all:start
 ```
 
-Middleware start: Postgres + observability → **Liquibase** knowledge changelog → `coa_agents_api` **:8090** + `coa_admin_api` **:8094**.
+| Layer | npm script | Persists data? | Notes |
+|-------|------------|----------------|--------|
+| Containers | `local:containers:all:start -- --postgres --observability` | **Yes** (volumes: DB, Redis, …) | Start once per session |
+| Middleware | `local:middleware:api:all:start` | No — uses container DB | Liquibase + APIs `:8090` / `:8094`; bounce anytime |
+| Portals | `local:portals:all:start` | No | Admin `:4201` |
 
 | URL | What |
 |-----|------|
@@ -75,6 +82,7 @@ Middleware start: Postgres + observability → **Liquibase** knowledge changelog
 | http://127.0.0.1:4200 | Customer portal (not required here) |
 
 ```bash
+npm run local:containers:all:status
 npm run local:middleware:api:all:status
 npm run local:portals:all:status
 curl -sf http://127.0.0.1:8094/healthz
@@ -107,12 +115,6 @@ This is the **first real ingest**, not a toy demo. Liquibase seeds this row; you
 
 4. Continue at [§6 Queue Download](#6-queue-download) (use the **Download** button on that page).
 
-Optional API check (UI is enough):
-
-```bash
-curl -sf http://127.0.0.1:8094/v1/knowledge/sources/d85e1c09-8157-5565-82d3-f9f3cf209509 | python3 -m json.tool
-```
-
 ---
 
 ## 5. Same path for every other source
@@ -123,12 +125,6 @@ After GoF lands, Wikipedia, NIST, or any source you add later follows the **same
 2. **Knowledge sources** → open that source → **Download**.  
 3. Run the facade with the new `wf_exec_log_id` ([§7](#7-run-the-ingest-facade)).  
 4. Files appear under `{category_code}/{subcategory_code}/{source_uuid}/` ([§8](#8-confirm-files-on-disk)).
-
-Optional — list via API:
-
-```bash
-curl -sf http://127.0.0.1:8094/v1/knowledge/sources | python3 -m json.tool
-```
 
 ---
 
@@ -141,15 +137,6 @@ On the source detail page: **Download — from / store to** → **Download**.
 Creates a **`wf_exec_log`** (`queued`) with `wf_id` = the source’s entry workflow. It does **not** fetch the page yet.
 
 Copy `wf_exec_log_id` from **Ops history** on that page (needed for §7).
-
-Optional — same action via API:
-
-```bash
-# Replace SOURCE_UUID (GoF: d85e1c09-8157-5565-82d3-f9f3cf209509).
-curl -sf -X POST \
-  http://127.0.0.1:8094/v1/knowledge/sources/SOURCE_UUID/download \
-  | python3 -m json.tool
-```
 
 ---
 
@@ -215,12 +202,21 @@ Trigger conf: `{ "wf_exec_log_id": "<uuid>" }`. See [`DataOps/airflow/README.md`
 
 ## 10. Stop everything
 
+Bounce APIs without losing DB data:
+
 ```bash
 npm run local:portals:all:stop
 npm run local:middleware:api:all:stop
+# containers stay up — Postgres / Redis data kept
 ```
 
-Volumes are wiped by default; next start re-applies Liquibase.
+End of session (wipes container volumes by default):
+
+```bash
+npm run local:containers:all:stop
+```
+
+Next full start re-applies Liquibase on empty Postgres.
 
 ---
 

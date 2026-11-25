@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
-# Status for middleware APIs: Docker obs stack + coa_agents_api + coa_admin_api.
+# Status for host middleware APIs only (coa_agents_api + coa_admin_api).
+# Containers: npm run local:containers:all:status
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-bash "${SCRIPT_DIR}/docker-all-status.sh"
 
 status_one() {
   local name="$1"

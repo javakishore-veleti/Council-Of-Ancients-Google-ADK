@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Stop middleware APIs: coa_agents_api + coa_admin_api (host) + observability Docker stack.
+# Stop middleware APIs on the host only (coa_agents_api + coa_admin_api).
+# Does NOT stop Docker containers or wipe volumes — use local:containers:all:stop for that.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -32,5 +33,4 @@ stop_pid_file() {
 stop_pid_file "coa_agents_api" "${SCRIPT_DIR}/.coa-agents-api.pid" "${COA_AGENTS_API_PORT:-8090}"
 stop_pid_file "coa_admin_api" "${SCRIPT_DIR}/.coa-admin-api.pid" "${COA_ADMIN_API_PORT:-8094}"
 
-bash "${SCRIPT_DIR}/docker-all-down.sh" "$@"
-echo "Middleware APIs are down."
+echo "Middleware APIs are down (containers left running)."

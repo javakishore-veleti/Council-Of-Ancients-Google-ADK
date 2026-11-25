@@ -62,24 +62,30 @@ App Prometheus scrape target (host): http://localhost:9108/metrics
 
 API docs: [`Middleware/API-Services/coa_observability_api/README.md`](../../Middleware/API-Services/coa_observability_api/README.md)
 
-## Middleware APIs (Postgres + obs + agents + admin)
+## Middleware APIs (host only — agents + admin)
+
+Containers and middleware are **independent**. Containers own durable storage (Postgres, Redis, obs). Middleware APIs are host processes that depend on that storage; restart them without touching Docker.
 
 ```bash
+# once per session — data lives in volumes
+npm run local:containers:all:start -- --postgres --observability
+
+# bounce as often as you like
 npm run local:middleware:api:all:start
 npm run local:middleware:api:all:status
 npm run local:middleware:api:all:stop
 ```
 
-Starts **Postgres** + observability (`coa_observability_api` **:8088**), runs **Liquibase**
-(`knowledge-db-apply.sh` → `db.changelog-master.xml` via Docker image), then host
-`coa_agents_api` **:8090** and `coa_admin_api` **:8094**. No manual `psql` for local start.
+Middleware start: requires `council-postgres` already up → runs **Liquibase**
+(`knowledge-db-apply.sh` → `db.changelog-master.xml` via Docker image) → host
+`coa_agents_api` **:8090** and `coa_admin_api` **:8094**. No manual `psql`.
 
 Needs repo-root `.env` with GCP / Model Armor for deliberation.  
 Each model turn POSTs into `COA_OBS_API_URL` (default `http://localhost:8088`) `/v1/obs/feed`.
 
 Foreground agents-only (debug): `./agents-api-up.sh`
 
-### Combine flags
+### Combine flags (containers)
 
 ```bash
 ./docker-all-up.sh --postgres --observability
@@ -88,7 +94,7 @@ Foreground agents-only (debug): `./agents-api-up.sh`
 ### Stop
 
 ```bash
-./docker-all-down.sh --volumes
+npm run local:middleware:api:all:stop   # APIs only; DB stays
+./docker-all-down.sh --volumes          # or: npm run local:containers:all:stop
 # keep data: ./docker-all-down.sh --keep-volumes
-# npm run local:containers:all:stop / local:middleware:api:all:stop always pass --volumes
 ```

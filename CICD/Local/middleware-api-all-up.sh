@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Start middleware APIs: Postgres + observability Docker + knowledge schema
-# + coa_agents_api + coa_admin_api (host).
-# Knowledge SQL (bootstrap + admin-ops + workflows) is applied here — no manual psql.
+# Start middleware APIs on the host: knowledge Liquibase + coa_agents_api + coa_admin_api.
+# Does NOT start/stop Docker. Containers (Postgres, Redis, obs) must already be up:
+#   npm run local:containers:all:start -- --postgres --observability
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -11,7 +11,11 @@ AGENTS_LOG="${SCRIPT_DIR}/.coa-agents-api.log"
 ADMIN_PID="${SCRIPT_DIR}/.coa-admin-api.pid"
 ADMIN_LOG="${SCRIPT_DIR}/.coa-admin-api.log"
 
-bash "${SCRIPT_DIR}/docker-all-up.sh" --postgres --observability
+if ! docker exec council-postgres pg_isready -U postgres >/dev/null 2>&1; then
+  echo "Postgres container not ready. Start containers first:" >&2
+  echo "  npm run local:containers:all:start -- --postgres --observability" >&2
+  exit 1
+fi
 
 export PYTHONPATH="${REPO_ROOT}/Middleware/API-Services:${REPO_ROOT}/Middleware:${REPO_ROOT}:${PYTHONPATH:-}"
 export COA_OBS_API_URL="${COA_OBS_API_URL:-http://localhost:8088}"

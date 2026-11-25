@@ -11,7 +11,9 @@ FastAPI / ADK runtime services that expose Council agents to portals and other c
 ## Local run
 
 ```bash
-npm run local:middleware:api:all:start    # Postgres + Liquibase knowledge + obs :8088 + agents :8090 + admin :8094
+npm run local:containers:all:start -- --postgres --observability   # durable DB / Redis / obs
+npm run local:middleware:api:all:start    # Liquibase + agents :8090 + admin :8094 (host; bounce anytime)
 npm run local:middleware:api:all:status
-npm run local:middleware:api:all:stop
+npm run local:middleware:api:all:stop     # APIs only — does not stop containers
+
 ```
