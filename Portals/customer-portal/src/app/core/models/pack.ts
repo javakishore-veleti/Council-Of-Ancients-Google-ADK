@@ -31,6 +31,9 @@ export interface PackDefinition {
   kbReady: boolean;
   tagline: string;
   heroImage: string;
+  /** Pack-specific visual for Overview “How this council works” */
+  howItWorksImage: string;
+  howItWorksCaption: string;
   seatsLabel: string;
   nav: NavItem[];
   optionsByNav: Record<string, DomainOption[]>;

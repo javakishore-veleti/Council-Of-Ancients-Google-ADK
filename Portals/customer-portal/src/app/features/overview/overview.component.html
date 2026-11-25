@@ -39,14 +39,12 @@
 
     <figure class="council-figure">
       <img
-        src="council-diagram.jpg"
-        width="960"
-        height="540"
-        alt="Council meeting: a Facilitator with counselors around a table for deliberation"
+        [src]="prefs.activePack().howItWorksImage"
+        width="1400"
+        height="787"
+        [alt]="'How the ' + prefs.activePack().shortLabel + ' council deliberates'"
       />
-      <figcaption>
-        A Facilitator guides the table. Each counselor speaks from a seat. Together they aim for a fair, usable outcome.
-      </figcaption>
+      <figcaption>{{ prefs.activePack().howItWorksCaption }}</figcaption>
     </figure>
 
     <div class="flow-grid">

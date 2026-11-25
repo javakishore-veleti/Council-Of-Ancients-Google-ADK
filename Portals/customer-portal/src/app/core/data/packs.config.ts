@@ -13,6 +13,10 @@ export const PACKS: PackDefinition[] = [
     tagline: 'Plan, fund, and launch with disciplined judgment.',
     heroImage:
       'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1400&q=80',
+    howItWorksCaption:
+      'Founders and operators pressure-test the plan: Vision, Capital, and Execution each take a seat before you commit.',
     seatsLabel: 'Vision / Capital / Execution',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -70,6 +74,10 @@ export const PACKS: PackDefinition[] = [
     tagline: 'People, culture, and one-way-door decisions.',
     heroImage:
       'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1400&q=80',
+    howItWorksCaption:
+      'Leadership dilemmas need more than one lens: People, Culture, and Judgment deliberate before the Facilitator synthesizes.',
     seatsLabel: 'People / Culture / Judgment',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -127,6 +135,10 @@ export const PACKS: PackDefinition[] = [
     tagline: 'Reliability, budgets, and calm incident response.',
     heroImage:
       'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1400&q=80',
+    howItWorksCaption:
+      'When systems are under stress, Reliability, Capacity, and Response argue the trade-offs — then the Facilitator names the next move.',
     seatsLabel: 'Reliability / Capacity / Response',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -188,6 +200,10 @@ export const PACKS: PackDefinition[] = [
     tagline: 'Training and recovery guidance — not medical advice.',
     heroImage:
       'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1400&q=80',
+    howItWorksCaption:
+      'Training, Nutrition, and Recovery each weigh in so the plan stays sustainable — never a substitute for medical care.',
     seatsLabel: 'Training / Nutrition / Recovery',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
@@ -250,6 +266,10 @@ export const PACKS: PackDefinition[] = [
     tagline: 'Patterns, cloud, data, events, and AI systems with the council.',
     heroImage:
       'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+    howItWorksImage:
+      'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1400&q=80',
+    howItWorksCaption:
+      'Patterns, Architecture, and Data take the whiteboard: trade-offs first, then a Facilitator recommendation you can ship against.',
     seatsLabel: 'Patterns / Architecture / Data',
     nav: [
       { id: 'overview', label: 'Overview', icon: 'bi-compass', route: 'overview' },
