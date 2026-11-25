@@ -39,9 +39,9 @@
   padding: 0;
   margin: 0;
   font-family: var(--coa-font-display);
-  font-size: 1.55rem;
+  font-size: 1.45rem;
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.35;
   letter-spacing: -0.02em;
   overflow: visible;
   color: #fff8ee;
@@ -151,7 +151,7 @@
 .acct-meta {
   display: flex;
   flex-direction: column;
-  line-height: 1.15;
+  line-height: 1.35;
   min-width: 0;
   max-width: 9.5rem;
 }
@@ -200,21 +200,20 @@
 .pack-title h2 {
   margin: 0;
   font-family: var(--coa-font-body);
-  font-size: 1.05rem;
+  font-size: 1.08rem;
   font-weight: 700;
   letter-spacing: 0;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--coa-deep);
   text-wrap: balance;
   overflow: visible;
-  padding-bottom: 0.05em;
 }
 
 .pack-title p {
-  margin: 0.4rem 0 1rem;
+  margin: 0.45rem 0 1rem;
   color: var(--coa-muted);
   font-size: 0.88rem;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .left-nav ul {
