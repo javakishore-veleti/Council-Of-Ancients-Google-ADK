@@ -27,19 +27,24 @@ HTTP returns **202 Accepted** quickly; fan-out runs on a background thread. Soft
 
 ## Run
 
-From repo root (requires `fastapi` + `uvicorn`):
+### Docker (recommended with local stack)
 
 ```bash
-# Optional: load .env
-set -a && source .env && set +a
+npm run local:containers:all:start:observability
+# builds + starts council-coa-observability-api with Prometheus/Grafana/Phoenix/Loki
+```
 
+API: http://localhost:8088 · OpenAPI: http://localhost:8088/docs · Health: `/healthz`
+
+Task toggles for the container live in `CICD/Local/.env` (`OBS_TASK_EMIT_*`, default `false`).
+
+### Host uvicorn (optional)
+
+```bash
 PYTHONPATH=Middleware/API-Services \
   uv run uvicorn coa_observability_api.presentation.app:app \
   --host 0.0.0.0 --port 8088
 ```
-
-Health: `GET http://localhost:8088/healthz`  
-OpenAPI: `http://localhost:8088/docs`
 
 ## Task toggles (default OFF)
 

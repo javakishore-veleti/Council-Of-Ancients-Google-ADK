@@ -4,7 +4,7 @@
 # Usage:
 #   ./docker-all-up.sh                 # Redis + Jaeger + OTEL Collector
 #   ./docker-all-up.sh --postgres      # + Postgres
-#   ./docker-all-up.sh --observability # + Prometheus, Grafana, Phoenix, Loki (AIOps/LLMOps/DataOps)
+#   ./docker-all-up.sh --observability # + Prometheus, Grafana, Phoenix, Loki, coa_observability_api
 #   ./docker-all-down.sh
 #   ./docker-all-status.sh
 
@@ -160,6 +160,37 @@ services:
     volumes:
       - ./Loki/loki-config.yaml:/etc/loki/loki-config.yaml:ro
       - loki_data:/loki
+    networks:
+      - council-net
+    restart: unless-stopped
+
+  # Async ingest API: ingest_obs_feed → facade → OBS_TASK_* → sub-facades → plugins.
+  coa-observability-api:
+    profiles: ["observability"]
+    build:
+      context: ../..
+      dockerfile: Middleware/API-Services/coa_observability_api/Dockerfile
+    image: council-coa-observability-api:local
+    container_name: council-coa-observability-api
+    ports:
+      - "${COA_OBS_API_PORT:-8088}:8088"
+      - "${PROMETHEUS_METRICS_PORT:-9108}:9108"
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      OTEL_SERVICE_NAME: coa_observability_api
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+      PHOENIX_OTLP_ENDPOINT: http://phoenix:4317
+      LOKI_URL: http://loki:3100
+      PROMETHEUS_METRICS_PORT: "9108"
+      # Task gates (default off). Override via CICD/Local/.env or compose env.
+      OBS_TASK_EMIT_METRICS: ${OBS_TASK_EMIT_METRICS:-false}
+      OBS_TASK_EMIT_TRACES: ${OBS_TASK_EMIT_TRACES:-false}
+      OBS_TASK_EMIT_LOGS: ${OBS_TASK_EMIT_LOGS:-false}
+      OBS_TASK_EMIT_LLMOPS: ${OBS_TASK_EMIT_LLMOPS:-false}
+    depends_on:
+      - otel-collector
+      - loki
+      - phoenix
     networks:
       - council-net
     restart: unless-stopped

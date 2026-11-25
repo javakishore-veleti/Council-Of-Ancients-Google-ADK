@@ -21,9 +21,11 @@ scrape_configs:
   - job_name: council-app
     metrics_path: /metrics
     static_configs:
-      # setup_observability() serves Prometheus on PROMETHEUS_METRICS_PORT (default 9108).
-      - targets: ["host.docker.internal:9108"]
+      # Host uvicorn (optional) + compose coa-observability-api service.
+      - targets:
+          - "host.docker.internal:9108"
+          - "coa-observability-api:9108"
         labels:
           component: council-api
-    # Host app may be down; scrape failures are OK until the API starts metrics.
+    # Targets may be down until OBS_TASK_EMIT_METRICS=true starts /metrics.
     scrape_interval: 30s

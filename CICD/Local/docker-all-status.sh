@@ -90,6 +90,7 @@ probe "Prometheus" "127.0.0.1" "${PROMETHEUS_PORT:-9090}"
 probe "Grafana" "127.0.0.1" "${GRAFANA_PORT:-3000}"
 probe "Phoenix LLMOps" "127.0.0.1" "${PHOENIX_PORT:-6006}"
 probe "Loki" "127.0.0.1" "${LOKI_PORT:-3100}"
+probe "coa_observability_api" "127.0.0.1" "${COA_OBS_API_PORT:-8088}"
 probe "App Prometheus /metrics" "127.0.0.1" "${PROMETHEUS_METRICS_PORT:-9108}"
 
 echo

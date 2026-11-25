@@ -35,7 +35,9 @@
 
 ### LLMOps metrics the app records
 
-Ingest path: `coa_observability_api` (`POST /v1/obs/feed`) → `ObservabilityFacade` → toggle-gated tasks → plugins.  
+`--observability` also builds and starts the **`coa_observability_api` container** (`council-coa-observability-api` on port **8088**).
+
+Ingest path: `POST http://localhost:8088/v1/obs/feed` → facade → toggle-gated tasks → plugins.  
 Thin helpers: `Middleware/Observability/llmops.py` (`estimate_cost_usd`, `record_llm_call` → facade).
 
 Fan-out is **off by default**. Enable in repo-root `.env`:

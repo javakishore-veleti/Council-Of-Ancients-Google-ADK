@@ -141,6 +141,7 @@ npm run local:containers:all:start -- --postgres
 
 # AIOps / LLMOps / DataOps: Prometheus + Grafana + Phoenix + Loki
 npm run local:containers:all:start:observability
+# → Prometheus, Grafana, Phoenix, Loki, + coa_observability_api (:8088)
 # or: ./CICD/Local/docker-all-up.sh --observability
 
 npm run local:containers:all:status

@@ -92,7 +92,7 @@ if [[ "${WITH_POSTGRES}" -eq 1 ]]; then
 fi
 if [[ "${WITH_OBSERVABILITY}" -eq 1 ]]; then
   PROFILES+=(--profile observability)
-  MSG="${MSG}, Prometheus, Grafana, Phoenix, Loki"
+  MSG="${MSG}, Prometheus, Grafana, Phoenix, Loki, coa_observability_api"
 fi
 echo "${MSG}..."
 
@@ -147,9 +147,10 @@ if [[ "${WITH_OBSERVABILITY}" -eq 1 ]]; then
   echo "  Grafana:        http://localhost:${GRAFANA_PORT:-3000} (admin/admin) — dashboard: Council LLMOps Overview"
   echo "  Phoenix LLMOps: http://localhost:${PHOENIX_PORT:-6006}"
   echo "  Loki:           http://localhost:${LOKI_PORT:-3100}"
-  echo "  App /metrics:   http://localhost:${PROMETHEUS_METRICS_PORT:-9108}/metrics (OBS_TASK_EMIT_METRICS=true + coa_observability_api)"
+  echo "  Obs API:        http://localhost:${COA_OBS_API_PORT:-8088}  (POST /v1/obs/feed, OpenAPI /docs)"
+  echo "  App /metrics:   http://localhost:${PROMETHEUS_METRICS_PORT:-9108}/metrics (when OBS_TASK_EMIT_METRICS=true)"
 else
-  echo "  Observability:  not started. Re-run with --observability for Prometheus/Grafana/Phoenix/Loki."
+  echo "  Observability:  not started. Re-run with --observability for Prometheus/Grafana/Phoenix/Loki/coa_observability_api."
 fi
 echo
 echo "Status: ${SCRIPT_DIR}/docker-all-status.sh"
