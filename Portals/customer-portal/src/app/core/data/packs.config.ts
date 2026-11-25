@@ -1,7 +1,7 @@
 import { PackDefinition } from '../models/pack';
 
 /**
- * Five domain packs — chrome for all; KB only where kbReady (Architecture v0).
+ * Five topics — chrome for all; KB only where kbReady (Architecture v0).
  * Left nav + options mirror Product_Ideas.md.
  */
 export const PACKS: PackDefinition[] = [

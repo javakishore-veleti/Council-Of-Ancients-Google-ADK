@@ -1,6 +1,6 @@
 # Council of Ancients — Customer Portal
 
-Angular 19 customer portal for domain packs, chamber chat, and settings that merge into `coa_agents_api` deliberate `ctx_data`.
+Angular 19 customer portal for topics, chamber chat, and settings that merge into `coa_agents_api` deliberate `ctx_data`.
 
 ## Open-source UI stack
 
@@ -20,7 +20,7 @@ Angular 19 customer portal for domain packs, chamber chat, and settings that mer
 
 ## Design direction
 
-Teal + copper professional palette (not gray / black / washed-light admin). Chat-first shell: top pack bar, pack left nav, chamber canvas, collapsible sources rail.
+Teal + copper professional palette (not gray / black / washed-light admin). Chat-first shell: top topic bar, topic left nav, chamber canvas, collapsible sources rail.
 
 ## Run
 
@@ -42,4 +42,4 @@ Sign up locally (stub auth until `coa_auth_api`). Chamber calls `http://localhos
 
 ## Settings merge
 
-`global → pack → chat window` → sent as `ctx_data.settings` with pack id, left nav, domain options, and recent turns.
+`global → topic → chat window` → sent as `ctx_data.settings` with topic id, left nav, domain options, and recent turns.

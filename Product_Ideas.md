@@ -1,4 +1,4 @@
-# Product Ideas — Pluggable KB Packs & Customer Portal
+# Product Ideas — Pluggable KB Topics & Customer Portal
 
 Captured product and research directions. These are backlog ideas, not committed delivery dates.
 
@@ -6,20 +6,20 @@ Captured product and research directions. These are backlog ideas, not committed
 
 **Pluggable per-domain knowledge banks (KBs)** plus **domain-scoped portal chrome** — not one monolithic KB across all topics.
 
-A single shared KB (entrepreneurship + SRE + fitness + architecture + …) confuses users and pollutes retrieval. Each **domain pack** is a plug: its own corpora, seats, prompts, and (later) RAG tools. The portal makes the active pack obvious so users always know which “brain” they are talking to.
+A single shared KB (entrepreneurship + SRE + fitness + architecture + …) confuses users and pollutes retrieval. Each **topic** is a plug: its own corpora, seats, prompts, and (later) RAG tools. The portal makes the active topic obvious so users always know which “brain” they are talking to.
 
 ```text
-Top menu bar     → domain packs (product lines) + Account / Settings
-Left nav         → workflows within the active pack only (+ Settings)
-Main canvas      → chamber chat project / window bound to that pack’s Facilitator + KB
+Top menu bar     → topics (product lines) + Account / Settings
+Left nav         → workflows within the active topic only (+ Settings)
+Main canvas      → chamber chat project / window bound to that topic’s Facilitator + KB
 ```
 
 No permanent right-hand “context/debug” rail — it cramps the chamber and feels too technical for customers. Citations/sources surface inside the chamber thread when KB retrieval returns them.
 
 Hard rules:
 
-- No cross-pack retrieval.
-- Empty packs show **coming soon / KB not loaded** — never silently answer from another pack.
+- No cross-topic retrieval.
+- Empty topics show **coming soon / KB not loaded** — never silently answer from another topic.
 - KB blobs never live in this **public** git repo (laptop or private S3 only).
 
 ---
@@ -30,22 +30,22 @@ Hard rules:
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
-│ Brand + council definition │ packs… │ Account               │
+│ Brand + council definition │ topics… │ Account               │
 ├──────────┬──────────────────────────────────────────────────┤
 │ Left nav │  Chamber / overview — full width canvas          │
-│ (pack)   │  history + chips + composer                      │
+│ (topic)  │  history + chips + composer                      │
 └──────────┴──────────────────────────────────────────────────┘
 ```
 
 | Region | Role |
 |--------|------|
-| **Top bar** | Large **Council of Ancients** mark; professor-hat icon opens “what is a council?”; five packs; **Global Settings**; Sign in / Sign out |
-| **Left nav** | Pack-specific list (below); **Settings** = defaults for the active top-menu topic (not the word “pack”) |
+| **Top bar** | Large **Council of Ancients** mark; professor-hat icon opens “what is a council?”; five topics; **Global Settings**; Sign in / Sign out |
+| **Left nav** | Topic-specific list (below); **Settings** = defaults for the active top-menu topic |
 | **Center** | Full-width chat **projects** / **windows** with history + domain chips + composer |
 
 Two-column shell (top + left + canvas). Do **not** make a multi-widget analytics home or a floating AI bubble the primary surface.
 
-Angular app lives under `Portals/`. v0: Architecture chamber live; other packs chrome + coming soon.
+Angular app lives under `Portals/`. v0: Architecture chamber live; other topics chrome + coming soon.
 
 ---
 
@@ -56,7 +56,7 @@ Angular app lives under `Portals/`. v0: Architecture chamber live; other packs c
 | Service | Role | Local port (proposed) | Postgres schema |
 |---------|------|----------------------|-----------------|
 | `coa_auth_api` | Signup, signin, signout, tokens/sessions only | `:8091` | `auth` |
-| `coa_customer_api` | Customer create/update, global + pack prefs, chat projects, chat overrides, history index | `:8092` | `customer` |
+| `coa_customer_api` | Customer create/update, global + topic prefs, chat projects, chat overrides, history index | `:8092` | `customer` |
 | `coa_agents_api` | Council `POST /v1/council/deliberate` | `:8090` | `agents` |
 | `coa_observability_api` | LLMOps ingest | `:8088` | `observability` |
 
@@ -64,8 +64,8 @@ Existing agents/obs APIs stay; auth and customer are **new** peers under `Middle
 
 ### Settings layers (later wins)
 
-1. **Global (per user)** — defaults in customer-service (tone, cite-sources default, last pack, UI prefs, Fitness disclaimer ack, …).  
-2. **Pack (top menu)** — overrides for that domain (default seats, preferred left-nav section, …).  
+1. **Global (per user)** — defaults in customer-service (tone, cite-sources default, last topic, UI prefs, Fitness disclaimer ack, …).  
+2. **Topic (top menu)** — overrides for that domain (default seats, preferred left-nav section, …).  
 3. **Chat project / chat window** — overrides for that conversation only (domain chips, seat focus, cite on/off). History attaches here.
 
 Left-nav selection drives domain option chips; when the user changes them, store as **chat-window overrides**.
@@ -80,7 +80,7 @@ Each Send → existing deliberate body:
   "user_id": "<customer_id>",
   "message": "<composer text>",
   "ctx_data": {
-    "pack_id": "software_architecture",
+    "topic_id": "software_architecture",
     "left_nav": "patterns",
     "domain_options": {},
     "lenses": ["startup_cto", "developer"],
@@ -92,7 +92,7 @@ Each Send → existing deliberate body:
 }
 ```
 
-`settings` is the **merged** global → pack → chat override map. Transcript index lives in customer-service; ADK session continuity uses `session_id`.
+`settings` is the **merged** global → topic → chat override map. Transcript index lives in customer-service; ADK session continuity uses `session_id`.
 
 ---
 
@@ -126,7 +126,7 @@ Schema management is **not** Alembic inside each app. Dedicated tree, e.g. `Midd
 
 ## Portal top menu (build full chrome now)
 
-Visible from the start so product focus is not lost as packs land:
+Visible from the start so product focus is not lost as topics land:
 
 1. **Entrepreneurship**
 2. **Leadership**
@@ -149,7 +149,7 @@ KB depth fills in behind each item over time. Nav discovery is complete early; c
 
 1. **Storage: laptop local first** (`KB_LOCAL_ROOT`), not S3.  
 2. **First KB: Software Architecture & Design** — dense technical corpora; faster useful chamber than a full SBA crawl.  
-3. Other packs next, same ingest pipeline.  
+3. Other topics next, same ingest pipeline.  
 4. Portal shell with all five top menus + left-nav configs; wire chamber only where `kbReady`.
 
 ### Software Architecture & Design — source caution
@@ -166,7 +166,7 @@ Named classics (GoF, many J2EE / architecture pattern books) are **copyrighted**
 
 Subcats after download (examples): `architecture_styles`, `microservices`, `integration`, `data_modeling`, `enterprise_java`, `cloud_architectures`, `databases_storage`, `event_systems`, `ai_agentic`, `gof_style_patterns` (open explanations only).
 
-MCP for external agents is a **later** second interface on the same structured store — not a v0 dependency. GraphRAG / compatibility tools after pack-scoped retrieval works in the chamber.
+MCP for external agents is a **later** second interface on the same structured store — not a v0 dependency. GraphRAG / compatibility tools after topic-scoped retrieval works in the chamber.
 
 ---
 
@@ -208,20 +208,20 @@ Cross-link topics later with `pairs_with` / `conflicts_with` metadata (admin ing
 Session chat: history panel + composer. Context for each turn:
 
 ```text
-1. Pack system + Facilitator instructions
+1. Topic system + Facilitator instructions
 2. Selected seats’ instructions
-3. Retrieved KB chunks (this pack + subcategory filters only)
+3. Retrieved KB chunks (this topic + subcategory filters only)
 4. Session summary + last N turns
 5. User-selected domain options (from left nav)
 6. Optional chat lenses + mode (deep_think | balanced)
 7. Current user message (+ optional attach)
 ```
 
-### Chat lenses (optional, multi-select in composer — **per pack**)
+### Chat lenses (optional, multi-select in composer — **per topic**)
 
 Never force a job-title wall. Default = **no lenses**. Lenses swap with the **active top menu**; they must not leak Architecture personas into Entrepreneurship (etc.).
 
-| Pack | Example lenses |
+| Topic | Example lenses |
 |------|----------------|
 | Software Architecture & Design | Aspiring · Developer · Startup CTO · Enterprise · Coding agent |
 | Entrepreneurship | Founder · Operator · Investor lens · First-time founder |
@@ -229,13 +229,13 @@ Never force a job-title wall. Default = **no lenses**. Lenses swap with the **ac
 | SRE | On-call · SRE lead · Platform · Exec risk |
 | Fitness | Beginner · Intermediate · Coach lens |
 
-Plus **Deep think** toggle → `mode: deep_think`. Domain option chips still come from **left nav** for that pack only.
+Plus **Deep think** toggle → `mode: deep_think`. Domain option chips still come from **left nav** for that topic only.
 
-Admin KB entries should eventually support facet blocks filtered by lenses; v0 UI sends pack-scoped `lenses` in `ctx_data` even before facets land.
+Admin KB entries should eventually support facet blocks filtered by lenses; v0 UI sends topic-scoped `lenses` in `ctx_data` even before facets land.
 
-### Conversation kinds (by pack)
+### Conversation kinds (by topic)
 
-| Pack | Example intents |
+| Topic | Example intents |
 |------|-----------------|
 | Software Architecture & Design | Pattern fit; design review; monolith vs microservices; data modeling |
 | Entrepreneurship | Idea validation; funding path; launch checklist; GTM vs build |
@@ -248,7 +248,7 @@ Shared modes: Quick ask · Full council · Single seat · Compare seats.
 ### Chat options — domain-specific (not generic engineering toolbar)
 
 Universal chrome only: **Send** · **New session** · **Cite sources** (if KB ready) · **Export**.  
-All other chips come from **active top menu + left nav**. Switching pack/nav swaps the option set; options must not leak across packs.
+All other chips come from **active top menu + left nav**. Switching topic/nav swaps the option set; options must not leak across topics.
 
 #### Software Architecture & Design
 | Left nav | Options |
@@ -297,7 +297,7 @@ History panel: rename/archive session, pin/copy/export, show sources, regenerate
 
 ## Geographic scope
 
-**US-oriented authoritative sources first** for Entrepreneurship / Leadership / federal materials. Architecture pack may use major US-hosted open vendor docs (Microsoft Learn, AWS, etc.) under their ToS. Non-US gov portals later as locale packs.
+**US-oriented authoritative sources first** for Entrepreneurship / Leadership / federal materials. Architecture topic may use major US-hosted open vendor docs (Microsoft Learn, AWS, etc.) under their ToS. Non-US gov portals later as locale topics.
 
 ---
 
@@ -359,7 +359,7 @@ sources registry (url, license, domain, status)
   → blob store (local FS or S3 — same keys)
   → normalize (HTML/PDF → text)
   → subcategorize (rules / classifier)
-  → chunk → embed → pack-scoped index (later)
+  → chunk → embed → topic-scoped index (later)
 ```
 
 ### Storage (locked)
@@ -385,7 +385,7 @@ This repository is **public**. Never commit downloaded KB files. Commit only ing
 
 - SBA/OPM-class feeds alone → **hundreds** of pages, not 10k URLs each.  
 - **Thousands–10k+** needs broad OA harvest under license gates.  
-- Early target: **thousands of chunks** per pack after section split.  
+- Early target: **thousands of chunks** per topic after section split.  
 - Program for scale; seed from authoritative allowlists; grow honestly.
 
 ### Subcategorize after download
@@ -401,8 +401,8 @@ Fetch into the domain first; label subcats offline (URL/title rules + optional c
 3. Angular portal: signup/signin, five top menus, left-nav, Architecture chamber, settings merge → deliberate.  
 4. Ingest v0: local blob store + license gate + Architecture allowlist.  
 5. Chamber options for Architecture left-nav sections.  
-6. Wire RAG retrieval pack-scoped.  
-7. Entrepreneurship (SBA) → Leadership → SRE → Fitness packs.  
+6. Wire RAG retrieval topic-scoped.  
+7. Entrepreneurship (SBA) → Leadership → SRE → Fitness topics.  
 8. Optional S3 backend with same keys.
 
 ---
