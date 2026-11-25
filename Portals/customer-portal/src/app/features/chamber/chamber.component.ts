@@ -8,7 +8,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { AuthService } from '../../core/services/auth.service';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { CouncilApiService, DeliberateResponse } from '../../core/services/council-api.service';
-import { CHAT_LENSES } from '../../core/models/pack';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { CheckboxModule } from 'primeng/checkbox';
 
@@ -31,7 +30,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 export class ChamberComponent {
   readonly prefs = inject(PreferencesService);
   readonly auth = inject(AuthService);
-  readonly lenses = CHAT_LENSES;
   private readonly council = inject(CouncilApiService);
 
   draft = '';

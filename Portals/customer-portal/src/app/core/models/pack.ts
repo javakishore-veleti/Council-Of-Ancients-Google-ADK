@@ -10,9 +10,16 @@ export interface NavItem {
   label: string;
   icon: string;
   route: string;
+  /** Soft-disabled chrome until KB ready */
+  disabledUntilKb?: boolean;
 }
 
 export interface DomainOption {
+  id: string;
+  label: string;
+}
+
+export interface ChatLens {
   id: string;
   label: string;
 }
@@ -23,8 +30,12 @@ export interface PackDefinition {
   shortLabel: string;
   kbReady: boolean;
   tagline: string;
+  heroImage: string;
+  seatsLabel: string;
   nav: NavItem[];
   optionsByNav: Record<string, DomainOption[]>;
+  /** Optional composer lenses — pack-specific; never mandatory */
+  lenses: ChatLens[];
 }
 
 export interface ChatMessage {
@@ -49,27 +60,11 @@ export interface UserSettings {
   disclaimerAck: boolean;
 }
 
-/** Optional chat lenses — never mandatory profile roles */
-export type ChatLensId =
-  | 'aspiring'
-  | 'developer'
-  | 'startup_cto'
-  | 'enterprise_architect'
-  | 'coding_agent';
-
-export const CHAT_LENSES: Array<{ id: ChatLensId; label: string }> = [
-  { id: 'aspiring', label: 'Aspiring' },
-  { id: 'developer', label: 'Developer' },
-  { id: 'startup_cto', label: 'Startup CTO' },
-  { id: 'enterprise_architect', label: 'Enterprise' },
-  { id: 'coding_agent', label: 'Coding agent' },
-];
-
 export interface EffectiveContext {
   pack_id: PackId;
   left_nav: string;
   domain_options: Record<string, string>;
-  lenses: ChatLensId[];
+  lenses: string[];
   mode: 'balanced' | 'deep_think';
   settings: UserSettings & Record<string, unknown>;
   chat_project_id: string;

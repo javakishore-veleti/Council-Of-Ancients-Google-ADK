@@ -1,6 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
 import {
-  ChatLensId,
   ChatMessage,
   ChatProject,
   EffectiveContext,
@@ -20,7 +19,7 @@ export class PreferencesService {
   readonly activeNavId = signal<string>('chamber');
   readonly activeProjectId = signal<string>('');
   readonly selectedOptions = signal<string[]>([]);
-  readonly selectedLenses = signal<ChatLensId[]>([]);
+  readonly selectedLenses = signal<string[]>([]);
   readonly deepThink = signal(false);
   readonly sourcesOpen = signal(true);
 
@@ -73,6 +72,8 @@ export class PreferencesService {
     this.activePackId.set(id);
     this.activeNavId.set('overview');
     this.selectedOptions.set([]);
+    this.selectedLenses.set([]);
+    this.deepThink.set(false);
     this.ensureProject();
     this.patchGlobal({ lastPackId: id });
   }
@@ -89,10 +90,10 @@ export class PreferencesService {
     );
   }
 
-  toggleLens(id: ChatLensId): void {
+  toggleLens(id: string): void {
     const cur = this.selectedLenses();
     this.selectedLenses.set(
-      cur.includes(id) ? cur.filter((x: ChatLensId) => x !== id) : [...cur, id],
+      cur.includes(id) ? cur.filter((x: string) => x !== id) : [...cur, id],
     );
     this.patchChat({ lenses: this.selectedLenses() });
   }

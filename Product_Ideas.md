@@ -217,21 +217,21 @@ Session chat: history panel + composer. Context for each turn:
 7. Current user message (+ optional attach)
 ```
 
-### Chat lenses (optional, multi-select in composer)
+### Chat lenses (optional, multi-select in composer — **per pack**)
 
-Never force a job-title wall. Default = **no lenses** (balanced architect tone). Checkboxes in the chamber toolbar:
+Never force a job-title wall. Default = **no lenses**. Lenses swap with the **active top menu**; they must not leak Architecture personas into Entrepreneurship (etc.).
 
-| Lens | Bias |
-|------|------|
-| Aspiring | Plain language, prerequisites |
-| Developer | Code / diagrams / local setup |
-| Startup CTO | Time-to-market, managed services, cost |
-| Enterprise | Governance, multi-region, compliance flags |
-| Coding agent | Guardrails + compact machine-oriented output |
+| Pack | Example lenses |
+|------|----------------|
+| Software Architecture & Design | Aspiring · Developer · Startup CTO · Enterprise · Coding agent |
+| Entrepreneurship | Founder · Operator · Investor lens · First-time founder |
+| Leadership | IC · Manager · Exec · People partner |
+| SRE | On-call · SRE lead · Platform · Exec risk |
+| Fitness | Beginner · Intermediate · Coach lens |
 
-Plus **Deep think** toggle → `mode: deep_think` for richer multi-facet reasoning when retrieval exists.
+Plus **Deep think** toggle → `mode: deep_think`. Domain option chips still come from **left nav** for that pack only.
 
-Admin KB entries should eventually support facet blocks (`summary`, `tradeoff_matrix`, `enterprise_governance`, `implementation_code`, `agent_guardrails`) filtered by lenses; v0 UI sends lenses in `ctx_data` even before facets land.
+Admin KB entries should eventually support facet blocks filtered by lenses; v0 UI sends pack-scoped `lenses` in `ctx_data` even before facets land.
 
 ### Conversation kinds (by pack)
 

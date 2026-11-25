@@ -18,9 +18,10 @@
           [pTooltip]="pack.tagline"
           tooltipPosition="bottom"
         >
-          <span>{{ pack.shortLabel }}</span>
+          <span class="pack-label-full">{{ pack.label }}</span>
+          <span class="pack-label-short">{{ pack.shortLabel }}</span>
           @if (!pack.kbReady) {
-            <p-tag severity="warn" value="Soon" styleClass="soon-tag" />
+            <p-tag severity="warn" value="KB soon" styleClass="soon-tag" />
           }
         </button>
       }
@@ -70,10 +71,15 @@
               type="button"
               class="nav-item"
               [class.active]="prefs.activeNavId() === item.id"
+              [class.kb-locked]="item.disabledUntilKb && !prefs.activePack().kbReady"
+              [disabled]="item.disabledUntilKb && !prefs.activePack().kbReady"
               (click)="goNav(item.route, item.id)"
             >
               <i [class]="item.icon"></i>
               <span>{{ item.label }}</span>
+              @if (item.disabledUntilKb && !prefs.activePack().kbReady) {
+                <span class="lock">soon</span>
+              }
             </button>
           </li>
         }

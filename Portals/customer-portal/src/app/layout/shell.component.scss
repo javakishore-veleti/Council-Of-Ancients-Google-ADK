@@ -58,8 +58,21 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.86rem;
+  font-size: 0.78rem;
   transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.pack-label-short {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .pack-label-full {
+    display: none;
+  }
+  .pack-label-short {
+    display: inline;
+  }
 }
 
 .pack-tab:hover,
@@ -179,6 +192,20 @@
   background: linear-gradient(90deg, var(--coa-mist), transparent);
   color: var(--coa-deep);
   font-weight: 600;
+}
+
+.nav-item.kb-locked,
+.nav-item:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.nav-item .lock {
+  margin-left: auto;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--coa-copper);
+  font-weight: 700;
 }
 
 .canvas {

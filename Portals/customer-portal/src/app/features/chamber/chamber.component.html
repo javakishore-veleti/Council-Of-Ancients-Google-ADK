@@ -63,21 +63,23 @@
     </div>
   </div>
 
-  <div class="lenses">
-    <span class="lbl">Lenses (optional)</span>
-    <div class="lens-row">
-      @for (lens of lenses; track lens.id) {
-        <label class="lens">
-          <p-checkbox
-            [binary]="true"
-            [ngModel]="prefs.selectedLenses().includes(lens.id)"
-            (ngModelChange)="prefs.toggleLens(lens.id)"
-          />
-          <span>{{ lens.label }}</span>
-        </label>
-      }
+  @if (prefs.activePack().lenses.length) {
+    <div class="lenses">
+      <span class="lbl">Lenses for {{ prefs.activePack().label }} (optional)</span>
+      <div class="lens-row">
+        @for (lens of prefs.activePack().lenses; track lens.id) {
+          <label class="lens">
+            <p-checkbox
+              [binary]="true"
+              [ngModel]="prefs.selectedLenses().includes(lens.id)"
+              (ngModelChange)="prefs.toggleLens(lens.id)"
+            />
+            <span>{{ lens.label }}</span>
+          </label>
+        }
+      </div>
     </div>
-  </div>
+  }
 
   <div class="options">
     <span class="lbl">Domain options · {{ prefs.activeNavId() }}</span>

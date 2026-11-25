@@ -16,9 +16,7 @@
     </div>
     <div
       class="visual"
-      [style.backgroundImage]="
-        'url(https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80)'
-      "
+      [style.backgroundImage]="'url(' + prefs.activePack().heroImage + ')'"
     ></div>
   </div>
 
@@ -30,23 +28,21 @@
           @if (prefs.activePack().kbReady) {
             Ready for local ingest &amp; citation.
           } @else {
-            Coming soon — navigation is available now.
+            Coming soon — full chrome is live; KB loads later per Product Ideas.
           }
         </p>
       </p-card>
     </div>
     <div class="col-md-4">
       <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Sessions</ng-template>
-        <p>{{ prefs.projectList().length }} chat project(s) in this pack.</p>
+        <ng-template pTemplate="title">Seats</ng-template>
+        <p>{{ prefs.activePack().seatsLabel }}</p>
       </p-card>
     </div>
     <div class="col-md-4">
       <p-card styleClass="stat-card">
-        <ng-template pTemplate="title">Settings</ng-template>
-        <p>
-          Global defaults merge with pack and chat overrides before every deliberate call.
-        </p>
+        <ng-template pTemplate="title">Sessions</ng-template>
+        <p>{{ prefs.projectList().length }} chat project(s) in this pack.</p>
       </p-card>
     </div>
   </div>
