@@ -199,16 +199,22 @@
 
 .pack-title h2 {
   margin: 0;
+  font-family: var(--coa-font-body);
   font-size: 1.05rem;
-  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.4;
   color: var(--coa-deep);
   text-wrap: balance;
+  overflow: visible;
+  padding-bottom: 0.05em;
 }
 
 .pack-title p {
-  margin: 0.35rem 0 1rem;
+  margin: 0.4rem 0 1rem;
   color: var(--coa-muted);
   font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 .left-nav ul {
