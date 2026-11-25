@@ -4,15 +4,20 @@
     <button
       pButton
       type="button"
-      label="New session"
+      label="New chat in current section"
       icon="pi pi-plus"
       (click)="create()"
     ></button>
   </div>
 
+  <p class="hint">
+    Every chat belongs to a left-nav section (for example Architecture styles). Open one below, or start a new chat while that section is selected.
+  </p>
+
   <p-table [value]="prefs.projectList()" styleClass="p-datatable-sm session-table">
     <ng-template pTemplate="header">
       <tr>
+        <th>Section</th>
         <th>Title</th>
         <th>Updated</th>
         <th></th>
@@ -20,6 +25,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-row>
       <tr>
+        <td>{{ sectionName(row.sectionId) }}</td>
         <td>{{ row.title }}</td>
         <td>{{ row.updatedAt | date: 'medium' }}</td>
         <td class="text-end">
@@ -35,7 +41,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="3">No sessions in this topic yet.</td>
+        <td colspan="4">No sessions in this topic yet.</td>
       </tr>
     </ng-template>
   </p-table>

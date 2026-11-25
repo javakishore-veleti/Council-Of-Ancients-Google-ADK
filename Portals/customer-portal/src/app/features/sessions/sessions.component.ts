@@ -16,14 +16,21 @@ export class SessionsComponent {
   readonly prefs = inject(PreferencesService);
   private readonly router = inject(Router);
 
+  sectionName(sectionId: string): string {
+    return this.prefs.sectionLabel(sectionId || 'overview');
+  }
+
   open(id: string): void {
+    const project = this.prefs.projectList().find((p) => p.id === id);
+    if (project?.sectionId) {
+      this.prefs.setNav(project.sectionId);
+    }
     this.prefs.selectProject(id);
-    // Do not steal left-nav highlight — chamber is the canvas for the active section.
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 
   create(): void {
-    this.prefs.createProject(`Session ${new Date().toLocaleString()}`);
+    this.prefs.createProject();
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 }

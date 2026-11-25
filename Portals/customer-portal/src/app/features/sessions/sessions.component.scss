@@ -2,7 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.65rem;
+}
+
+.hint {
+  margin: 0 0 1rem;
+  color: var(--coa-muted);
+  font-size: 0.92rem;
+  max-width: 42rem;
 }
 
 .head h2 {

@@ -69,6 +69,7 @@ export class SectionHubComponent {
   readonly options = computed(() => this.prefs.domainOptions());
 
   openChamber(): void {
+    this.prefs.openSectionChamber();
     void this.router.navigate(['/app', this.prefs.activePackId(), 'chamber']);
   }
 

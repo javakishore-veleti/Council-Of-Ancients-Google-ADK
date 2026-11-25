@@ -1,6 +1,7 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -17,6 +18,7 @@ import { CheckboxModule } from 'primeng/checkbox';
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     ButtonModule,
     TextareaModule,
     ProgressSpinnerModule,
@@ -27,7 +29,7 @@ import { CheckboxModule } from 'primeng/checkbox';
   templateUrl: './chamber.component.html',
   styleUrl: './chamber.component.scss',
 })
-export class ChamberComponent {
+export class ChamberComponent implements OnInit {
   readonly prefs = inject(PreferencesService);
   readonly auth = inject(AuthService);
   private readonly council = inject(CouncilApiService);
@@ -87,8 +89,12 @@ export class ChamberComponent {
     this.criteriaOpen.update((v) => !v);
   }
 
+  ngOnInit(): void {
+    this.prefs.openSectionChamber();
+  }
+
   newSession(): void {
-    this.prefs.createProject(`Session ${new Date().toLocaleString()}`);
+    this.prefs.createProject();
   }
 
   send(): void {

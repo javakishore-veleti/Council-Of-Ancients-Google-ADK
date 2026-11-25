@@ -42,6 +42,7 @@ export class PreferencesService {
     return pack.optionsByNav[nav] ?? pack.optionsByNav['chamber'] ?? [];
   });
 
+  /** All sessions for the active topic (any section). */
   readonly projectList = computed(() =>
     this.projects()
       .filter((p: ChatProject) => p.packId === this.activePackId())
@@ -50,6 +51,14 @@ export class PreferencesService {
           b.updatedAt.getTime() - a.updatedAt.getTime(),
       ),
   );
+
+  /** Sessions for the active left-nav section only. */
+  readonly sectionProjectList = computed(() => {
+    const sectionId = this.activeNavId();
+    return this.projectList().filter(
+      (p: ChatProject) => (p.sectionId || 'overview') === sectionId,
+    );
+  });
 
   readonly activeMessages = computed(
     () => this.messages()[this.activeProjectId()] ?? [],
@@ -124,8 +133,12 @@ export class PreferencesService {
     this.chatOverrides.set(all);
   }
 
-  ensureProject(title = 'New chamber session'): string {
-    const existing = this.projectList()[0];
+  sectionLabel(sectionId = this.activeNavId()): string {
+    return this.activePack().nav.find((n) => n.id === sectionId)?.label ?? sectionId;
+  }
+
+  ensureProject(title?: string): string {
+    const existing = this.sectionProjectList()[0];
     if (existing) {
       this.activeProjectId.set(existing.id);
       return existing.id;
@@ -133,12 +146,25 @@ export class PreferencesService {
     return this.createProject(title);
   }
 
-  createProject(title = 'New chamber session'): string {
+  /** Open chamber for the current section: reuse latest session or start one. */
+  openSectionChamber(): string {
+    const list = this.sectionProjectList();
+    if (list.length) {
+      this.activeProjectId.set(list[0].id);
+      return list[0].id;
+    }
+    return this.createProject();
+  }
+
+  createProject(title?: string): string {
+    const sectionId = this.activeNavId();
+    const label = this.sectionLabel(sectionId);
     const id = `proj_${crypto.randomUUID().slice(0, 8)}`;
     const project: ChatProject = {
       id,
-      title,
+      title: title ?? `${label} · ${new Date().toLocaleString()}`,
       packId: this.activePackId(),
+      sectionId,
       updatedAt: new Date(),
     };
     const next = [project, ...this.projects()];
@@ -202,8 +228,15 @@ export class PreferencesService {
   }
 
   private loadProjects(): ChatProject[] {
-    const raw = this.loadJson<Array<ChatProject & { updatedAt: string }>>(PROJECTS_KEY, []);
-    return raw.map((p) => ({ ...p, updatedAt: new Date(p.updatedAt) }));
+    const raw = this.loadJson<Array<ChatProject & { updatedAt: string; sectionId?: string }>>(
+      PROJECTS_KEY,
+      [],
+    );
+    return raw.map((p) => ({
+      ...p,
+      sectionId: p.sectionId || 'overview',
+      updatedAt: new Date(p.updatedAt),
+    }));
   }
 
   private persistProjects(): void {

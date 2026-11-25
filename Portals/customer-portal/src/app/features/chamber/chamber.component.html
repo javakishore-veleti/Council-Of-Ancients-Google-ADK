@@ -13,7 +13,7 @@
       <button
         pButton
         type="button"
-        label="New session"
+        label="New chat"
         icon="pi pi-plus"
         class="p-button-outlined"
         (click)="newSession()"
@@ -33,8 +33,13 @@
     </div>
   }
 
+  <p class="session-hint">
+    Chats in <strong>{{ sectionLabel() }}</strong> — switch below, or start a new one. All sections:
+    <a routerLink="/app/{{ prefs.activePackId() }}/sessions">Sessions</a>.
+  </p>
+
   <div class="projects">
-    @for (p of prefs.projectList(); track p.id) {
+    @for (p of prefs.sectionProjectList(); track p.id) {
       <button
         type="button"
         class="proj"
@@ -43,6 +48,8 @@
       >
         {{ p.title }}
       </button>
+    } @empty {
+      <span class="no-chats">No chats in this section yet — click New chat.</span>
     }
   </div>
 

@@ -56,6 +56,8 @@ export interface ChatProject {
   id: string;
   title: string;
   packId: PackId;
+  /** Left-nav section this chat belongs to (e.g. styles, patterns). */
+  sectionId: string;
   updatedAt: Date;
 }
 
