@@ -55,6 +55,15 @@ export class ShellComponent {
     this.councilMeaningVisible = true;
   }
 
+  displayInitials(): string {
+    const name = (this.auth.user()?.displayName || 'U').trim();
+    const parts = name.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  }
+
   signOut(): void {
     this.auth.signout();
     void this.router.navigate(['/signin']);

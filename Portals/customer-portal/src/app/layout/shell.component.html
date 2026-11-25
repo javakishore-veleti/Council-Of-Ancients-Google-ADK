@@ -39,12 +39,8 @@
         routerLink="/app/settings/global"
         pTooltip="Global settings"
       ></button>
-      <div class="account">
-        <p-avatar
-          [label]="(auth.user()?.displayName || 'U').slice(0, 1).toUpperCase()"
-          shape="circle"
-          styleClass="acct-avatar"
-        />
+      <div class="account" [pTooltip]="auth.user()?.displayName || ''" tooltipPosition="bottom">
+        <p-avatar [label]="displayInitials()" shape="circle" styleClass="acct-avatar" />
         <div class="acct-meta">
           <div class="acct-name">{{ auth.user()?.displayName }}</div>
           <button type="button" class="signout" (click)="signOut()">Sign out</button>
@@ -72,7 +68,7 @@
   </p-dialog>
 
   <div class="body-grid">
-    <aside class="left-nav coa-glass">
+    <aside class="left-nav">
       <div class="pack-title">
         <h2>{{ prefs.activePack().label }}</h2>
         <p>{{ prefs.activePack().tagline }}</p>
